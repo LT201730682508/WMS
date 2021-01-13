@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:background="@drawable/mylongbuton"
+    android:layout_height="wrap_content">
+    <TextView
+        android:layout_width="300dp"
+        android:id="@+id/open"
+        android:gravity="center"
+        android:textColor="@color/skyblue"
+        android:text="从本地相册中获取"
+        android:textSize="25dp"
+        android:layout_height="70dp"></TextView>
+    <View
+        android:layout_width="300dp"
+        android:background="@color/skyblue"
+        android:layout_height="1dp"></View>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:text="拍照"
+        android:textColor="@color/skyblue"
+        android:id="@+id/take"
+        android:textSize="25dp"></TextView>
+
+    <View
+        android:layout_width="300dp"
+        android:background="@color/skyblue"
+        android:layout_height="1dp"></View>
+    <TextView
+        android:layout_width="300dp"
+        android:gravity="center"
+        android:id="@+id/cancel"
+        android:text="取消"
+        android:textColor="@color/skyblue"
+        android:textSize="25dp"
+        android:layout_height="70dp"></TextView>
+</LinearLayout>
