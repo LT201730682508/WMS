@@ -1,30 +1,38 @@
 package com.example.WMS
 
+
+import android.R.attr.fragment
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.graphics.Path
 import android.os.Build
 import android.os.Bundle
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.bumptech.glide.Glide
-import com.example.WMS.Open_Album.CHOOSE_PHOTO
-import com.example.WMS.Open_Album.TAKE_PHOTO
-import com.example.WMS.custom_Dialog.take_Album_Dialog
+import com.example.WMS.MyFragment.Login_fragment
+import com.example.WMS.MyFragment.Register_Fragment
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
-    lateinit var image:ImageView
+     lateinit var loginFragment:Login_fragment
+    lateinit var registerFragment: Register_Fragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        image=findViewById<ImageView>(R.id.appIcon)
 
-        image.setOnClickListener {
-            var dialog=take_Album_Dialog(this)
-             dialog.getAct(this )
-            dialog.show()
-        }
+        loginFragment= Login_fragment()
+        registerFragment=Register_Fragment()
+        val manager: FragmentManager = supportFragmentManager
+        val transaction: FragmentTransaction = manager.beginTransaction()
+        transaction.add(R.id.Fragment_First, loginFragment)
+        transaction.commit()
+    }
+    fun replace(){
+        supportFragmentManager.beginTransaction().hide(loginFragment).add(R.id.Fragment_First,registerFragment).addToBackStack(null).commit()
     }
     override fun onActivityResult(
         requestCode: Int,
@@ -32,18 +40,7 @@ class MainActivity : AppCompatActivity() {
         data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
-
-        when (requestCode) {
-            TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
-                val bitmap =
-                    BitmapFactory.decodeStream(contentResolver.openInputStream(Open_Album.uri))
-                    Glide.with(this).load(bitmap).into(image)
-            }
-               CHOOSE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
-                if (Build.VERSION.SDK_INT >= 19) Open_Album.handleImageOnKitKat(this,data,image) else Open_Album.handleImageBeforeKitKat(this,data,image)
-            }
-            else -> {
-            }
-        }
+        loginFragment.onActivityResult(requestCode,resultCode,data)
     }
+
 }

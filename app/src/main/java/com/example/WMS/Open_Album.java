@@ -26,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static android.app.Activity.RESULT_OK;
 
 public class Open_Album {
     private static String imagePath;
