@@ -3,9 +3,8 @@
 
 打开相册与拍照功能｛
   封装类：Open_Album
-  在需要使用到该功能的activity或者fragment中 调用 take_Album_Dialog,呈现dialog，该dialog需要调用 getAct(Activity) 赋予activity
-    var dialog=take_Album_Dialog(this)
-             dialog.getAct(this)
+  在需要使用到该功能的activity或者fragment中 调用 take_Album_Dialog,呈现dialog
+    var dialog=take_Album_Dialog(this）
             dialog.show()
   在activity或者fragment中，调用回调函数，获取相片：
     override fun onActivityResult(
