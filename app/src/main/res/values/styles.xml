@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!--        <item name="android:windowBackground">@color/colorAPP</item>-->
+        <item name="android:textStyle">normal</item>
+        <item name="colorPrimary">@color/xui_config_color_main_theme</item>
+        <item name="colorPrimaryDark">@color/Black</item>
+
+    </style>
+</resources>
