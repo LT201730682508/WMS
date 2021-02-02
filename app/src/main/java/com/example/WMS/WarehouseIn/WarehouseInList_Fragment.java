@@ -63,6 +63,7 @@ public class WarehouseInList_Fragment extends Fragment{
                 super.run();
                 warehouseItems = new ArrayList<WarehouseItem>();
                 WarehouseItem warehouseItem=new WarehouseItem();
+                //假数据
                 warehouseItem.setName("仓库1");
                 warehouseItems.add(warehouseItem);
                 warehouseItem.setName("仓库1");
