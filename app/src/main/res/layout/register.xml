@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/signUp_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+        <TextView
+            android:text="新用户注册"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:background="@drawable/editframe2">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:textSize="15dp"
+                android:gravity="center_vertical"
+                android:text="账号:"/>
+
+            <EditText
+                android:id="@+id/signUp_account"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="设置账号"
+                android:lines="1"
+                android:inputType="text"/>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:background="@drawable/editframe2">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:textSize="15dp"
+                android:gravity="center_vertical"
+                android:text="密码:"/>
+
+            <EditText
+                android:id="@+id/signUp_password"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="设置密码"
+                android:lines="1"
+                android:inputType="text"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/signUp_signUpButton"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginRight="20dp"
+                android:textSize="15dp"
+                android:textColor="@color/xui_config_color_main_theme"
+                android:text="注册新用户"
+                android:background="@drawable/mylongbuton"/>
+            <Button
+                android:id="@+id/signUn_goBackButton"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:textSize="15dp"
+                android:textColor="@color/xui_config_color_main_theme"
+                android:text="返回"
+                android:background="@drawable/mylongbuton"/>
+
+        </LinearLayout>
+
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/signUp_tip"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_marginTop="10dp"-->
+        <!--            android:text="账号已被注册"-->
+        <!--            android:textSize="20dp"-->
+        <!--            android:textColor="@color/Red"-->
+        <!--            android:visibility="gone"/>-->
+
+    </LinearLayout>
+</LinearLayout>
