@@ -18,7 +18,7 @@ class Register_Fragment:Fragment() {
         var view=inflater.inflate(R.layout.register,container,false)
         var signUn_goBackButton=view.findViewById<Button>(R.id.signUn_goBackButton)
         signUn_goBackButton.setOnClickListener {
-            (activity as MainActivity).supportFragmentManager.beginTransaction().remove(this).show((activity as MainActivity).loginFragment).commit()
+            (activity as MainActivity).supportFragmentManager.popBackStack()
         }
         return view
     }

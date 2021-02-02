@@ -24,6 +24,8 @@ class Login_fragment: Fragment() {
 
     lateinit var image:ImageView
     lateinit var signIn_signUpButton: Button
+    lateinit var signIn_signInButton:Button
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,9 +37,15 @@ class Login_fragment: Fragment() {
             var dialog=take_Album_Dialog(context!!)
             dialog.show()
         }
+        signIn_signInButton=view.findViewById(R.id.signIn_signInButton)
         signIn_signUpButton=view.findViewById(R.id.signIn_signUpButton)
         signIn_signUpButton.setOnClickListener {
-            (activity as MainActivity).replace()
+            var  registerFragment= Register_Fragment()
+            (activity as MainActivity).fragment_Manager.hide_all(registerFragment)
+        }
+        signIn_signInButton.setOnClickListener {
+            var homeFragment= Home_Fragment()
+            (activity as MainActivity).fragment_Manager.replace_all(homeFragment)
         }
 
         return view
