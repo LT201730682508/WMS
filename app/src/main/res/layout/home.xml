@@ -58,7 +58,6 @@
     <RelativeLayout
         android:id="@+id/item2"
         android:clickable="true"
-        android:focusableInTouchMode="true"
         android:layout_width="wrap_content"
         android:layout_marginTop="30dp"
         android:layout_centerHorizontal="true"
@@ -81,7 +80,6 @@
     <RelativeLayout
         android:layout_alignParentRight="true"
         android:clickable="true"
-        android:focusableInTouchMode="true"
         android:layout_marginRight="40dp"
         android:layout_width="wrap_content"
         android:layout_marginTop="30dp"
