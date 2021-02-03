@@ -46,7 +46,6 @@ public class OkHttpHelper {
 
     //Get方法
     public void get(String url,BaseCallback callback){
-
         Request request = buildRequest(url,null,HttpMethodType.GET);
         doRequest(request,callback);
     }
@@ -113,7 +112,6 @@ public class OkHttpHelper {
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Request request, IOException e) {
-
                 callback.onFailure(request,e);
             }
 
@@ -126,8 +124,7 @@ public class OkHttpHelper {
                     if (callback.mType == String.class){
 //                      callback.onSuccess(response,resultStr);
                         callbackSuccess(callback,response,resultStr);
-                    }else
-                    {
+                    }else {
                         //使用try catch处理json解析错误
                         try {
                             Object object = gson.fromJson(resultStr,callback.mType);
