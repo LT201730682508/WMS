@@ -122,7 +122,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if(v==btn_fanhui){
-            ((MainActivity)getActivity()).fragment_Manager.hide_all(new Home_Fragment());
+            ((MainActivity)getActivity()).fragment_Manager.pop();
         }
         else if(v==btn_gengduo){
             Toast.makeText(context,"更多",Toast.LENGTH_SHORT).show();

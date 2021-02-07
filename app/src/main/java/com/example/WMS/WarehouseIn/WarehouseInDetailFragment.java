@@ -37,7 +37,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v){
         if(v==btn_fanhui){
-            ((MainActivity)getActivity()).fragment_Manager.hide_all(new WarehouseInList_Fragment());
+            ((MainActivity)getActivity()).fragment_Manager.pop();
         }
     }
     @Override
