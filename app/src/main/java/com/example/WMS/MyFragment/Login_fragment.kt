@@ -68,27 +68,7 @@ class Login_fragment: Fragment() {
                 if (Build.VERSION.SDK_INT >= 19) Open_Album.handleImageOnKitKat(activity,data,image) else Open_Album.handleImageBeforeKitKat(activity,data,image)
             }
             else -> {
-                var ok=OkHttpHelper.getInstance()
-                ok.get("dsasda",object : BaseCallback<dsa>(){
-                    override fun onFailure(request: Request?, e: IOException?) {
-                        TODO("Not yet implemented")
-                    }
-
-                    override fun onResponse(response: Response?) {
-                        TODO("Not yet implemented")
-                    }
-
-                    override fun onSuccess(response: Response?, t: dsa?) {
-
-                    }
-
-                    override fun onError(response: Response?, code: Int, e: Exception?) {
-                        TODO("Not yet implemented")
-                    }
-
-                })
             }
         }
     }
 }
-data class dsa(var a:Int,var B:List<Int>)
