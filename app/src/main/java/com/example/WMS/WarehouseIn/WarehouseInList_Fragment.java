@@ -9,11 +9,14 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,24 +24,32 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.WMS.Fragment_Manager;
+import com.example.WMS.MainActivity;
+import com.example.WMS.MyFragment.Home_Fragment;
 import com.example.WMS.R;
 import com.example.WMS.domain.WarehouseItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class WarehouseInList_Fragment extends Fragment{
+public class WarehouseInList_Fragment extends Fragment implements View.OnClickListener{
     protected Context context;
     private RecyclerView lv_video_pager;
     private TextView tv_nomedia;
     private ProgressBar pb_loading;
+    private Spinner spinner;
+    private ImageView btn_fanhui;
+    private ImageView btn_gengduo;
+    private boolean isHandleBack = false;
     private ArrayList<WarehouseItem> warehouseItems;
+    private String[] warehouseName={"深圳","上海","北京","山西"};
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context=getActivity();
     }
-
+    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return initView();
@@ -50,12 +61,19 @@ public class WarehouseInList_Fragment extends Fragment{
         lv_video_pager.setLayoutManager(new LinearLayoutManager(context));
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
+        spinner=view.findViewById(R.id.spinner);
+        btn_fanhui=view.findViewById(R.id.fanhui);
+        btn_gengduo=view.findViewById(R.id.gengduo);
+        isHandleBack=false;
+
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        btn_fanhui.setOnClickListener(this);
+        btn_gengduo.setOnClickListener(this);
         initData();
     }
 
@@ -70,8 +88,14 @@ public class WarehouseInList_Fragment extends Fragment{
                 //假数据
                 warehouseItem.setName("仓库1");
                 warehouseItems.add(warehouseItem);
+                warehouseItem=new WarehouseItem();
+                //假数据
                 warehouseItem.setName("仓库2");
                 warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+
                 handler.sendEmptyMessage(0);
             }
         }.start();
@@ -84,7 +108,8 @@ public class WarehouseInList_Fragment extends Fragment{
                 tv_nomedia.setVisibility(View.GONE);
                 pb_loading.setVisibility(View.GONE);
                 //设置适配器
-
+                ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(context, R.layout.myspinner,warehouseName);
+                spinner.setAdapter(spinnerAdapter);
                 lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
             }
             else{
@@ -93,6 +118,18 @@ public class WarehouseInList_Fragment extends Fragment{
             }
         }
     };
+
+    @Override
+    public void onClick(View v) {
+        if(v==btn_fanhui){
+            ((MainActivity)getActivity()).fragment_Manager.pop();
+        }
+        else if(v==btn_gengduo){
+            Toast.makeText(context,"更多",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     public class WarehouseInListAdapter extends RecyclerView.Adapter<WarehouseInListAdapter.VH>{
         //② 创建ViewHolder
         public class VH extends RecyclerView.ViewHolder{
@@ -115,7 +152,9 @@ public class WarehouseInList_Fragment extends Fragment{
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //item 点击事件
+                    WarehouseInDetailFragment warehouseInDetailFragment=new WarehouseInDetailFragment();
+                    ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouseInDetailFragment);
+                    //Toast.makeText(context,"111",Toast.LENGTH_SHORT).show();
                 }
             });
         }
