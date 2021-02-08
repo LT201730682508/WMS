@@ -28,11 +28,12 @@
                 android:layout_marginRight="6dp"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
+
     </androidx.appcompat.widget.Toolbar>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:textColor="@color/black"
-        android:text="入库详情页"/>
+        android:text="出库详情页"/>
 </RelativeLayout>
