@@ -42,6 +42,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static Spinner spinner;
     private ImageView btn_fanhui;
     private ImageView btn_gengduo;
+    private static MyAdapter<MyAdapter.VH> adapter;
     private static ArrayList<WarehouseItem> warehouseItems;
     private static final String[] warehouseName={"深圳","上海","北京","山西"};
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
@@ -51,6 +52,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         handler=new WarehouseOutList_Fragment.MyHandler((MainActivity) getActivity());
         context=getActivity();
+
     }
     @Nullable
     @Override
@@ -119,23 +121,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner,warehouseName);
                     spinner.setAdapter(spinnerAdapter);
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-                    rv_pager.setAdapter(new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist) {
-                        @Override
-                        public void onClickMethod(VH holder, int position) {
-                            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    WarehouseOutDetailFragment warehouseOutDetailFragment = new WarehouseOutDetailFragment();
-                                    activity.fragment_Manager.hide_all(warehouseOutDetailFragment);
-                                    //Toast.makeText(context,"111",Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
-                        @Override
-                        public void bindView(VH holder, int position) {
-                            holder.setText(R.id.tv_name, warehouseItems.get(position).getName());
-                        }
-                    });
+                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_outlist,1,activity);
+                    rv_pager.setAdapter(adapter);
                 }
                 else{
                     tv_nomedia.setVisibility(View.VISIBLE);

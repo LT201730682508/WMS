@@ -12,13 +12,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
+import com.example.WMS.WarehouseOut.WarehouseOutDetailFragment;
 import com.example.WMS.domain.WarehouseItem;
 
 import java.util.ArrayList;
 
-public abstract class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<MyAdapter.VH> {
+public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<MyAdapter.VH> {
     public static class VH extends RecyclerView.ViewHolder{
         //public final TextView title;
+
         private SparseArray<View> views = new SparseArray<>();
         public static  VH getHolder(int mResId, ViewGroup parent, int viewType){
             VH holder;
@@ -49,12 +52,15 @@ public abstract class MyAdapter<V extends RecyclerView.ViewHolder> extends Recyc
             return this;
         }
     }
-
+    private int opType=0;//0是入库，1是出库后续继续添加
     private int mResId;
     private ArrayList<WarehouseItem> mDatas;
-    public MyAdapter(ArrayList<WarehouseItem> data,int mResId) {
+    private MainActivity activity;
+    public MyAdapter(ArrayList<WarehouseItem> data,int mResId, int opType,MainActivity activity) {
         this.mDatas = data;
-        this.mResId=mResId;
+        this.mResId = mResId;
+        this.opType = opType;
+        this.activity=activity;
     }
 
     @NonNull
@@ -72,9 +78,31 @@ public abstract class MyAdapter<V extends RecyclerView.ViewHolder> extends Recyc
         onClickMethod(holder,position);
     }
 
-    public abstract void onClickMethod(VH holder, int position);
-
-    public abstract void bindView(VH holder,int position);
+    //public abstract void onClickMethod(VH holder, int position);
+    public void onClickMethod(VH holder,int position){
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(opType==0){//入库Adater
+                    WarehouseInDetailFragment warehouseInDetailFragment = new WarehouseInDetailFragment();
+                    activity.fragment_Manager.hide_all(warehouseInDetailFragment);
+                }
+                else if(opType==1){//出库Adater
+                    WarehouseOutDetailFragment warehouseOutDetailFragment = new WarehouseOutDetailFragment();
+                    activity.fragment_Manager.hide_all(warehouseOutDetailFragment);
+                }
+            }
+        });
+    }
+    //public abstract void bindView(VH holder,int position);
+    public void bindView(VH holder,int position){
+        if(opType==0){
+            holder.setText(R.id.tv_name, mDatas.get(position).getName());
+        }
+        else if(opType==1){
+            holder.setText(R.id.tv_name, mDatas.get(position).getName());
+        }
+    }
     @Override
     public int getItemCount() {
         return mDatas.size();
