@@ -98,6 +98,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     public void bindView(VH holder,int position){
         if(opType==0){
             holder.setText(R.id.tv_name, mDatas.get(position).getName());
+            holder.setText(R.id.tv_quantity,"100");
         }
         else if(opType==1){
             holder.setText(R.id.tv_name, mDatas.get(position).getName());

@@ -62,7 +62,7 @@
         </LinearLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
+        <com.example.WMS.SlideRecyclerView
             android:id="@+id/lv_video_pager"
             android:cacheColorHint="@android:color/transparent"
             android:layout_width="match_parent"
@@ -73,7 +73,7 @@
     <TextView
         android:layout_centerInParent="true"
         android:id="@+id/tv_nomedia"
-        android:text="当前无可操作仓库"
+        android:text="当前仓库无商品(入库)"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:layout_width="wrap_content"

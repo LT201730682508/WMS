@@ -61,7 +61,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     }
     //子类实现方法
     public View initView(){
-        View view=View.inflate(context,R.layout.inlist_fragment,null);
+        View view=View.inflate(context,R.layout.outlist_fragment,null);
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
