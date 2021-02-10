@@ -1,4 +1,4 @@
-package com.example.WMS.MyFragment.Data_report
+package com.example.WMS.MyFragment.Warehouse
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,16 +9,17 @@ import androidx.fragment.app.Fragment
 import com.example.WMS.MainActivity
 import com.example.WMS.R
 
-class Data_report_fragment :Fragment(){
+class Warehouse_Fragment:Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view=inflater.inflate(R.layout.data_report,container,false)
+        var view=inflater.inflate(R.layout.warehouse,container,false)
         init(view)
         return view
     }
+
     fun init(view:View){
         var search=view.findViewById<ImageView>(R.id.search)
         search.visibility=View.GONE

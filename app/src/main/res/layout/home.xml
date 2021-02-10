@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:background="@color/lightslategrey"
+    android:background="@color/backgroundGray"
     android:layout_height="match_parent">
     <TextView
         android:layout_width="match_parent"
@@ -9,29 +9,35 @@
         android:text="仓库管理系统"
         android:gravity="center"
         android:textSize="20dp"
+        android:background="@color/whitesmoke"
         android:textColor="@color/skyblue"
         android:layout_height="50dp">
     </TextView>
-    <TextView
-        android:layout_below="@+id/ware_title"
-        android:layout_width="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginRight="80dp"
-        android:layout_marginTop="50dp"
-        android:text="欢迎来到仓库管理系统"
-        android:gravity="center"
-        android:textSize="10dp"
-        android:textColor="@color/white"
-        android:background="@drawable/talk_dialog1"
+    <RelativeLayout
         android:id="@+id/talk_dialog"
-        android:layout_height="100dp"></TextView>
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_toLeftOf="@+id/talk_dialog"
-        android:layout_alignBottom="@+id/talk_dialog"
-        android:src="@drawable/animal"
-        android:layout_marginBottom="20dp"
-        android:layout_height="50dp"></ImageView>
+        android:layout_below="@+id/ware_title"
+        android:layout_width="match_parent"
+        android:layout_alignParentRight="true"
+        android:background="@color/whitesmoke"
+        android:layout_height="150dp">
+        <ImageView
+            android:layout_width="80dp"
+            android:id="@+id/monster"
+            android:src="@drawable/ic_kidaha_01"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="45dp"
+            android:layout_height="80dp"></ImageView>
+        <TextView
+            android:layout_width="match_parent"
+            android:gravity="center_vertical|left"
+            android:text="欢迎来到仓库管理系统"
+            android:textSize="15dp"
+            android:textColor="@color/black"
+            android:layout_toRightOf="@+id/monster"
+            android:layout_marginLeft="25dp"
+            android:layout_height="match_parent"></TextView>
+    </RelativeLayout>
+
 
    <RelativeLayout
     android:layout_width="wrap_content"
@@ -41,15 +47,18 @@
     android:layout_below="@+id/talk_dialog"
     android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="70dp"
+            android:layout_width="45dp"
             android:id="@+id/item_icon1"
-            android:src="@drawable/warehouse"
-            android:layout_height="60dp">
+            android:src="@drawable/ware"
+            android:layout_centerHorizontal="true"
+            android:layout_height="45dp">
         </ImageView>
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="60dp"
+            android:layout_marginTop="5dp"
             android:gravity="center"
             android:text="仓库"
+            android:textColor="@color/black"
             android:textSize="12sp"
             android:layout_below="@+id/item_icon1"
             android:layout_height="20dp"></TextView>
@@ -64,16 +73,19 @@
         android:layout_below="@+id/talk_dialog"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="70dp"
+            android:layout_width="45dp"
             android:id="@+id/item_icon2"
-            android:src="@drawable/put_in_warehouse"
-            android:layout_height="60dp">
+            android:src="@drawable/ware_in"
+            android:layout_centerHorizontal="true"
+            android:layout_height="45dp">
         </ImageView>
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="60dp"
             android:gravity="center"
             android:text="入库"
             android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
             android:layout_below="@+id/item_icon2"
             android:layout_height="20dp"></TextView>
     </RelativeLayout>
@@ -87,17 +99,20 @@
         android:layout_below="@+id/talk_dialog"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="70dp"
+            android:layout_width="45dp"
+            android:layout_centerHorizontal="true"
             android:id="@+id/item_icon3"
-            android:src="@drawable/get_out_warehouse"
-            android:layout_height="60dp">
+            android:src="@drawable/ware_out"
+            android:layout_height="45dp">
         </ImageView>
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="60dp"
             android:gravity="center"
             android:text="出库"
             android:textSize="12sp"
+            android:textColor="@color/black"
             android:layout_below="@+id/item_icon3"
+            android:layout_marginTop="5dp"
             android:layout_height="20dp"></TextView>
     </RelativeLayout>
 
@@ -110,15 +125,19 @@
         android:layout_below="@+id/item1"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="70dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="45dp"
             android:id="@+id/item_icon4"
-            android:layout_height="60dp">
+            android:src="@drawable/message"
+            android:layout_height="45dp">
         </ImageView>
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="60dp"
             android:gravity="center"
-            android:text="xxxxx"
+            android:text="消息通知"
+            android:textColor="@color/black"
             android:textSize="12sp"
+            android:layout_marginTop="5dp"
             android:layout_below="@+id/item_icon4"
             android:layout_height="20dp"></TextView>
     </RelativeLayout>
@@ -131,14 +150,18 @@
         android:layout_below="@+id/item2"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="70dp"
+            android:layout_width="45dp"
+            android:layout_centerHorizontal="true"
             android:id="@+id/item_icon5"
-            android:layout_height="60dp">
+            android:src="@drawable/process"
+            android:layout_height="45dp">
         </ImageView>
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="60dp"
             android:gravity="center"
-            android:text="xxxxx"
+            android:text="开发进度"
+            android:layout_marginTop="5dp"
+            android:textColor="@color/black"
             android:textSize="12sp"
             android:layout_below="@+id/item_icon5"
             android:layout_height="20dp"></TextView>
@@ -152,15 +175,19 @@
         android:layout_below="@+id/item3"
         android:layout_height="wrap_content">
         <ImageView
-            android:layout_width="70dp"
+            android:layout_width="45dp"
+            android:src="@drawable/data_report"
             android:id="@+id/item_icon6"
-            android:layout_height="60dp">
+            android:layout_centerHorizontal="true"
+            android:layout_height="45dp">
         </ImageView>
         <TextView
-            android:layout_width="70dp"
+            android:layout_width="60dp"
             android:gravity="center"
             android:text="数据报表"
             android:textSize="12sp"
+            android:textColor="@color/black"
+            android:layout_marginTop="5dp"
             android:layout_below="@+id/item_icon6"
             android:layout_height="20dp"></TextView>
     </RelativeLayout>

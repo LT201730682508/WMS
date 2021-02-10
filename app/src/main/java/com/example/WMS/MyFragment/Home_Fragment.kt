@@ -9,12 +9,14 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Data_report.Data_report_fragment
+import com.example.WMS.MyFragment.Warehouse.Warehouse_Fragment
 import com.example.WMS.R
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment
 import com.example.WMS.WarehouseOut.WarehouseOutList_Fragment
 import kotlinx.android.synthetic.main.home.*
 
 class Home_Fragment: Fragment() {
+    lateinit var item1: RelativeLayout
     lateinit var item2: RelativeLayout
     lateinit var item3: RelativeLayout
     lateinit var item6: RelativeLayout
@@ -24,6 +26,15 @@ class Home_Fragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         var view=inflater.inflate(R.layout.home,container,false)
+        jump(view)
+        return view
+    }
+    fun jump(view:View){
+        item1=view.findViewById(R.id.item1)
+        item1.setOnClickListener {
+            var warehouseFragment=Warehouse_Fragment()
+            (activity as MainActivity).fragment_Manager.hide_all(warehouseFragment)
+        }
         item2=view.findViewById(R.id.item2)
         item2.setOnClickListener {
             var warehouseInListFragment= WarehouseInList_Fragment()
@@ -39,7 +50,5 @@ class Home_Fragment: Fragment() {
             var dataReportFragment= Data_report_fragment()
             (activity as MainActivity).fragment_Manager.hide_all(dataReportFragment)
         }
-        return view
     }
-    
 }
