@@ -3,13 +3,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:background="@color/backgroundGray"
     android:layout_height="match_parent">
-   <include
-    layout="@layout/base_top_bar"
-    android:id="@+id/topbar"
-    ></include>
+    <include
+        layout="@layout/base_top_bar"
+        android:id="@+id/topbar"
+        ></include>
     <TextView
         android:layout_width="match_parent"
-        android:text="数据报表"
+        android:text="仓库管理"
         android:gravity="center"
         android:textColor="@color/skyblue"
         android:textSize="25dp"
@@ -17,18 +17,19 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/whitesmoke"
-        android:id="@+id/ware_in"
+        android:id="@+id/all_ware"
+        android:visibility="visible"
         android:layout_height="50dp">
         <ImageView
             android:layout_width="15dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/in"
+            android:src="@drawable/all"
             android:id="@+id/img1"
             android:layout_height="15dp"></ImageView>
         <TextView
             android:layout_width="match_parent"
-            android:text="入库列表"
+            android:text="所有仓库"
             android:textColor="@color/Gray"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
@@ -44,23 +45,23 @@
             android:layout_marginRight="15dp"
             ></ImageView>
     </RelativeLayout>
-
     <RelativeLayout
-        android:layout_marginTop="3dp"
         android:layout_width="match_parent"
         android:background="@color/whitesmoke"
-        android:id="@+id/ware_out"
+        android:id="@+id/join_ware"
+        android:visibility="visible"
+        android:layout_marginTop="3dp"
         android:layout_height="50dp">
         <ImageView
             android:layout_width="15dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/out"
+            android:src="@drawable/join"
             android:id="@+id/img2"
             android:layout_height="15dp"></ImageView>
         <TextView
             android:layout_width="match_parent"
-            android:text="出库列表"
+            android:text="我加入的仓库"
             android:textColor="@color/Gray"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
@@ -80,19 +81,20 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:background="@color/whitesmoke"
-        android:id="@+id/inventory"
+        android:id="@+id/create_ware"
+        android:visibility="visible"
         android:layout_marginTop="3dp"
         android:layout_height="50dp">
         <ImageView
             android:layout_width="15dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/inventory"
+            android:src="@drawable/create"
             android:id="@+id/img3"
             android:layout_height="15dp"></ImageView>
         <TextView
             android:layout_width="match_parent"
-            android:text="库存盘点"
+            android:text="创建仓库"
             android:textColor="@color/Gray"
             android:layout_marginLeft="10dp"
             android:gravity="center_vertical"
