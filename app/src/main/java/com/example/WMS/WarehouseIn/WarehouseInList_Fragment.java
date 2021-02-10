@@ -92,7 +92,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 WarehouseItem warehouseItem=new WarehouseItem();
                 //假数据
                 warehouseItem.setName("仓库1");
+                warehouseItem.setSize(433333);
                 warehouseItems.add(warehouseItem);
+
                 warehouseItem=new WarehouseItem();
                 //假数据
                 warehouseItem.setName("仓库2");
@@ -100,7 +102,14 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 warehouseItems.add(warehouseItem);
                 warehouseItems.add(warehouseItem);
                 warehouseItems.add(warehouseItem);
-
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
                 handler.sendEmptyMessage(0);
             }
         }.start();
@@ -132,42 +141,6 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
         }
     }
-//    private Handler handler=new Handler(){
-//        @Override
-//        public void handleMessage(@NonNull Message msg) {
-//            super.handleMessage(msg);
-//            if(warehouseItems!=null&&warehouseItems.size()>0){
-//                tv_nomedia.setVisibility(View.GONE);
-//                pb_loading.setVisibility(View.GONE);
-//                //设置适配器
-//                ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(context, R.layout.myspinner,warehouseName);
-//                spinner.setAdapter(spinnerAdapter);
-//                //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-//                lv_video_pager.setAdapter(new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist) {
-//                    @Override
-//                    public void onClickMethod(VH holder, int position) {
-//                        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                WarehouseInDetailFragment warehouseInDetailFragment = new WarehouseInDetailFragment();
-//                                ((MainActivity) getActivity()).fragment_Manager.hide_all(warehouseInDetailFragment);
-//                                //Toast.makeText(context,"111",Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//                    }
-//                    @Override
-//                    public void bindView(VH holder, int position) {
-//                        holder.setText(R.id.tv_name, warehouseItems.get(position).getName());
-//                    }
-//                });
-//            }
-//            else{
-//                tv_nomedia.setVisibility(View.VISIBLE);
-//                pb_loading.setVisibility(View.VISIBLE);
-//            }
-//        }
-//    };
-
     @Override
     public void onClick(View v) {
         if(v==btn_fanhui){

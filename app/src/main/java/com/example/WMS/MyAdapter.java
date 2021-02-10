@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,8 +24,9 @@ import java.util.ArrayList;
 public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<MyAdapter.VH> {
     public static class VH extends RecyclerView.ViewHolder{
         //public final TextView title;
-
         private SparseArray<View> views = new SparseArray<>();
+        private RelativeLayout rl;
+        private FrameLayout fl;
         public static  VH getHolder(int mResId, ViewGroup parent, int viewType){
             VH holder;
             View v = LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false);
@@ -31,6 +35,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         }
         public VH(View v) {
             super(v);
+            rl=v.findViewById(R.id.item_inlist_rl);
+            fl=v.findViewById(R.id.item_inlist_fl);
             //title = (TextView) v.findViewById(R.id.tv_name);
         }
         private <T extends View> T getView(int id) {
@@ -80,7 +86,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
 
     //public abstract void onClickMethod(VH holder, int position);
     public void onClickMethod(VH holder,int position){
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+        holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(opType==0){//入库Adater
@@ -90,6 +96,17 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                 else if(opType==1){//出库Adater
                     WarehouseOutDetailFragment warehouseOutDetailFragment = new WarehouseOutDetailFragment();
                     activity.fragment_Manager.hide_all(warehouseOutDetailFragment);
+                }
+            }
+        });
+        holder.fl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(opType==0){//入库Adater
+                    Toast.makeText(activity,"删除",Toast.LENGTH_SHORT).show();
+                }
+                else if(opType==1){//出库Adater
+                    Toast.makeText(activity,"删除",Toast.LENGTH_SHORT).show();
                 }
             }
         });
