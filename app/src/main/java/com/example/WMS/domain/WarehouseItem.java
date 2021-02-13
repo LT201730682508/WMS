@@ -3,12 +3,13 @@ package com.example.WMS.domain;
 import java.io.Serializable;
 
 public class WarehouseItem implements Serializable {
-    private String name;
+    private String name;//商品名称
+    private int size;//商品数量
+    private int price;//商品价格
+    private String warehouse_name;//存储所在的仓库名
+    private String imageUrl;//商品图片
     private long duration;
-    private long size;
-    private String data;
-    private String imageUrl;
-
+    private String detail;
     public String getImageUrl() {
         return imageUrl;
     }
@@ -17,15 +18,13 @@ public class WarehouseItem implements Serializable {
         this.imageUrl = imageUrl;
     }
 
-    public String getDesc() {
-        return desc;
+    public int getPrice() {
+        return price;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setPrice(int price) {
+        this.price = price;
     }
-
-    private String desc;
 
     public WarehouseItem() {
     }
@@ -46,28 +45,38 @@ public class WarehouseItem implements Serializable {
         this.duration = duration;
     }
 
-    public long getSize() {
+    public int getSize() {
         return size;
     }
 
-    public void setSize(long size) {
+    public void setSize(int size) {
         this.size = size;
     }
 
-    public String getData() {
-        return data;
+    public String getWarehouse_name() {
+        return warehouse_name;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setWarehouse_name(String warehouse_name) {
+        this.warehouse_name = warehouse_name;
+    }
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
     @Override
     public String toString() {
         return "MediaItem{" +
-                "name='" + name + '\'' +
-                ", duration=" + duration +
+                "name='" + name +
+                ", price=" + price +
                 ", size=" + size +
-                ", data='" + data + '\'' +
+                ", warehouse_name=" + warehouse_name +
+                ", detail=" + detail +
                 '}';
     }
+
+
 }

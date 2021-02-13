@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.xuexiang.xui.widget.dialog.bottomsheet.BottomSheetItemView xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bottomsheet"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <Button
+            android:id="@+id/bottomsheet_fragment_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|top"
+            android:layout_marginBottom="16dp"
+            android:text="1111" />
+    </RelativeLayout>
+</com.xuexiang.xui.widget.dialog.bottomsheet.BottomSheetItemView>

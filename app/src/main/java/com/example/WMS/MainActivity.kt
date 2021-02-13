@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onActivityResult(requestCode, resultCode, data)
         fragment_Manager.loginFragment.onActivityResult(requestCode,resultCode,data)
+        fragment_Manager.warehousenewfragment.onActivityResult(requestCode,resultCode,data)
     }
 
 }

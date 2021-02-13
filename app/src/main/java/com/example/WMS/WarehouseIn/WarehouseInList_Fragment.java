@@ -1,11 +1,8 @@
 package com.example.WMS.WarehouseIn;
 
-
-
-
-
-
-
+/**
+ * 入库商品列表
+ */
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +11,9 @@ import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -43,11 +42,14 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static Spinner spinner;
     private ImageView btn_fanhui;
     private ImageView btn_gengduo;
+    private Button btn_add;
     private static ArrayList<WarehouseItem> warehouseItems;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static final String[] warehouseName={"深圳","上海","北京","山西"};
+    private static String selectWarehouseName;
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         spinner=view.findViewById(R.id.spinner);
         btn_fanhui=view.findViewById(R.id.fanhui);
         btn_gengduo=view.findViewById(R.id.gengduo);
+        btn_add=view.findViewById(R.id.add);
 
         return view;
     }
@@ -79,6 +82,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         super.onActivityCreated(savedInstanceState);
         btn_fanhui.setOnClickListener(this);
         btn_gengduo.setOnClickListener(this);
+        btn_add.setOnClickListener(this);
         initData();
     }
 
@@ -93,11 +97,13 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 //假数据
                 warehouseItem.setName("仓库1");
                 warehouseItem.setSize(433333);
+                warehouseItem.setWarehouse_name("深圳");
                 warehouseItems.add(warehouseItem);
 
                 warehouseItem=new WarehouseItem();
                 //假数据
                 warehouseItem.setName("仓库2");
+                warehouseItem.setWarehouse_name("上海");
                 warehouseItems.add(warehouseItem);
                 warehouseItems.add(warehouseItem);
                 warehouseItems.add(warehouseItem);
@@ -130,6 +136,17 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     //设置适配器
                     ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner,warehouseName);
                     spinner.setAdapter(spinnerAdapter);
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            selectWarehouseName=warehouseName[position];
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+
+                        }
+                    });
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
                     adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity);
                     rv_pager.setAdapter(adapter);
@@ -149,7 +166,12 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         else if(v==btn_gengduo){
             Toast.makeText(context,"更多",Toast.LENGTH_SHORT).show();
         }
+        else if(v==btn_add){
+            Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName);
+            ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
+        }
     }
+
 //    public class WarehouseInListAdapter extends RecyclerView.Adapter<WarehouseInListAdapter.VH>{
 //        //② 创建ViewHolder
 //        public class VH extends RecyclerView.ViewHolder{

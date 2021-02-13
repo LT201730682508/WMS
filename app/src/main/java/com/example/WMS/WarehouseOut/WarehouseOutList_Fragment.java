@@ -1,5 +1,7 @@
 package com.example.WMS.WarehouseOut;
-
+/**
+ * 出库商品列表
+ * */
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;

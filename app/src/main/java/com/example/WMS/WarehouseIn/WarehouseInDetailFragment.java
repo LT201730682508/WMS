@@ -13,7 +13,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.WMS.MainActivity;
 import com.example.WMS.R;
-
+/**
+ * 点击item打开的修改详情页
+ * */
 public class WarehouseInDetailFragment extends Fragment implements View.OnClickListener {
     protected Context context;
     private ImageView btn_fanhui;

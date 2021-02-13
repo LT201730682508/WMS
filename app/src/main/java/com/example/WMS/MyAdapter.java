@@ -6,6 +6,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
+import com.example.WMS.WarehouseIn.Warehouse_New_Fragment;
 import com.example.WMS.WarehouseOut.WarehouseOutDetailFragment;
 import com.example.WMS.domain.WarehouseItem;
 
@@ -27,6 +29,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         private SparseArray<View> views = new SparseArray<>();
         private RelativeLayout rl;
         private FrameLayout fl;
+        private Button btn_add;
         public static  VH getHolder(int mResId, ViewGroup parent, int viewType){
             VH holder;
             View v = LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false);
@@ -37,6 +40,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             super(v);
             rl=v.findViewById(R.id.item_inlist_rl);
             fl=v.findViewById(R.id.item_inlist_fl);
+            btn_add=v.findViewById(R.id.btn_add);
             //title = (TextView) v.findViewById(R.id.tv_name);
         }
         private <T extends View> T getView(int id) {
@@ -52,13 +56,20 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             textView.setText(text);
             return this;
         }
+        public VH setSize(int id,int size){
+            TextView textView = getView(id);
+            textView.setText(size+"");
+            return this;
+        }
         public VH setChecked(int id, boolean isChecked) {
             CheckBox checkBox = getView(id);
             checkBox.setChecked(isChecked);
             return this;
         }
     }
-    private int opType=0;//0是入库，1是出库后续继续添加
+    private final int WAREHOUSE_IN=0;
+    private final int WAREHOUSE_OUT=1;
+    private int opType;//WAREHOUSE_IN是入库，WAREHOUSE_OUT是出库后续继续添加
     private int mResId;
     private ArrayList<WarehouseItem> mDatas;
     private MainActivity activity;
@@ -85,7 +96,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     }
 
     //public abstract void onClickMethod(VH holder, int position);
-    public void onClickMethod(VH holder,int position){
+    public void onClickMethod(VH holder, final int position){
         holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,22 +113,34 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         holder.fl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(opType==0){//入库Adater
-                    Toast.makeText(activity,"删除",Toast.LENGTH_SHORT).show();
+                if(opType==WAREHOUSE_IN){//入库Adater
+                    Toast.makeText(activity,mDatas.get(position).getName()+"删除",Toast.LENGTH_SHORT).show();
                 }
-                else if(opType==1){//出库Adater
+                else if(opType==WAREHOUSE_OUT){//出库Adater
                     Toast.makeText(activity,"删除",Toast.LENGTH_SHORT).show();
                 }
             }
         });
+        holder.btn_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(opType==WAREHOUSE_IN){//入库Adater
+
+                }
+                else if(opType==WAREHOUSE_OUT){//出库Adater
+                    Toast.makeText(activity,mDatas.get(position).getName()+"入库",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
     }
     //public abstract void bindView(VH holder,int position);
     public void bindView(VH holder,int position){
-        if(opType==0){
+        if(opType==WAREHOUSE_IN){
             holder.setText(R.id.tv_name, mDatas.get(position).getName());
-            holder.setText(R.id.tv_quantity,"100");
+            holder.setSize(R.id.tv_quantity,mDatas.get(position).getSize());
         }
-        else if(opType==1){
+        else if(opType==WAREHOUSE_OUT){
             holder.setText(R.id.tv_name, mDatas.get(position).getName());
         }
     }

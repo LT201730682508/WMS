@@ -28,6 +28,7 @@
                 android:layout_marginRight="6dp"
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
+
     </androidx.appcompat.widget.Toolbar>
     <TextView
         android:layout_width="wrap_content"
