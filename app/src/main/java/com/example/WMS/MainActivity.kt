@@ -24,8 +24,8 @@ class MainActivity : AppCompatActivity() {
         data: Intent?
     ) {
         super.onActivityResult(requestCode, resultCode, data)
-        fragment_Manager.loginFragment.onActivityResult(requestCode,resultCode,data)
-        fragment_Manager.warehousenewfragment.onActivityResult(requestCode,resultCode,data)
+        fragment_Manager.ger_Top_Fragment().onActivityResult(requestCode,resultCode,data)
+
     }
 
 }

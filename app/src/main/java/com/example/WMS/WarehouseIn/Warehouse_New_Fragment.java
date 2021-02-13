@@ -95,7 +95,27 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode){
+            case Open_Album.TAKE_PHOTO:{
+                if (resultCode == Activity.RESULT_OK){
+                    try {
+                        Bitmap bitmap =
+                                BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(Open_Album.uri));
+                        Glide.with(this).load(bitmap).into(picture);
+                    }catch (Exception e){
 
+                    }
+                    break;
+                }
+            }
+            case  Open_Album.CHOOSE_PHOTO:{
+                if(resultCode == Activity.RESULT_OK){
+                    if (Build.VERSION.SDK_INT >= 19) Open_Album.handleImageOnKitKat(getActivity(),data,picture);
+                    else Open_Album.handleImageBeforeKitKat(getActivity(),data,picture);
 
+                }else {}
+                break;
+            }
+        }
     }
 }

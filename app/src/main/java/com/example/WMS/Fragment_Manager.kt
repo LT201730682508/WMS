@@ -33,5 +33,9 @@ class Fragment_Manager {
         var manager=my_activity.supportFragmentManager
         manager.popBackStack()
     }
+    fun ger_Top_Fragment():Fragment{
+        var fragment_list=my_activity.supportFragmentManager.fragments
+        return fragment_list[fragment_list.size-1]
+    }
 
 }
