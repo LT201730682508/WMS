@@ -9,11 +9,9 @@ class Fragment_Manager {
     var my_activity:MainActivity
     var fragment_show:Fragment
     var loginFragment:Login_fragment
-    var warehousenewfragment:Warehouse_New_Fragment
     constructor(activity:MainActivity){
         my_activity=activity
         loginFragment=Login_fragment()
-        warehousenewfragment=Warehouse_New_Fragment("仓库名")
         fragment_show=loginFragment
         my_activity.supportFragmentManager.beginTransaction().add(R.id.Fragment_First,loginFragment).commit()
     }
