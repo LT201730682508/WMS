@@ -158,6 +158,15 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
         }
     }
+    //返回该framgent时刷新数据
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(isHidden()){
+        }else {
+            initData();
+        }
+    }
     @Override
     public void onClick(View v) {
         if(v==btn_fanhui){
