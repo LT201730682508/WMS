@@ -91,7 +91,9 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             dialog.show();
         }
     }
-
+    public   void setImage(Activity activity,String str,ImageView imageView){
+        Glide.with(activity).load(str).into(imageView);
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -99,9 +101,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             case Open_Album.TAKE_PHOTO:{
                 if (resultCode == Activity.RESULT_OK){
                     try {
-                        Bitmap bitmap =
-                                BitmapFactory.decodeStream(getActivity().getContentResolver().openInputStream(Open_Album.uri));
-                        Glide.with(this).load(bitmap).into(picture);
+                        setImage(getActivity(),Open_Album.uri.toString(),picture);
                     }catch (Exception e){
 
                     }
@@ -116,6 +116,18 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 }else {}
                 break;
             }
+            default:{
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(isHidden()){
+        }else {
+            onResume();
         }
     }
 }

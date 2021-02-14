@@ -2,7 +2,6 @@ package com.example.WMS
 
 import androidx.fragment.app.Fragment
 import com.example.WMS.MyFragment.Login_fragment
-import com.example.WMS.WarehouseIn.Warehouse_New_Fragment
 
 
 class Fragment_Manager {
