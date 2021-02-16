@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/frame_line">
+   <ImageView
+       android:src="@drawable/join"
+       android:id="@+id/ware_img"
+       android:layout_width="100dp"
+       android:layout_height="100dp"></ImageView>
+    <TextView
+        android:layout_marginLeft="20dp"
+        android:id="@+id/warehouse_name"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:text="仓库名称"
+        android:layout_height="100dp">
+    </TextView>
+</LinearLayout>
