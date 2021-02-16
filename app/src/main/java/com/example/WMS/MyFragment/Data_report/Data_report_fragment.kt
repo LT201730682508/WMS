@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.R
 
 class Data_report_fragment :Fragment(){
+    lateinit var base_Top_Bar:Base_Topbar
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -20,9 +22,6 @@ class Data_report_fragment :Fragment(){
         return view
     }
     fun init(view:View){
-        var search=view.findViewById<ImageView>(R.id.search)
-        search.visibility=View.GONE
-        var back=view.findViewById<ImageView>(R.id.back)
-        back.setOnClickListener { (activity as MainActivity).fragment_Manager.pop() }
+        base_Top_Bar= Base_Topbar(view,(activity as MainActivity),false)
     }
 }
