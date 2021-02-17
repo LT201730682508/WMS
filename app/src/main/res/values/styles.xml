@@ -5,7 +5,16 @@
         <item name="android:textStyle">normal</item>
         <item name="colorPrimary">@color/xui_config_color_main_theme</item>
         <item name="colorPrimaryDark">@color/Black</item>
+    </style>
 
+
+    <style name="BottomDialog" parent="@style/Base.V7.Theme.AppCompat.Light.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+    <style name="BottomDialog.Animation" parent="Animation.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@xml/translate_dialog_in</item>
+        <item name="android:windowExitAnimation">@xml/translate_dialog_out</item>
     </style>
 
     <style name="CustomDialog" parent="android:style/Theme.Dialog">

@@ -141,8 +141,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             @Override
             public void onClick(View v) {
                 if(opType==WAREHOUSE_IN){//入库Adater
-                    Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment();
-                    activity.fragment_Manager.hide_all(warehouse_add_fragment);
+                    //Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment();
+                    //activity.fragment_Manager.hide_all(warehouse_add_fragment);
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
                     Toast.makeText(activity,mDatas.get(position).getName()+"入库",Toast.LENGTH_SHORT).show();
