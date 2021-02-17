@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,10 +21,9 @@ import com.bumptech.glide.Glide;
 import com.example.WMS.MainActivity;
 import com.example.WMS.Open_Album;
 import com.example.WMS.R;
-import com.example.WMS.domain.WarehouseItem;
+
 import com.example.WMS.custom_Dialog.take_Album_Dialog;
 
-import java.io.FileNotFoundException;
 
 /**
  * 点击新增商品打开的输入信息页
@@ -84,6 +81,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         }
         else if (v==btn_commit){
             //更新数据
+            //需要更新数据库信息代码
             ((MainActivity)getActivity()).fragment_Manager.pop();
         }
         else if (v==picture){
