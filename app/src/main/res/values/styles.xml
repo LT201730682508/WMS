@@ -29,5 +29,8 @@
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
-
+    <style name="FullScreenDialogStyle" parent="android:Theme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
 </resources>

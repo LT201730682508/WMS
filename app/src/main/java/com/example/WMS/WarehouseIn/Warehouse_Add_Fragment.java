@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
@@ -23,8 +24,8 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     protected Context context;
     private Button btn_add;
     private Button btn_cancel;
-    public Warehouse_Add_Fragment(@NonNull Context context) {
-        super(context);
+    public Warehouse_Add_Fragment(@NonNull Context context,int id) {
+        super(context,id);
         this.context=context;
     }
 
@@ -37,12 +38,16 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
         btn_cancel=contentView.findViewById(R.id.btn_cancel);
         btn_add.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
-        ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
+    //    ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
         //存在问题：无法水平铺满
-        //layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;
-        layoutParams.width = 1300;
-        contentView.setLayoutParams(layoutParams);
+    //    layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;
+       // layoutParams.width = 1300;
+     //   setCancelable(true);
+        // requestWindowFeature(Window.FEATURE_NO_TITLE);
+     //   contentView.setLayoutParams(layoutParams);
+        setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
     }
     @Override

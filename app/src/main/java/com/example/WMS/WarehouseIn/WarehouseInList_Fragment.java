@@ -203,7 +203,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
         }
         else if(v==btn_scan){
-            Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(context);
+            Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(context,R.style.FullScreenDialogStyle);
             warehouse_add_fragment.show();
         }
     }
