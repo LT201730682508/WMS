@@ -39,7 +39,7 @@
             android:inputType="numberDecimal"
             android:maxLines="1"
             android:layout_weight="1"
-            android:hint="商品数量"/>
+            android:hint="入库商品数量"/>
         <EditText
             android:id="@+id/et_price"
             android:layout_margin="10dp"
@@ -50,7 +50,7 @@
             android:inputType="numberDecimal"
             android:maxLines="1"
             android:layout_weight="1"
-            android:hint="商品价格"/>
+            android:hint="入库商品价格"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

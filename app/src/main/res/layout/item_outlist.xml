@@ -6,7 +6,7 @@
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal">
     <RelativeLayout
-        android:id="@+id/item_outlist_rl"
+        android:id="@+id/item_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
@@ -59,15 +59,17 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <Button
-            android:layout_width="20dp"
+            android:id="@+id/btn_add"
+            android:layout_width="40dp"
+            android:layout_centerInParent="true"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/outlist_ll"
+            android:layout_alignParentRight="true"
             android:background="#f59905"
             android:textSize="20sp"
-            android:text="入库"/>
+            android:text="出库"/>
     </RelativeLayout>
     <FrameLayout
-        android:id="@+id/item_outlist_fl"
+        android:id="@+id/item_fl"
         android:layout_width="80dp"
         android:layout_height="match_parent"
         android:background="#fd4965">

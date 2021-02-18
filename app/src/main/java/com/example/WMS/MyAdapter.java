@@ -39,8 +39,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         }
         public VH(View v) {
             super(v);
-            rl=v.findViewById(R.id.item_inlist_rl);
-            fl=v.findViewById(R.id.item_inlist_fl);
+            rl=v.findViewById(R.id.item_rl);
+            fl=v.findViewById(R.id.item_fl);
             btn_add=v.findViewById(R.id.btn_add);
             //title = (TextView) v.findViewById(R.id.tv_name);
         }
@@ -141,8 +141,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             @Override
             public void onClick(View v) {
                 if(opType==WAREHOUSE_IN){//入库Adater
-                    //Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment();
-                    //activity.fragment_Manager.hide_all(warehouse_add_fragment);
+                    Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(activity,mDatas.get(position));
+                    warehouse_add_fragment.show();
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
                     Toast.makeText(activity,mDatas.get(position).getName()+"入库",Toast.LENGTH_SHORT).show();

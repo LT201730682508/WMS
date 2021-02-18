@@ -6,7 +6,7 @@
     android:descendantFocusability="blocksDescendants"
     android:orientation="horizontal">
     <RelativeLayout
-        android:id="@+id/item_inlist_rl"
+        android:id="@+id/item_rl"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
@@ -69,7 +69,7 @@
             android:text="入库"/>
     </RelativeLayout>
     <FrameLayout
-        android:id="@+id/item_inlist_fl"
+        android:id="@+id/item_fl"
         android:layout_width="80dp"
         android:layout_height="match_parent"
         android:background="#fd4965">
