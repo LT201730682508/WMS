@@ -4,10 +4,12 @@ package com.example.WMS.WarehouseIn;
  * 入库商品列表
  */
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +48,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private ImageView btn_fanhui;
     private ImageView btn_gengduo;
     private Button btn_add;
+    private Button btn_scan;
     private static ArrayList<WarehouseItem> warehouseItems;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static final String[] warehouseName={"深圳","上海","北京","山西"};
@@ -76,7 +79,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         btn_fanhui=view.findViewById(R.id.fanhui);
         btn_gengduo=view.findViewById(R.id.gengduo);
         btn_add=view.findViewById(R.id.add);
-
+        btn_scan=view.findViewById(R.id.scan);
         //设置适配器
         ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(context, R.layout.myspinner,warehouseName);
         spinner.setAdapter(spinnerAdapter);
@@ -102,6 +105,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         btn_fanhui.setOnClickListener(this);
         btn_gengduo.setOnClickListener(this);
         btn_add.setOnClickListener(this);
+        btn_scan.setOnClickListener(this);
         initData();
     }
 
@@ -198,8 +202,22 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName);
             ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
         }
+        else if(v==btn_scan){
+            Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(context);
+            warehouse_add_fragment.show();
+        }
     }
-
+//    private void show1() {
+//        Dialog bottomDialog = new Dialog(context, R.style.BottomDialog);
+//        View contentView = LayoutInflater.from(context).inflate(R.layout.fragment_warehouse_in_add, null);
+//        bottomDialog.setContentView(contentView);
+//        ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
+//        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
+//        contentView.setLayoutParams(layoutParams);
+//        bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
+//        bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+//        bottomDialog.show();
+//    }
 //    public class WarehouseInListAdapter extends RecyclerView.Adapter<WarehouseInListAdapter.VH>{
 //        //② 创建ViewHolder
 //        public class VH extends RecyclerView.ViewHolder{
