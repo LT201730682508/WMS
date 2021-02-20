@@ -61,6 +61,7 @@
             android:layout_marginLeft="20dp"
             android:textColor="@color/skyblue"
             android:hint="请输入"
+            android:singleLine="true"
             android:textSize="15dp"
             android:layout_weight="1"></EditText>
         <ImageView
