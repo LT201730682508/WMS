@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
 import com.example.WMS.R;
 /**
@@ -18,7 +19,7 @@ import com.example.WMS.R;
  * */
 public class WarehouseOutDetailFragment extends Fragment implements View.OnClickListener {
     protected Context context;
-    private ImageView btn_fanhui;
+    private Base_Topbar base_topbar;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,16 +33,13 @@ public class WarehouseOutDetailFragment extends Fragment implements View.OnClick
     }
     public View initView(){
         View view=View.inflate(context, R.layout.fragment_warehouse_out_detail,null);
-        btn_fanhui=view.findViewById(R.id.fanhui);
-
-        btn_fanhui.setOnClickListener(this);
+        base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),false);
+        base_topbar.setTitle("出库");
         return view;
     }
     @Override
     public void onClick(View v){
-        if(v==btn_fanhui){
-            ((MainActivity)getActivity()).fragment_Manager.pop();
-        }
+
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {

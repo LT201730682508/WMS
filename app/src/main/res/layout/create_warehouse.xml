@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/backgroundGray"
+    android:layout_height="match_parent">
+
+    <include
+        layout="@layout/base_top_bar"></include>
+    <com.xuexiang.xui.widget.edittext.ClearEditText
+        android:id="@+id/set_warehouse_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:textSize="20dp"
+        android:hint="取个名字哦~"/>
+
+    <com.xuexiang.xui.widget.edittext.MultiLineEditText
+        android:id="@+id/ware_introduction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mlet_hintText="来吧，简要描述一下~"
+        app:mlet_maxCount="500"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="5dp"/>
+
+    <ImageView
+        android:id="@+id/set_img"
+        android:layout_width="60dp"
+        android:layout_height="49dp"
+        android:layout_marginVertical="5dp"
+        android:layout_marginLeft="20dp"
+        android:src="@drawable/add" />
+
+
+
+
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/ware_make_sure"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right"
+        android:text="发布"/>
+
+
+</LinearLayout>

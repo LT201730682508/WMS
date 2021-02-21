@@ -5,6 +5,8 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.xuexiang.xui.XUI
+import com.xuexiang.xui.widget.edittext.ClearEditText
 
 class Base_Topbar(var view:View,var activity: MainActivity) {
     var back:ImageView
@@ -12,10 +14,11 @@ class Base_Topbar(var view:View,var activity: MainActivity) {
     var search:ImageView
     var search_lin:LinearLayout
     var base:LinearLayout
-    var search_content:EditText
+    var search_content:ClearEditText
     var more:ImageView
     var title:TextView
     init {
+        XUI.initTheme(activity)
         back=view.findViewById(R.id.back)
         search_back=view.findViewById(R.id.search_back)
         search=view.findViewById(R.id.search)

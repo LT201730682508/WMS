@@ -22,6 +22,7 @@ class Fragment_Manager {
     fun hide_all(fragment: Fragment){
         var fragment_list=my_activity.supportFragmentManager.fragments
         var transaction=my_activity.supportFragmentManager.beginTransaction()
+        transaction.setCustomAnimations(R.anim.push_in,R.anim.pull_out_enter,R.anim.push_in_pop,R.anim.pull_out)
         transaction.hide(fragment_list[fragment_list.size-1])
         println("fragment的大小"+fragment_list.size+"   "+fragment_list[fragment_list.size-1])
         transaction.add(R.id.Fragment_First,fragment).addToBackStack(null).commit()
@@ -33,6 +34,10 @@ class Fragment_Manager {
     fun ger_Top_Fragment():Fragment{
         var fragment_list=my_activity.supportFragmentManager.fragments
         return fragment_list[fragment_list.size-1]
+    }
+    fun get_second_Fragment():Fragment{
+        var fragment_list=my_activity.supportFragmentManager.fragments
+        return fragment_list[fragment_list.size-2]
     }
 
 }
