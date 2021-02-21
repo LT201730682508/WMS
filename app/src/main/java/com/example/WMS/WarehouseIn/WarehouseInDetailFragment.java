@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
 import com.example.WMS.Open_Album;
 import com.example.WMS.R;
@@ -32,10 +33,10 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     private TextView name;
     private TextView detail;
     private TextView price;
+    private Base_Topbar base_topbar;
     private TextView size;
     private ImageView picture;
     private TextView warehouse_name;
-    private ImageView btn_fanhui;
     private String warehouseName;
     private String product_name;
     private Dialog dialog;
@@ -59,8 +60,8 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
 
     private View initView() {
         View view=View.inflate(context, R.layout.fragment_warehouse_in_detail,null);
-        btn_fanhui=view.findViewById(R.id.fanhui);
-        btn_fanhui.setOnClickListener(this);
+        base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),false);
+        base_topbar.setTitle("入库");
         btn_commit=view.findViewById(R.id.commit);
         btn_commit.setOnClickListener(this);
         warehouse_name=view.findViewById(R.id.et_warehousename);
@@ -77,11 +78,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-        if(v==btn_fanhui){
-            //无操作返回
-            ((MainActivity)getActivity()).fragment_Manager.pop();
-        }
-        else if (v==btn_commit){
+        if (v==btn_commit){
             //更新数据
             //需要更新数据库信息代码
             ((MainActivity)getActivity()).fragment_Manager.pop();

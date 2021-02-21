@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
 import com.example.WMS.My_Thread;
@@ -47,8 +48,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static TextView tv_nomedia;
     private static ProgressBar pb_loading;
     private static Spinner spinner;
-    private ImageView btn_fanhui;
-    private ImageView btn_gengduo;
+    private Base_Topbar base_topbar;
     private Button btn_scan;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static ArrayList<WarehouseItem> warehouseItems;
@@ -71,13 +71,12 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     //子类实现方法
     public View initView(){
         View view=View.inflate(context,R.layout.outlist_fragment,null);
+        base_topbar=new Base_Topbar(view,(MainActivity) getActivity(),true);
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);
-        btn_fanhui=view.findViewById(R.id.fanhui);
-        btn_gengduo=view.findViewById(R.id.gengduo);
         btn_scan=view.findViewById(R.id.scan);
         //设置适配器
         ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(context, R.layout.myspinner,warehouseName);
@@ -102,8 +101,6 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btn_fanhui.setOnClickListener(this);
-        btn_gengduo.setOnClickListener(this);
         btn_scan.setOnClickListener(this);
         initData();
     }
@@ -162,7 +159,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     pb_loading.setVisibility(View.GONE);
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_outlist,0,activity,selectWarehouseName);
+                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_outlist,1,activity,selectWarehouseName);
                     rv_pager.setAdapter(adapter);
                 }
                 else{
@@ -183,12 +180,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     }
     @Override
     public void onClick(View v) {
-        if(v==btn_fanhui){
-            ((MainActivity)getActivity()).fragment_Manager.pop();
-        }
-        else if(v==btn_gengduo){
-            Toast.makeText(context,"更多",Toast.LENGTH_SHORT).show();
-        }
+
     }
 
 }

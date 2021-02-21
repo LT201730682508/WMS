@@ -3,41 +3,8 @@
     android:id="@+id/in_detail"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="#C9C3C6">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:background="?attr/colorPrimary">
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/fanhui"
-                android:src="@drawable/fanhui"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:layout_alignParentLeft="true"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="新增商品"
-                android:layout_centerInParent="true"
-                android:textColor="@color/white"
-                android:textSize="20sp"/>
-            <ImageView
-                android:id="@+id/gengduo"
-                android:src="@drawable/gengduo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:layout_marginRight="6dp"
-                android:layout_alignParentRight="true" />
-        </RelativeLayout>
-
-    </androidx.appcompat.widget.Toolbar>
+  <include
+      layout="@layout/base_top_bar"></include>
     <RelativeLayout
         android:layout_marginTop="50dp"
         android:layout_marginBottom="200dp"
