@@ -20,6 +20,7 @@ import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
 import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
 import com.example.WMS.WarehouseIn.Warehouse_New_Fragment;
 import com.example.WMS.WarehouseOut.WarehouseOutDetailFragment;
+import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
 import com.example.WMS.domain.WarehouseItem;
 
 import java.util.ArrayList;
@@ -115,8 +116,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     activity.fragment_Manager.hide_all(warehouseInDetailFragment);
                 }
                 else if(opType==1){//出库Adater
-                    WarehouseOutDetailFragment warehouseOutDetailFragment = new WarehouseOutDetailFragment();
-                    activity.fragment_Manager.hide_all(warehouseOutDetailFragment);
+//                    WarehouseOutDetailFragment warehouseOutDetailFragment = new WarehouseOutDetailFragment();
+//                    activity.fragment_Manager.hide_all(warehouseOutDetailFragment);
                 }
             }
         });
@@ -133,7 +134,13 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     }
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
-                    Toast.makeText(activity,"删除",Toast.LENGTH_SHORT).show();
+                    if(mDatas.get(position).getSize()==0){
+                        //执行删除list刷新ui操作
+                        Toast.makeText(activity,"当前可删除",Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(activity,"不为0不可删除",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -145,7 +152,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     warehouse_add_fragment.show();
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
-                    Toast.makeText(activity,mDatas.get(position).getName()+"入库",Toast.LENGTH_SHORT).show();
+                    Warehouse_Delete_Dialog warehouse_delete_dialog=new Warehouse_Delete_Dialog(activity,mDatas.get(position));
+                    warehouse_delete_dialog.show();
                 }
             }
         });

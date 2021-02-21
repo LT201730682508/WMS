@@ -162,7 +162,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     pb_loading.setVisibility(View.GONE);
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_outlist,0,activity,selectWarehouseName);
+                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_outlist,1,activity,selectWarehouseName);
                     rv_pager.setAdapter(adapter);
                 }
                 else{
