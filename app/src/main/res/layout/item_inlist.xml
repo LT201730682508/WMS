@@ -53,7 +53,7 @@
             </LinearLayout>
             <TextView
                 android:id="@+id/tv_detail"
-                android:text="详情详情详情详情详情详情详情详情详情详情详情详情详情详情详情详情详情"
+                android:text="我是详情详情详情1234567891011121314详情详情详情详情一个"
                 android:textColor="#000000"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
