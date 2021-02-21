@@ -52,7 +52,7 @@
             android:id="@+id/search_back"
             android:layout_marginLeft="10dp"
             android:layout_height="50dp"></ImageView>
-        <EditText
+        <com.xuexiang.xui.widget.edittext.ClearEditText
             android:textColorHint="@color/skyblue"
             android:layout_width="0dp"
             android:layout_height="50dp"
@@ -61,9 +61,8 @@
             android:layout_marginLeft="20dp"
             android:textColor="@color/skyblue"
             android:hint="请输入"
-            android:singleLine="true"
             android:textSize="15dp"
-            android:layout_weight="1"></EditText>
+            android:layout_weight="1"></com.xuexiang.xui.widget.edittext.ClearEditText>
         <ImageView
             android:layout_width="25dp"
             android:id="@+id/make_sure"

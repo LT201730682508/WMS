@@ -35,5 +35,9 @@ class Fragment_Manager {
         var fragment_list=my_activity.supportFragmentManager.fragments
         return fragment_list[fragment_list.size-1]
     }
+    fun get_second_Fragment():Fragment{
+        var fragment_list=my_activity.supportFragmentManager.fragments
+        return fragment_list[fragment_list.size-2]
+    }
 
 }

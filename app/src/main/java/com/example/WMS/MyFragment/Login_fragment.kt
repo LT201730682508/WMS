@@ -36,7 +36,7 @@ class Login_fragment: Fragment() {
         var view=inflater.inflate(R.layout.login,container,false)
         image=view.findViewById(R.id.appIcon)
         image.setOnClickListener {
-            var dialog=take_Album_Dialog(context!!)
+            var dialog=take_Album_Dialog(requireContext())
             dialog.show()
         }
         signIn_signInButton=view.findViewById(R.id.signIn_signInButton)
@@ -57,12 +57,14 @@ class Login_fragment: Fragment() {
         resultCode: Int,
         data: Intent?
     ) {
+        println("拍照成功")
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             Open_Album.TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
                 val bitmap =
-                    BitmapFactory.decodeStream(activity!!.contentResolver.openInputStream(Open_Album.uri))
+                    BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(Open_Album.uri))
                 Glide.with(this).load(bitmap).into(image)
+                println("拍照成功")
             }
             Open_Album.CHOOSE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
                 if (Build.VERSION.SDK_INT >= 19) Open_Album.handleImageOnKitKat(activity,data,image) else Open_Album.handleImageBeforeKitKat(activity,data,image)

@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -18,13 +18,18 @@ class MainActivity : AppCompatActivity() {
         fragment_Manager= Fragment_Manager(this)
     }
 
+
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
         data: Intent?
     ) {
+
         super.onActivityResult(requestCode, resultCode, data)
-        fragment_Manager.ger_Top_Fragment().onActivityResult(requestCode,resultCode,data)
+        println("已执行"+fragment_Manager.ger_Top_Fragment())
+        if(fragment_Manager.ger_Top_Fragment() is SupportRequestManagerFragment){
+            fragment_Manager.get_second_Fragment().onActivityResult(requestCode,resultCode,data)
+        } else fragment_Manager.ger_Top_Fragment().onActivityResult(requestCode,resultCode,data)
 
     }
 
