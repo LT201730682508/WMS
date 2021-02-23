@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
@@ -48,6 +49,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static TextView tv_nomedia;
     private static ProgressBar pb_loading;
     private static Spinner spinner;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private Base_Topbar base_topbar;
     private Button btn_scan;
     private static MyAdapter<MyAdapter.VH> adapter;
@@ -74,6 +76,17 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         base_topbar=new Base_Topbar(view,(MainActivity) getActivity(),true);
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
+        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /**
+                 * 刷新操作在这里实现
+                 * */
+                //这里获取数据的逻辑
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);

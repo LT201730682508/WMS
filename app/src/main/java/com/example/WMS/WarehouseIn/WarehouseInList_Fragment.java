@@ -27,8 +27,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.WMS.Base_Topbar;
+import com.example.WMS.EndlessRecyclerOnScrollListener;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
 import com.example.WMS.My_Thread;
@@ -39,6 +41,8 @@ import com.example.WMS.perform_UI;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class WarehouseInList_Fragment extends Fragment implements View.OnClickListener{
     protected Context context;
@@ -46,6 +50,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static TextView tv_nomedia;
     private static ProgressBar pb_loading;
     private static Spinner spinner;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private Button btn_add;
     private Button btn_scan;
     private Base_Topbar base_topbar;
@@ -77,7 +82,17 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);
-
+        swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                /**
+                 * 刷新操作在这里实现
+                 * */
+                //这里获取数据的逻辑
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         btn_add=view.findViewById(R.id.add);
         btn_scan=view.findViewById(R.id.scan);
         //设置适配器
@@ -172,6 +187,15 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
                     adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName);
                     rv_pager.setAdapter(adapter);
+                    rv_pager.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+                        @Override
+                        public void onLoadMore() {
+                            /**
+                             * 下拉加载在此处实现
+                             * */
+                            adapter.setLoadState(adapter.LOADING_END);
+                        }
+                    });
                 }
                 else{
                     tv_nomedia.setVisibility(View.VISIBLE);

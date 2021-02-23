@@ -47,13 +47,18 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
 
-
-        <com.example.WMS.SlideRecyclerView
-            android:id="@+id/lv_video_pager"
-            android:cacheColorHint="@android:color/transparent"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp"/>
+            android:layout_height="match_parent">
+            <com.example.WMS.SlideRecyclerView
+                android:id="@+id/lv_video_pager"
+                android:cacheColorHint="@android:color/transparent"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"/>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
 
