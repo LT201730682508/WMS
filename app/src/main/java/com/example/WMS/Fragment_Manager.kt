@@ -1,6 +1,7 @@
 package com.example.WMS
 
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.example.WMS.MyFragment.Login_fragment
 
 
@@ -20,11 +21,10 @@ class Fragment_Manager {
         transaction.replace(R.id.Fragment_First,fragment).commit()
     }
     fun hide_all(fragment: Fragment){
-        var fragment_list=my_activity.supportFragmentManager.fragments
         var transaction=my_activity.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.push_in,R.anim.pull_out_enter,R.anim.push_in_pop,R.anim.pull_out)
-        transaction.hide(fragment_list[fragment_list.size-1])
-        println("fragment的大小"+fragment_list.size+"   "+fragment_list[fragment_list.size-1])
+
+        transaction.hide(ger_Top_Fragment())
         transaction.add(R.id.Fragment_First,fragment).addToBackStack(null).commit()
     }
     fun pop(){
@@ -33,11 +33,14 @@ class Fragment_Manager {
     }
     fun ger_Top_Fragment():Fragment{
         var fragment_list=my_activity.supportFragmentManager.fragments
+        var transaction=my_activity.supportFragmentManager.beginTransaction()
+        println("fragment的大小"+fragment_list.size+"   "+fragment_list[fragment_list.size-1])
+        if(fragment_list[fragment_list.size-1] is SupportRequestManagerFragment){
+            transaction.remove(fragment_list[fragment_list.size-1])
+            transaction.commit()
+            return fragment_list[fragment_list.size-2]
+        }
         return fragment_list[fragment_list.size-1]
-    }
-    fun get_second_Fragment():Fragment{
-        var fragment_list=my_activity.supportFragmentManager.fragments
-        return fragment_list[fragment_list.size-2]
     }
 
 }
