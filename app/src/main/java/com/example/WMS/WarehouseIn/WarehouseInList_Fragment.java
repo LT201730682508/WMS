@@ -89,6 +89,19 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
+                warehouseItems = new ArrayList<WarehouseItem>();
+                WarehouseItem warehouseItem=new WarehouseItem();
+                //赋予初始化仓库名
+                selectWarehouseName=warehouseName[0];
+                //假数据
+                warehouseItem.setName("仓库3");
+                warehouseItem.setSize(433333);
+                warehouseItem.setWarehouse_name("深圳");
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                handler.sendEmptyMessage(0);
+                //adapter.notifyDataSetChanged();
                 //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -193,6 +206,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                             /**
                              * 下拉加载在此处实现
                              * */
+
                             adapter.setLoadState(adapter.LOADING_END);
                         }
                     });
