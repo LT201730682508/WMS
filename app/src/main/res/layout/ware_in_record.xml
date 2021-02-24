@@ -25,7 +25,7 @@
               android:id="@+id/text"
               android:textColor="@color/red"
               android:layout_centerVertical="true"
-              android:layout_marginLeft="5dp"
+              android:layout_marginLeft="20dp"
               android:gravity="center"
               android:layout_height="match_parent"></TextView>
           <Spinner
