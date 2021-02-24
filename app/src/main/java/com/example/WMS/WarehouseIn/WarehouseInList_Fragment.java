@@ -174,14 +174,6 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 warehouseItems.add(warehouseItem);
             }
         });
-//        new Thread() {
-//            @Override
-//            public void run() {
-//                super.run();
-//
-//
-//            }
-//        }.start();
     }
     private static class MyHandler extends Handler{
         private final WeakReference<MainActivity> mActivity;
@@ -238,56 +230,4 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             //warehouse_add_fragment.show();
         }
     }
-//    private void show1() {
-//        Dialog bottomDialog = new Dialog(context, R.style.BottomDialog);
-//        View contentView = LayoutInflater.from(context).inflate(R.layout.fragment_warehouse_in_add, null);
-//        bottomDialog.setContentView(contentView);
-//        ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
-//        layoutParams.width = getResources().getDisplayMetrics().widthPixels;
-//        contentView.setLayoutParams(layoutParams);
-//        bottomDialog.getWindow().setGravity(Gravity.BOTTOM);
-//        bottomDialog.getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
-//        bottomDialog.show();
-//    }
-//    public class WarehouseInListAdapter extends RecyclerView.Adapter<WarehouseInListAdapter.VH>{
-//        //② 创建ViewHolder
-//        public class VH extends RecyclerView.ViewHolder{
-//            public final TextView title;
-//            public VH(View v) {
-//                super(v);
-//                title = (TextView) v.findViewById(R.id.tv_name);
-//            }
-//        }
-//
-//        private ArrayList<WarehouseItem> mDatas;
-//        public WarehouseInListAdapter(ArrayList<WarehouseItem> data) {
-//            this.mDatas = data;
-//        }
-//
-//        //③ 在Adapter中实现3个方法
-//        @Override
-//        public void onBindViewHolder(VH holder, int position) {
-//            holder.title.setText(mDatas.get(position).getName());
-//            holder.itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    WarehouseInDetailFragment warehouseInDetailFragment=new WarehouseInDetailFragment();
-//                    ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouseInDetailFragment);
-//                    //Toast.makeText(context,"111",Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        }
-//
-//        @Override
-//        public int getItemCount() {
-//            return mDatas.size();
-//        }
-//
-//        @Override
-//        public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-//            //LayoutInflater.from指定写法
-//            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inlist, parent, false);
-//            return new VH(v);
-//        }
-//    }
 }
