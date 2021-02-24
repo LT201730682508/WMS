@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="match_parent"
         android:id="@+id/date"
-        android:text="2020年2月30日"
+        android:text="2020.2.30--14：28：19"
         android:textColor="@color/skyblue"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="5dp"
