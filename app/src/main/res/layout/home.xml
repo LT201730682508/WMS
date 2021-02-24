@@ -131,6 +131,15 @@
             android:src="@drawable/message"
             android:layout_height="45dp">
         </ImageView>
+        <ImageView
+            android:layout_centerHorizontal="true"
+            android:layout_width="10dp"
+            android:id="@+id/hongdian"
+            android:layout_alignBottom="@+id/item_icon4"
+            android:layout_alignRight="@+id/item_icon4"
+            android:src="@drawable/tishi"
+            android:layout_height="10dp">
+        </ImageView>
         <TextView
             android:layout_width="60dp"
             android:gravity="center"

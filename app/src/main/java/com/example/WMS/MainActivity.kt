@@ -24,12 +24,9 @@ class MainActivity : AppCompatActivity() {
         resultCode: Int,
         data: Intent?
     ) {
-
         super.onActivityResult(requestCode, resultCode, data)
         println("已执行"+fragment_Manager.ger_Top_Fragment())
-        if(fragment_Manager.ger_Top_Fragment() is SupportRequestManagerFragment){
-            fragment_Manager.get_second_Fragment().onActivityResult(requestCode,resultCode,data)
-        } else fragment_Manager.ger_Top_Fragment().onActivityResult(requestCode,resultCode,data)
+        fragment_Manager.ger_Top_Fragment().onActivityResult(requestCode,resultCode,data)
 
     }
 

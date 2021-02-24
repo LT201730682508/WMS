@@ -28,6 +28,7 @@ class Create_Warehouse_Fragment:Fragment() {
     lateinit var ware_introduction: MultiLineEditText
     lateinit var set_name: ClearEditText
     lateinit var make_sure: RoundButton
+    lateinit var set_address:ClearEditText
     lateinit var topbar:Base_Topbar
     lateinit var dialog:take_Album_Dialog
     override fun onCreateView(
@@ -44,6 +45,7 @@ class Create_Warehouse_Fragment:Fragment() {
          topbar= Base_Topbar(view,activity as MainActivity,false)
          topbar.setTitle("仓库管理")
          set_img=view.findViewById(R.id.set_img)
+         set_address=view.findViewById(R.id.set_warehouse_address)
          ware_introduction=view.findViewById(R.id.ware_introduction)
          set_name=view.findViewById(R.id.set_warehouse_name)
          make_sure=view.findViewById(R.id.ware_make_sure)
@@ -57,7 +59,7 @@ class Create_Warehouse_Fragment:Fragment() {
              dialog.show()
          }
          make_sure.setOnClickListener {
-             if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()){
+             if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()){
                  XToast.warning(requireContext(), "请完善信息").show()
              }else
              (activity as MainActivity).fragment_Manager.pop()

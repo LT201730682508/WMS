@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Data_report.Data_report_fragment
+import com.example.WMS.MyFragment.Message_Notify.Message_Notify_Fragment
 import com.example.WMS.MyFragment.Warehouse.Warehouse_Fragment
 import com.example.WMS.R
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment
@@ -19,7 +20,10 @@ class Home_Fragment: Fragment() {
     lateinit var item1: RelativeLayout
     lateinit var item2: RelativeLayout
     lateinit var item3: RelativeLayout
+    lateinit var item4: RelativeLayout
+    lateinit var item5: RelativeLayout
     lateinit var item6: RelativeLayout
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +48,11 @@ class Home_Fragment: Fragment() {
         item3.setOnClickListener {
             var warehouseOutListFragment= WarehouseOutList_Fragment()
             (activity as MainActivity).fragment_Manager.hide_all(warehouseOutListFragment)
+        }
+        item4=view.findViewById(R.id.item4)
+        item4.setOnClickListener {
+            var Message_Notify_Fragment= Message_Notify_Fragment()
+            (activity as MainActivity).fragment_Manager.hide_all(Message_Notify_Fragment)
         }
         item6=view.findViewById(R.id.item6)
         item6.setOnClickListener {

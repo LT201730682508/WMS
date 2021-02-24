@@ -26,17 +26,29 @@
             android:layout_marginTop="50dp"
             android:layout_marginLeft="20dp"
             android:layout_height="35dp"></TextView>
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_below="@+id/warehouse_name"
             android:layout_alignLeft="@+id/warehouse_name"
+            android:text="广东省番禺区华南理工大学"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/warehouse_address"
+            android:textColor="@color/skyblue"
+            android:textSize="10dp"
+            android:layout_height="25dp"></TextView>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_below="@+id/warehouse_address"
+            android:layout_alignLeft="@+id/warehouse_name"
             android:text="1000名员工"
             android:gravity="center"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="10dp"
             android:id="@+id/warehouse_number"
             android:textColor="@color/skyblue"
-            android:textSize="15dp"
-            android:layout_height="35dp"></TextView>
+            android:textSize="10dp"
+            android:layout_height="25dp"></TextView>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,7 +61,7 @@
             android:id="@+id/information"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:text="仓库信息"
+            android:text="仓库详情"
             android:textColor="@color/skyblue"
             android:layout_marginLeft="15dp"
             android:gravity="center"

@@ -32,7 +32,7 @@ class Join_Warehouse_Fragment:Fragment() {
         base_Top_Bar.setTitle("仓库管理")
         join_recycleview=view.findViewById(R.id.join_recycleview)
         join_recycleview.layoutManager= LinearLayoutManager(context)
-        val mList: List<String> = listOf("1", "3", "4", "5", "3")
+        val mList: List<String> = listOf("1", "3", "4", "5", "3","1", "3", "4", "5", "3","1", "3", "4", "5", "3","1", "3", "4", "5", "3")
         joinWarehouseAdapter= Join_Warehouse_Adapter(mList,activity as MainActivity)
         join_recycleview.adapter=joinWarehouseAdapter
     }

@@ -4,13 +4,19 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="5dp"
     android:background="@drawable/frame_line">
-   <ImageView
-       android:src="@drawable/join"
+   <com.makeramen.roundedimageview.RoundedImageView
+       android:layout_margin="10dp"
+       android:src="@drawable/touxiang"
        android:id="@+id/ware_img"
-       android:layout_width="100dp"
-       android:layout_height="100dp"></ImageView>
+       android:layout_width="90dp"
+       app:riv_oval="true"
+       android:scaleType="centerCrop"
+       android:layout_centerVertical="true"
+       android:adjustViewBounds="true"
+       android:layout_height="90dp"></com.makeramen.roundedimageview.RoundedImageView>
     <TextView
         android:layout_marginLeft="20dp"
         android:id="@+id/warehouse_name"

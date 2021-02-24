@@ -16,7 +16,14 @@
         android:layout_marginVertical="10dp"
         android:textSize="20dp"
         android:hint="取个名字哦~"/>
-
+    <com.xuexiang.xui.widget.edittext.ClearEditText
+        android:id="@+id/set_warehouse_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="10dp"
+        android:textSize="20dp"
+        android:hint="留下地址信息~"/>
     <com.xuexiang.xui.widget.edittext.MultiLineEditText
         android:id="@+id/ware_introduction"
         android:layout_width="match_parent"
