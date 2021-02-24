@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Add_Member.Add_Member_Fragment
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Title_Manager.Title_Manager_Fragment
 import com.example.WMS.R
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
@@ -40,6 +41,10 @@ class Member_Manager_Fragment:Fragment() {
         memberListAdapter= Member_List_Adapter(mList,activity as MainActivity)
         member_Recycle.adapter=memberListAdapter
 
+        title_manager.setOnClickListener {
+            var titleManagerFragment=Title_Manager_Fragment()
+            (activity  as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
+        }
         add_new_member.setOnClickListener {
             var addMemberFragment=Add_Member_Fragment()
             (activity  as MainActivity).fragment_Manager.hide_all(addMemberFragment)
