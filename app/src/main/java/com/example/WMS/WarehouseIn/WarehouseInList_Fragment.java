@@ -30,16 +30,23 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
 import com.example.WMS.EndlessRecyclerOnScrollListener;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
 import com.example.WMS.My_Thread;
+import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.domain.WarehouseItem;
 import com.example.WMS.execute_IO;
 import com.example.WMS.perform_UI;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Timer;
@@ -144,7 +151,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     }
 
     public void initData(){
-        getData();
+
         My_Thread.Companion.new_thread(new perform_UI() {
             @Override
             public void show() {
@@ -153,38 +160,62 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         }, new execute_IO() {
             @Override
             public void execute() {
-                warehouseItems = new ArrayList<WarehouseItem>();
-                WarehouseItem warehouseItem=new WarehouseItem();
-                //赋予初始化仓库名
-                selectWarehouseName=warehouseName[0];
-                //假数据
-                warehouseItem.setName("仓库1");
-                warehouseItem.setSize(433333);
-                warehouseItem.setWarehouse_name("深圳");
-                warehouseItems.add(warehouseItem);
-
-                warehouseItem=new WarehouseItem();
-                //假数据
-                warehouseItem.setName("仓库2");
-                //warehouseItem.setWarehouse_name("上海");
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
+                getData();
+//                warehouseItems = new ArrayList<WarehouseItem>();
+//                WarehouseItem warehouseItem=new WarehouseItem();
+//                //赋予初始化仓库名
+//                selectWarehouseName=warehouseName[0];
+//                //假数据
+//                warehouseItem.setName("仓库1");
+//                warehouseItem.setSize(433333);
+//                warehouseItem.setWarehouse_name("深圳");
+//                warehouseItems.add(warehouseItem);
+//
+//                warehouseItem=new WarehouseItem();
+//                //假数据
+//                warehouseItem.setName("仓库2");
+//                //warehouseItem.setWarehouse_name("上海");
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
             }
         });
     }
 
     private void getData() {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get("172.21.245.42:8003/api-order/getInventory/1", new BaseCallback<WarehouseItem>(){
 
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) {
+
+            }
+
+            @Override
+            public void onSuccess(Response response, WarehouseItem warehouseItem) {
+                warehouseItems = new ArrayList<WarehouseItem>();
+                warehouseItems.add(warehouseItem);
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+
+            }
+        });
     }
 
     private static class MyHandler extends Handler{
