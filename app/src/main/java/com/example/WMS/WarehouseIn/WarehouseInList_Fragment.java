@@ -6,6 +6,7 @@ package com.example.WMS.WarehouseIn;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -143,7 +144,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     }
 
     public void initData(){
-        //getData();
+        getData();
         My_Thread.Companion.new_thread(new perform_UI() {
             @Override
             public void show() {
@@ -181,6 +182,11 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
         });
     }
+
+    private void getData() {
+
+    }
+
     private static class MyHandler extends Handler{
         private final WeakReference<MainActivity> mActivity;
         public MyHandler(MainActivity activity){
@@ -234,6 +240,13 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         else if(v==btn_scan){
             //Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(context);
             //warehouse_add_fragment.show();
+        }
+    }
+    class myTask extends AsyncTask {
+
+        @Override
+        protected Object doInBackground(Object[] objects) {
+            return null;
         }
     }
 }
