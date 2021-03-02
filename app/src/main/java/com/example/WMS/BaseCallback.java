@@ -35,7 +35,7 @@ public abstract class BaseCallback<T> {
 
     public abstract void onResponse(Response response);
 
-
+    public abstract void onSuccess_List(Response response);
     public abstract void onSuccess (Response response,T t);
 
     //code是http的状态码，用来提示信息

@@ -14,10 +14,14 @@ import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-public class OkHttpHelper {
+public class OkHttpHelper<T> {
 
     private static OkHttpClient okHttpClient;
     private static OkHttpHelper okHttpHelper;
@@ -45,18 +49,25 @@ public class OkHttpHelper {
     }
 
     //Get方法
-    public void get(String url,BaseCallback callback){
+    public void get_for_object(String url,BaseCallback callback){
         Request request = buildRequest(url,null,HttpMethodType.GET);
         doRequest(request,callback);
     }
-
+    public void get_for_list(String url, BaseCallback callback){
+        Request request = buildRequest(url,null,HttpMethodType.GET);
+        doRequest_for_list(request,callback);
+    }
     //Post方法
-    public void post(String url, Map<String,String> params,BaseCallback callback){
+    public void post_for_object(String url, Map<String,String> params,BaseCallback callback){
 
         Request request = buildRequest(url,params,HttpMethodType.POST);
         doRequest(request,callback);
     }
+    public void post_for_list(String url, Map<String,String> params,BaseCallback callback){
 
+        Request request = buildRequest(url,params,HttpMethodType.POST);
+        doRequest_for_list(request,callback);
+    }
     //构建Request的方法
     private  Request buildRequest(String url,Map<String,String> params,HttpMethodType methodType){
 
@@ -133,7 +144,6 @@ public class OkHttpHelper {
                             callback.onError(response,response.code(),e);
                         }
                     }
-
                 }
                 else{
                     callback.onError(response,response.code(),null);
@@ -141,4 +151,30 @@ public class OkHttpHelper {
             }
         });
     }
+
+    public void doRequest_for_list(Request request, final BaseCallback callback){
+
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                callback.onFailure(request,e);
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+                callback.onResponse(response);
+                if (response.isSuccessful()){
+                    callback.onSuccess_List(response);
+
+                }
+
+                else{
+                    callback.onError(response,response.code(),null);
+                }
+            }
+        });
+    }
+
+
+
 }
