@@ -100,6 +100,12 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 warehouseItems.add(warehouseItem);
                 warehouseItems.add(warehouseItem);
                 warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
+                warehouseItems.add(warehouseItem);
                 handler.sendEmptyMessage(0);
                 //adapter.notifyDataSetChanged();
                 //这里获取数据的逻辑

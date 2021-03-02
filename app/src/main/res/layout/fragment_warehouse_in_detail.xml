@@ -22,10 +22,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/picture_add_big"/>
-            <EditText
+            <com.xuexiang.xui.widget.edittext.ClearEditText
                 android:id="@+id/et_size"
                 android:layout_marginTop="8dp"
-                android:background="#C9C3C6"
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
@@ -39,20 +38,18 @@
             android:orientation="vertical"
             android:layout_width="wrap_content"
             android:layout_height="match_parent">
-            <EditText
+            <com.xuexiang.xui.widget.edittext.ClearEditText
                 android:id="@+id/et_name"
-                android:background="#C9C3C6"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:maxLength="15"
                 android:maxLines="1"
                 android:hint="请输入商品名称"/>
-            <EditText
+            <com.xuexiang.xui.widget.edittext.ClearEditText
                 android:id="@+id/et_detail"
                 android:gravity="top"
                 android:layout_marginTop="8dp"
-                android:background="#C9C3C6"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
@@ -60,20 +57,18 @@
                 android:maxLines="3"
                 android:maxLength="60"
                 android:hint="请输入商品详情"/>
-            <EditText
+            <com.xuexiang.xui.widget.edittext.ClearEditText
                 android:id="@+id/et_price"
                 android:layout_marginTop="8dp"
-                android:background="#C9C3C6"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:hint="请输入商品价格"/>
-            <EditText
+            <com.xuexiang.xui.widget.edittext.ClearEditText
                 android:id="@+id/et_warehousename"
                 android:layout_marginTop="8dp"
-                android:background="#C9C3C6"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"

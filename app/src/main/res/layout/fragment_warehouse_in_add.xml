@@ -29,10 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <EditText
+        <com.xuexiang.xui.widget.edittext.ClearEditText
             android:id="@+id/et_size"
             android:layout_margin="10dp"
-            android:background="#C9C3C6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -40,10 +39,9 @@
             android:maxLines="1"
             android:layout_weight="1"
             android:hint="入库商品数量"/>
-        <EditText
+        <com.xuexiang.xui.widget.edittext.ClearEditText
             android:id="@+id/et_price"
             android:layout_margin="10dp"
-            android:background="#C9C3C6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"

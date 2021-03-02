@@ -3,6 +3,7 @@ package com.example.WMS.domain;
 import java.io.Serializable;
 
 public class WarehouseItem implements Serializable {
+
     private String name;//商品名称
     private int size;//商品数量
     private int price;//商品价格
