@@ -91,6 +91,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     }
     private final int WAREHOUSE_IN=0;
     private final int WAREHOUSE_OUT=1;
+    private final int WAREHOUSE_CHECK=2;
     private int opType;//WAREHOUSE_IN是入库，WAREHOUSE_OUT是出库后续继续添加
     private int mResId;
     private ArrayList<WarehouseItem> mDatas;
@@ -136,34 +137,46 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     public final int LOADING_END = 3;
     @Override
     public void onBindViewHolder(@NonNull MyAdapter.VH holder, int position) {
-        if(getItemViewType(position)==TYPE_ITEM){
-            bindView(holder,position);
-            onClickMethod(holder,position);
-        }
-        else if(getItemViewType(position)==TYPE_FOOTER){
-            switch (loadState) {
-                case LOADING: // 正在加载
-                    holder.pbLoading.setVisibility(View.VISIBLE);
-                    holder.tvLoading.setVisibility(View.VISIBLE);
-                    holder.llEnd.setVisibility(View.GONE);
-                    break;
+        if(opType==WAREHOUSE_IN||opType==WAREHOUSE_OUT){
+            if(getItemViewType(position)==TYPE_ITEM){
+                bindView(holder,position);
+                onClickMethod(holder,position);
+            }
+            else if(getItemViewType(position)==TYPE_FOOTER){
+                switch (loadState) {
+                    case LOADING: // 正在加载
+                        holder.pbLoading.setVisibility(View.VISIBLE);
+                        holder.tvLoading.setVisibility(View.VISIBLE);
+                        holder.llEnd.setVisibility(View.GONE);
+                        break;
 
-                case LOADING_COMPLETE: // 加载完成
-                    holder.pbLoading.setVisibility(View.INVISIBLE);
-                    holder.tvLoading.setVisibility(View.INVISIBLE);
-                    holder.llEnd.setVisibility(View.GONE);
-                    break;
+                    case LOADING_COMPLETE: // 加载完成
+                        holder.pbLoading.setVisibility(View.INVISIBLE);
+                        holder.tvLoading.setVisibility(View.INVISIBLE);
+                        holder.llEnd.setVisibility(View.GONE);
+                        break;
 
-                case LOADING_END: // 加载到底
-                    holder.pbLoading.setVisibility(View.GONE);
-                    holder.tvLoading.setVisibility(View.GONE);
-                    holder.llEnd.setVisibility(View.VISIBLE);
-                    break;
+                    case LOADING_END: // 加载到底
+                        holder.pbLoading.setVisibility(View.GONE);
+                        holder.tvLoading.setVisibility(View.GONE);
+                        holder.llEnd.setVisibility(View.VISIBLE);
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
             }
         }
+        else if(opType==WAREHOUSE_CHECK){
+            bindView(holder,position);
+            holder.rl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+
 
     }
     public void setLoadState(int loadState) {
@@ -183,6 +196,9 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                 else if(opType==1){//出库Adater
 //                    WarehouseOutDetailFragment warehouseOutDetailFragment = new WarehouseOutDetailFragment();
 //                    activity.fragment_Manager.hide_all(warehouseOutDetailFragment);
+                }
+                else if(opType==2){
+
                 }
             }
         });
@@ -207,6 +223,9 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                         Toast.makeText(activity,"不为0不可删除",Toast.LENGTH_SHORT).show();
                     }
                 }
+                else if(opType==2){
+
+                }
             }
         });
         holder.btn_add.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +239,9 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     Warehouse_Delete_Dialog warehouse_delete_dialog=new Warehouse_Delete_Dialog(activity,mDatas.get(position));
                     warehouse_delete_dialog.show();
                 }
+                else if(opType==2){
+
+                }
             }
         });
 
@@ -232,6 +254,9 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         }
         else if(opType==WAREHOUSE_OUT){
             holder.setText(R.id.tv_name, mDatas.get(position).getName());
+        }
+        else if(opType==WAREHOUSE_CHECK){
+            holder.setText(R.id.tv_name,mDatas.get(position).getWarehouse_name());
         }
     }
     @Override

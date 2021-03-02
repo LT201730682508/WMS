@@ -43,8 +43,8 @@ class Data_report_fragment :Fragment(){
             (activity as MainActivity).fragment_Manager.hide_all(wareOutRecordFragment)
         }
         ware_check.setOnClickListener {
-            var wareCheckFragment= Warehouse_Check_Fragment()
-            (activity as MainActivity).fragment_Manager.hide_all(wareCheckFragment)
+            //var wareCheckFragment= Warehouse_Check_Fragment()
+            //(activity as MainActivity).fragment_Manager.hide_all(wareCheckFragment)
         }
     }
 }
