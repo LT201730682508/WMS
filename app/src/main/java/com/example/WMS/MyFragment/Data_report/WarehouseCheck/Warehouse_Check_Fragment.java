@@ -71,25 +71,25 @@ public class Warehouse_Check_Fragment extends Fragment {
         }, new execute_IO() {
             @Override
             public void execute() {
-                warehouseItems = new ArrayList<WarehouseItem>();
-                WarehouseItem warehouseItem=new WarehouseItem();
-                //假数据
-                warehouseItem.setWarehouse_name("深圳");
-                warehouseItems.add(warehouseItem);
-                warehouseItem=new WarehouseItem();
-                //假数据
-                warehouseItem.setWarehouse_name("广州");
-                warehouseItems.add(warehouseItem);
-                warehouseItem=new WarehouseItem();
-                //假数据
-                warehouseItem.setWarehouse_name("中山");
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
+//                warehouseItems = new ArrayList<WarehouseItem>();
+//                WarehouseItem warehouseItem=new WarehouseItem();
+//                //假数据
+//                warehouseItem.setWarehouse_name("深圳");
+//                warehouseItems.add(warehouseItem);
+//                warehouseItem=new WarehouseItem();
+//                //假数据
+//                warehouseItem.setWarehouse_name("广州");
+//                warehouseItems.add(warehouseItem);
+//                warehouseItem=new WarehouseItem();
+//                //假数据
+//                warehouseItem.setWarehouse_name("中山");
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
             }
         });
 

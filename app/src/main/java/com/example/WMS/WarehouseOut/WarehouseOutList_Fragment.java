@@ -128,32 +128,32 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         }, new execute_IO() {
             @Override
             public void execute() {
-                warehouseItems = new ArrayList<WarehouseItem>();
-                WarehouseItem warehouseItem=new WarehouseItem();
-                //赋予初始化仓库名
-                selectWarehouseName=warehouseName[0];
-                //假数据
-                warehouseItem.setName("仓库1");
-                warehouseItem.setSize(433333);
-                warehouseItem.setWarehouse_name("深圳");
-                warehouseItems.add(warehouseItem);
-
-                warehouseItem=new WarehouseItem();
-                //假数据
-                warehouseItem.setName("仓库2");
-                //warehouseItem.setWarehouse_name("上海");
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
+//                warehouseItems = new ArrayList<WarehouseItem>();
+//                WarehouseItem warehouseItem=new WarehouseItem();
+//                //赋予初始化仓库名
+//                selectWarehouseName=warehouseName[0];
+//                //假数据
+//                warehouseItem.setName("仓库1");
+//                warehouseItem.setSize(433333);
+//                warehouseItem.setWarehouse_name("深圳");
+//                warehouseItems.add(warehouseItem);
+//
+//                warehouseItem=new WarehouseItem();
+//                //假数据
+//                warehouseItem.setName("仓库2");
+//                //warehouseItem.setWarehouse_name("上海");
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
             }
         });
     }

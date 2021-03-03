@@ -41,13 +41,19 @@ import com.example.WMS.R;
 import com.example.WMS.domain.WarehouseItem;
 import com.example.WMS.execute_IO;
 import com.example.WMS.perform_UI;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -97,27 +103,27 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
-                warehouseItems = new ArrayList<WarehouseItem>();
-                WarehouseItem warehouseItem=new WarehouseItem();
-                //赋予初始化仓库名
-                selectWarehouseName=warehouseName[0];
-                //假数据
-                warehouseItem.setName("仓库3");
-                warehouseItem.setSize(433333);
-                warehouseItem.setWarehouse_name("深圳");
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                handler.sendEmptyMessage(0);
-                //adapter.notifyDataSetChanged();
-                //这里获取数据的逻辑
-                swipeRefreshLayout.setRefreshing(false);
+//                warehouseItems = new ArrayList<WarehouseItem>();
+//                WarehouseItem warehouseItem=new WarehouseItem();
+//                //赋予初始化仓库名
+//                selectWarehouseName=warehouseName[0];
+//                //假数据
+//                warehouseItem.setName("仓库3");
+//                warehouseItem.setSize(433333);
+//                warehouseItem.setWarehouse_name("深圳");
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                warehouseItems.add(warehouseItem);
+//                handler.sendEmptyMessage(0);
+//                //adapter.notifyDataSetChanged();
+//                //这里获取数据的逻辑
+//                swipeRefreshLayout.setRefreshing(false);
             }
         });
         btn_add=view.findViewById(R.id.add);
@@ -160,6 +166,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         }, new execute_IO() {
             @Override
             public void execute() {
+                warehouseItems = new ArrayList<WarehouseItem>();
+
                 getData();
 //                warehouseItems = new ArrayList<WarehouseItem>();
 //                WarehouseItem warehouseItem=new WarehouseItem();
@@ -193,7 +201,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get("172.21.245.42:8003/api-order/getInventory/1", new BaseCallback<WarehouseItem>(){
+        ok.get_for_list("http://172.21.245.42:8003/api-order/getInventory/1",new BaseCallback<WarehouseItem>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -206,16 +214,27 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
 
             @Override
+            public void onSuccess_List(Response response) {
+                String resultStr = response.toString();
+
+                Gson gson= new Gson();
+                WarehouseItem[] wares=gson.fromJson(resultStr,WarehouseItem[].class);
+                //System.out.println("a"+wares[0]);
+                warehouseItems.add(wares[0]);
+
+            }
+
+            @Override
             public void onSuccess(Response response, WarehouseItem warehouseItem) {
-                warehouseItems = new ArrayList<WarehouseItem>();
+
                 warehouseItems.add(warehouseItem);
             }
 
             @Override
             public void onError(Response response, int code, Exception e) {
-
+                System.out.println("aaa"+response+e);
             }
-        });
+        } );
     }
 
     private static class MyHandler extends Handler{

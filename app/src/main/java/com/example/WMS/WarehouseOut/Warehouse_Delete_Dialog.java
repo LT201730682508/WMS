@@ -40,7 +40,7 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
         btn_add.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
         tv_name=contentView.findViewById(R.id.tv_name);
-        tv_name.setText(warehouseItem.getName());
+        tv_name.setText(warehouseItem.getProduct().getProductName());
     //    ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
         //存在问题：无法水平铺满
     //    layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;

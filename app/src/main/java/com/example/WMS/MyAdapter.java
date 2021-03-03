@@ -189,7 +189,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             @Override
             public void onClick(View v) {
                 if(opType==0){//入库Adater
-                    WarehouseInDetailFragment warehouseInDetailFragment = new WarehouseInDetailFragment(warehouseName,mDatas.get(position).getName());
+                    WarehouseInDetailFragment warehouseInDetailFragment = new WarehouseInDetailFragment(warehouseName,mDatas.get(position).getProduct().getProductName());
                     Toast.makeText(activity,"仓库名："+warehouseName,Toast.LENGTH_SHORT).show();
                     activity.fragment_Manager.hide_all(warehouseInDetailFragment);
                 }
@@ -206,7 +206,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             @Override
             public void onClick(View v) {
                 if(opType==WAREHOUSE_IN){//入库Adater
-                    if(mDatas.get(position).getSize()==0){
+                    if(mDatas.get(position).getTotalAmount()==0){
                         //执行删除list刷新ui操作
                         Toast.makeText(activity,"当前可删除",Toast.LENGTH_SHORT).show();
                     }
@@ -215,7 +215,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     }
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
-                    if(mDatas.get(position).getSize()==0){
+                    if(mDatas.get(position).getTotalAmount()==0){
                         //执行删除list刷新ui操作
                         Toast.makeText(activity,"当前可删除",Toast.LENGTH_SHORT).show();
                     }
@@ -249,14 +249,14 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     //public abstract void bindView(VH holder,int position);
     public void bindView(VH holder,int position){
         if(opType==WAREHOUSE_IN){
-            holder.setText(R.id.tv_name, mDatas.get(position).getName());
-            holder.setSize(R.id.tv_quantity,mDatas.get(position).getSize());
+            holder.setText(R.id.tv_name, mDatas.get(position).getProduct().getProductName());
+            holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
         }
         else if(opType==WAREHOUSE_OUT){
-            holder.setText(R.id.tv_name, mDatas.get(position).getName());
+            holder.setText(R.id.tv_name, mDatas.get(position).getProduct().getProductName());
         }
         else if(opType==WAREHOUSE_CHECK){
-            holder.setText(R.id.tv_name,mDatas.get(position).getWarehouse_name());
+
         }
     }
     @Override
