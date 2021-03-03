@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonParseException;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
+import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -58,18 +59,17 @@ public class OkHttpHelper<T> {
         doRequest_for_list(request,callback);
     }
     //Post方法
-    public void post_for_object(String url, Map<String,String> params,BaseCallback callback){
+    public void post_for_object(String url, Object params,BaseCallback callback){
 
         Request request = buildRequest(url,params,HttpMethodType.POST);
         doRequest(request,callback);
     }
-    public void post_for_list(String url, Map<String,String> params,BaseCallback callback){
-
+    public void post_for_list(String url, Object params,BaseCallback callback){
         Request request = buildRequest(url,params,HttpMethodType.POST);
         doRequest_for_list(request,callback);
     }
     //构建Request的方法
-    private  Request buildRequest(String url,Map<String,String> params,HttpMethodType methodType){
+    private  Request buildRequest(String url,Object params,HttpMethodType methodType){
 
         //构建一个Request的对象
         Request.Builder builder = new Request.Builder();
@@ -79,25 +79,19 @@ public class OkHttpHelper<T> {
             builder.get();
         }
         else if (methodType == HttpMethodType.POST){
-
             RequestBody body = buildFormData(params);
             builder.post(body);
         }
         return builder.build();
     }
 
+
     //构建RequestBody的方法
-    private RequestBody buildFormData(Map<String,String> params){
-
-        FormEncodingBuilder builder = new FormEncodingBuilder();
-
-        if (params != null){
-            //循环取出Map中的数据
-            for (Map.Entry<String,String> entry :params.entrySet()){
-                builder.add(entry.getKey(),entry.getValue());
-            }
-        }
-        return builder.build();
+    private RequestBody buildFormData(Object params){
+        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        String jsonStr=gson.toJson(params);
+        RequestBody body = RequestBody.create(JSON, jsonStr);
+        return body;
     }
 
     //用来回调的方法
@@ -131,11 +125,7 @@ public class OkHttpHelper<T> {
                 callback.onResponse(response);
                 if (response.isSuccessful()){
                     String resultStr = response.body().string();
-                    //如果原本需要的类型就是String则直接返回，否则进行转换
-                    if (callback.mType == String.class){
-//                      callback.onSuccess(response,resultStr);
-                        callbackSuccess(callback,response,resultStr);
-                    }else {
+
                         //使用try catch处理json解析错误
                         try {
                             Object object = gson.fromJson(resultStr,callback.mType);
@@ -144,7 +134,6 @@ public class OkHttpHelper<T> {
                             callback.onError(response,response.code(),e);
                         }
                     }
-                }
                 else{
                     callback.onError(response,response.code(),null);
                 }
@@ -162,9 +151,10 @@ public class OkHttpHelper<T> {
 
             @Override
             public void onResponse(Response response) throws IOException {
+                String resultStr = response.body().string();
                 callback.onResponse(response);
                 if (response.isSuccessful()){
-                    callback.onSuccess_List(response);
+                    callback.onSuccess_List(resultStr);
 
                 }
 

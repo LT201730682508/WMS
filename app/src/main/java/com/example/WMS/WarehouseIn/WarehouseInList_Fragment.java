@@ -214,13 +214,12 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
 
             @Override
-            public void onSuccess_List(Response response) {
-                String resultStr = response.toString();
+            public void onSuccess_List(String resultStr) {
 
                 Gson gson= new Gson();
                 WarehouseItem[] wares=gson.fromJson(resultStr,WarehouseItem[].class);
                 //System.out.println("a"+wares[0]);
-                warehouseItems.add(wares[0]);
+        //        warehouseItems.add(wares[0]);
 
             }
 

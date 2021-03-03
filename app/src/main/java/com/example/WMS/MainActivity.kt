@@ -39,8 +39,7 @@ class MainActivity : AppCompatActivity() {
                 println("aaaa"+response+e)
             }
 
-            override fun onSuccess_List(response: Response?) {
-                val resultStr = response!!.body().string()
+            override fun onSuccess_List(resultStr: String?) {
                 var gson=Gson()
                 val list = gson.fromJson(
                     resultStr,
