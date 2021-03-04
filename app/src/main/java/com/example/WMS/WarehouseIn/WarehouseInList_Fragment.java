@@ -38,6 +38,7 @@ import com.example.WMS.MyAdapter;
 import com.example.WMS.My_Thread;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
+import com.example.WMS.domain.Product;
 import com.example.WMS.domain.WarehouseItem;
 import com.example.WMS.execute_IO;
 import com.example.WMS.perform_UI;
@@ -103,6 +104,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
+                getData();
+                handler.sendEmptyMessage(0);
 //                warehouseItems = new ArrayList<WarehouseItem>();
 //                WarehouseItem warehouseItem=new WarehouseItem();
 //                //赋予初始化仓库名
@@ -123,7 +126,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 //                handler.sendEmptyMessage(0);
 //                //adapter.notifyDataSetChanged();
 //                //这里获取数据的逻辑
-//                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
         btn_add=view.findViewById(R.id.add);
@@ -167,8 +170,21 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             @Override
             public void execute() {
                 warehouseItems = new ArrayList<WarehouseItem>();
-
-                getData();
+                WarehouseItem warehouseItem=new WarehouseItem();
+                Product product=new Product();
+                product.setProductName("广州");
+                warehouseItem.setProduct(product);
+                warehouseItem.setId(1);
+                warehouseItem.setTotalAmount(1000);
+                warehouseItems.add(warehouseItem);
+                //getData();
+                warehouseItem=new WarehouseItem();
+                product=new Product();
+                product.setProductName("深圳");
+                warehouseItem.setProduct(product);
+                warehouseItem.setId(2);
+                warehouseItem.setTotalAmount(12000);
+                warehouseItems.add(warehouseItem);
 //                warehouseItems = new ArrayList<WarehouseItem>();
 //                WarehouseItem warehouseItem=new WarehouseItem();
 //                //赋予初始化仓库名
@@ -215,13 +231,23 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
             @Override
             public void onSuccess_List(Response response) {
-                String resultStr = response.toString();
+                String resultStr = null;
+                try {
+                    resultStr = response.body().string();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 Gson gson= new Gson();
                 WarehouseItem[] wares=gson.fromJson(resultStr,WarehouseItem[].class);
-                //System.out.println("a"+wares[0]);
+                System.out.println("a  "+resultStr);
+                System.out.println("a  "+wares[0].getId());
                 warehouseItems.add(wares[0]);
+                warehouseItems.add(wares[1]);
 
+                //WarehouseItem warehouseItem=new WarehouseItem();
+                //warehouseItem.setId(wares[0].getId());
+                //warehouseItem.setProduct(wares[0].getProduct());
             }
 
             @Override
@@ -254,16 +280,16 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
                     adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName);
                     rv_pager.setAdapter(adapter);
-                    rv_pager.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
-                        @Override
-                        public void onLoadMore() {
-                            /**
-                             * 下拉加载在此处实现
-                             * */
-
-                            adapter.setLoadState(adapter.LOADING_END);
-                        }
-                    });
+//                    rv_pager.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+//                        @Override
+//                        public void onLoadMore() {
+//                            /**
+//                             * 下拉加载在此处实现
+//                             * */
+//
+//                            adapter.setLoadState(adapter.LOADING_END);
+//                        }
+//                    });
                 }
                 else{
                     tv_nomedia.setVisibility(View.VISIBLE);
