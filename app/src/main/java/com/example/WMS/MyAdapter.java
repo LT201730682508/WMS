@@ -83,6 +83,12 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             textView.setText(size+"");
             return this;
         }
+        public VH setDetail(int id,String detail){
+            TextView textView = getView(id);
+            textView.setText(detail);
+            return this;
+        }
+
         public VH setChecked(int id, boolean isChecked) {
             CheckBox checkBox = getView(id);
             checkBox.setChecked(isChecked);
@@ -251,9 +257,12 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         if(opType==WAREHOUSE_IN){
             holder.setText(R.id.tv_name, mDatas.get(position).getProduct().getProductName());
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
+            holder.setDetail(R.id.tv_detail,mDatas.get(position).getProduct().getProductDescription());
         }
         else if(opType==WAREHOUSE_OUT){
             holder.setText(R.id.tv_name, mDatas.get(position).getProduct().getProductName());
+            holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
+            holder.setDetail(R.id.tv_detail,mDatas.get(position).getProduct().getProductDescription());
         }
         else if(opType==WAREHOUSE_CHECK){
 

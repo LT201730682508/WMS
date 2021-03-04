@@ -230,20 +230,28 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
 
             @Override
-            public void onSuccess_List(Response response) {
-                String resultStr = null;
-                try {
-                    resultStr = response.body().string();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+
+            public void onSuccess_List(String resultStr) {
 
                 Gson gson= new Gson();
                 WarehouseItem[] wares=gson.fromJson(resultStr,WarehouseItem[].class);
-                System.out.println("a  "+resultStr);
-                System.out.println("a  "+wares[0].getId());
-                warehouseItems.add(wares[0]);
-                warehouseItems.add(wares[1]);
+                //System.out.println("a"+wares[0]);
+        //        warehouseItems.add(wares[0]);
+
+
+//                    String resultStr = null;
+//                    try {
+//                        resultStr = response.body().string();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                    Gson gson= new Gson();
+//                    WarehouseItem[] wares=gson.fromJson(resultStr,WarehouseItem[].class);
+//                    System.out.println("a  "+resultStr);
+//                    System.out.println("a  "+wares[0].getId());
+//                    warehouseItems.add(wares[0]);
+//                    warehouseItems.add(wares[1]);
 
                 //WarehouseItem warehouseItem=new WarehouseItem();
                 //warehouseItem.setId(wares[0].getId());
