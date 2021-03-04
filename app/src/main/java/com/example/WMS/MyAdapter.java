@@ -270,7 +270,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     }
     @Override
     public int getItemCount() {
-        return mDatas.size();
+        return mDatas.size()+1;
     }
 
 
