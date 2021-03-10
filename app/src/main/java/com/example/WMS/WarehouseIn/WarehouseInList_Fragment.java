@@ -38,8 +38,9 @@ import com.example.WMS.MyAdapter;
 import com.example.WMS.My_Thread;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
+import com.example.WMS.domain.DataBean;
 import com.example.WMS.domain.Product;
-import com.example.WMS.domain.WarehouseItem;
+import com.example.WMS.domain.DataBean.ProductIn;
 import com.example.WMS.execute_IO;
 import com.example.WMS.perform_UI;
 import com.google.gson.Gson;
@@ -69,10 +70,10 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private Button btn_add;
     private Button btn_scan;
     private Base_Topbar base_topbar;
-    private static ArrayList<WarehouseItem> warehouseItems;
+    private static ArrayList<DataBean.ProductIn> warehouseItems;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static final String[] warehouseName={"深圳","上海","北京","山西"};
-    private static String selectWarehouseName;
+    private static String selectWarehouseName=warehouseName[0];
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
 
@@ -104,27 +105,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
-                getData();
+                initData();
                 handler.sendEmptyMessage(0);
-//                warehouseItems = new ArrayList<WarehouseItem>();
-//                WarehouseItem warehouseItem=new WarehouseItem();
-//                //赋予初始化仓库名
-//                selectWarehouseName=warehouseName[0];
-//                //假数据
-//                warehouseItem.setName("仓库3");
-//                warehouseItem.setSize(433333);
-//                warehouseItem.setWarehouse_name("深圳");
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                handler.sendEmptyMessage(0);
-//                //adapter.notifyDataSetChanged();
+
 //                //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -169,107 +152,64 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         }, new execute_IO() {
             @Override
             public void execute() {
-                warehouseItems = new ArrayList<WarehouseItem>();
-                WarehouseItem warehouseItem=new WarehouseItem();
-                Product product=new Product();
-                product.setProductName("苹果");
-                product.setProductDescription("多汁的苹果");
-                warehouseItem.setProduct(product);
-                warehouseItem.setId(1);
-                warehouseItem.setTotalAmount(1000);
-                warehouseItems.add(warehouseItem);
-                warehouseItems.add(warehouseItem);
-                //getData();
-                warehouseItem=new WarehouseItem();
-                product=new Product();
-                product.setProductName("相机");
-                product.setProductDescription("质量不错的相机");
-                warehouseItem.setProduct(product);
-                warehouseItem.setId(2);
-                warehouseItem.setTotalAmount(12000);
-                warehouseItems.add(warehouseItem);
-//                warehouseItems = new ArrayList<WarehouseItem>();
-//                WarehouseItem warehouseItem=new WarehouseItem();
-//                //赋予初始化仓库名
-//                selectWarehouseName=warehouseName[0];
-//                //假数据
-//                warehouseItem.setName("仓库1");
-//                warehouseItem.setSize(433333);
-//                warehouseItem.setWarehouse_name("深圳");
-//                warehouseItems.add(warehouseItem);
+                warehouseItems = new ArrayList<DataBean.ProductIn>();
+                getData();
+//                DataBean.ProductIn productIn=new DataBean.ProductIn();
 //
-//                warehouseItem=new WarehouseItem();
-//                //假数据
-//                warehouseItem.setName("仓库2");
-//                //warehouseItem.setWarehouse_name("上海");
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
-//                warehouseItems.add(warehouseItem);
+//                productIn.setProductName("苹果");
+//                productIn.setProductDescription("多汁的苹果");
+//
+//                productIn.setTotalAmount(1000);
+//                warehouseItems.add(productIn);
+//                warehouseItems.add(productIn);
+//                getData();
+//                productIn=new DataBean.ProductIn();
+//
+//                productIn.setProductName("相机");
+//                productIn.setProductDescription("质量不错的相机");
+//
+//                productIn.setTotalAmount(12000);
+//                warehouseItems.add(productIn);
+
             }
         });
     }
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://172.21.245.42:8003/api-order/getInventory/1",new BaseCallback<WarehouseItem>(){
+        //入库接口没提供 先用着出库 改回来之后还要改databean
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutWarehouseRecordByWarehouseId/1",new BaseCallback<DataBean.ProductIn>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
-
+                System.out.println("failure"+e);
             }
 
             @Override
             public void onResponse(Response response) {
-
+                System.out.println("response"+response);
             }
 
             @Override
 
             public void onSuccess_List(String resultStr) {
+                    Gson gson= new Gson();
+                    DataBean.ProductIn[] wares=gson.fromJson(resultStr,DataBean.ProductIn[].class);
+                    System.out.println("a  "+resultStr);
 
-                Gson gson= new Gson();
-                WarehouseItem[] wares=gson.fromJson(resultStr,WarehouseItem[].class);
-                //System.out.println("a"+wares[0]);
-        //        warehouseItems.add(wares[0]);
-
-
-//                    String resultStr = null;
-//                    try {
-//                        resultStr = response.body().string();
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                    Gson gson= new Gson();
-//                    WarehouseItem[] wares=gson.fromJson(resultStr,WarehouseItem[].class);
-//                    System.out.println("a  "+resultStr);
-//                    System.out.println("a  "+wares[0].getId());
-//                    warehouseItems.add(wares[0]);
-//                    warehouseItems.add(wares[1]);
-
-                //WarehouseItem warehouseItem=new WarehouseItem();
-                //warehouseItem.setId(wares[0].getId());
-                //warehouseItem.setProduct(wares[0].getProduct());
+                    warehouseItems.add(wares[0]);
+                    warehouseItems.add(wares[1]);
             }
 
             @Override
-            public void onSuccess(Response response, WarehouseItem warehouseItem) {
+            public void onSuccess(Response response, DataBean.ProductIn productIn) {
 
-                warehouseItems.add(warehouseItem);
+                System.out.println("Success"+response);
             }
 
             @Override
             public void onError(Response response, int code, Exception e) {
-                System.out.println("aaa"+response+e);
+                System.out.println("error"+response+e);
             }
         } );
     }
@@ -288,8 +228,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     tv_nomedia.setVisibility(View.GONE);
                     pb_loading.setVisibility(View.GONE);
 
-                    //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName);
+                    //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
+                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity);
                     rv_pager.setAdapter(adapter);
 //                    rv_pager.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
 //                        @Override

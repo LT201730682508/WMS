@@ -117,7 +117,7 @@ public class Warehouse_Check_Fragment extends Fragment {
                     pb_loading.setVisibility(View.GONE);
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_checklist,2,activity);
+                    //adapter=new MyAdapter<MyAdapter.VH>(1warehouseItems, R.layout.item_checklist,2,activity);
                     rv_pager.setAdapter(adapter);
                 }
                 else{

@@ -18,6 +18,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
 import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
+import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
+import com.example.WMS.domain.DataBean;
+import com.example.WMS.domain.WarehouseItem;
+
+import java.util.ArrayList;
+
+
+import android.util.SparseArray;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
+import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
 import com.example.WMS.WarehouseIn.Warehouse_New_Fragment;
 import com.example.WMS.WarehouseOut.WarehouseOutDetailFragment;
 import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
@@ -100,16 +125,16 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     private final int WAREHOUSE_CHECK=2;
     private int opType;//WAREHOUSE_IN是入库，WAREHOUSE_OUT是出库后续继续添加
     private int mResId;
-    private ArrayList<WarehouseItem> mDatas;
+    private ArrayList<DataBean.ProductIn> mDatas;
     private MainActivity activity;
-    public MyAdapter(ArrayList<WarehouseItem> data,int mResId, int opType,MainActivity activity) {
+    public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity) {
         this.mDatas = data;
         this.mResId = mResId;
         this.opType = opType;
         this.activity=activity;
     }
     private String warehouseName;
-    public MyAdapter(ArrayList<WarehouseItem> data,int mResId, int opType,MainActivity activity,String warehouseName) {
+    public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity,String warehouseName) {
         this.mDatas = data;
         this.mResId = mResId;
         this.opType = opType;
@@ -195,7 +220,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             @Override
             public void onClick(View v) {
                 if(opType==0){//入库Adater
-                    WarehouseInDetailFragment warehouseInDetailFragment = new WarehouseInDetailFragment(warehouseName,mDatas.get(position).getProduct().getProductName());
+                    WarehouseInDetailFragment warehouseInDetailFragment = new WarehouseInDetailFragment(warehouseName,mDatas.get(position));
                     Toast.makeText(activity,"仓库名："+warehouseName,Toast.LENGTH_SHORT).show();
                     activity.fragment_Manager.hide_all(warehouseInDetailFragment);
                 }
@@ -242,8 +267,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     warehouse_add_fragment.show();
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
-                    Warehouse_Delete_Dialog warehouse_delete_dialog=new Warehouse_Delete_Dialog(activity,mDatas.get(position));
-                    warehouse_delete_dialog.show();
+                    //Warehouse_Delete_Dialog warehouse_delete_dialog=new Warehouse_Delete_Dialog(activity,mDatas.get(position));
+                    //warehouse_delete_dialog.show();
                 }
                 else if(opType==2){
 
@@ -255,14 +280,14 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     //public abstract void bindView(VH holder,int position);
     public void bindView(VH holder,int position){
         if(opType==WAREHOUSE_IN){
-            holder.setText(R.id.tv_name, mDatas.get(position).getProduct().getProductName());
+            holder.setText(R.id.tv_name, mDatas.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
-            holder.setDetail(R.id.tv_detail,mDatas.get(position).getProduct().getProductDescription());
+            holder.setDetail(R.id.tv_detail,mDatas.get(position).getProductDescription());
         }
         else if(opType==WAREHOUSE_OUT){
-            holder.setText(R.id.tv_name, mDatas.get(position).getProduct().getProductName());
+            holder.setText(R.id.tv_name, mDatas.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
-            holder.setDetail(R.id.tv_detail,mDatas.get(position).getProduct().getProductDescription());
+            holder.setDetail(R.id.tv_detail,mDatas.get(position).getProductDescription());
         }
         else if(opType==WAREHOUSE_CHECK){
 

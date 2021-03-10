@@ -23,6 +23,7 @@ import com.example.WMS.MainActivity;
 import com.example.WMS.Open_Album;
 import com.example.WMS.R;
 import com.example.WMS.custom_Dialog.take_Album_Dialog;
+import com.example.WMS.domain.DataBean;
 
 /**
  * 点击item打开的修改详情页
@@ -38,12 +39,13 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     private ImageView picture;
     private TextView warehouse_name;
     private String warehouseName;
+    private DataBean.ProductIn productIn;
     private String product_name;
     private Dialog dialog;
-    public WarehouseInDetailFragment(String warehouseName,String product_name){
+    public WarehouseInDetailFragment(String warehouseName, DataBean.ProductIn productIn){
         //根据仓库名和商品名读取数据库，显示已有数据
         this.warehouseName=warehouseName;
-        this.product_name=product_name;
+        this.productIn=productIn;
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,9 +72,11 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         picture.setOnClickListener(this);
         size=view.findViewById(R.id.et_size);
         name=view.findViewById(R.id.et_name);
-        name.setText(product_name);
+        name.setText(productIn.getProductName());
         detail=view.findViewById(R.id.et_detail);
+        detail.setText(productIn.getProductDescription());
         price=view.findViewById(R.id.et_price);
+        price.setText(productIn.getOutPrice());
         return view;
     }
 
@@ -81,6 +85,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         if (v==btn_commit){
             //更新数据
             //需要更新数据库信息代码
+            // /api-inventory/modifyProduct
             ((MainActivity)getActivity()).fragment_Manager.pop();
         }
         else if (v==picture){

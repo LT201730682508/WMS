@@ -18,7 +18,8 @@ import androidx.annotation.NonNull;
 
 
 import com.example.WMS.R;
-import com.example.WMS.domain.WarehouseItem;
+import com.example.WMS.domain.DataBean;
+import com.example.WMS.domain.DataBean.ProductIn;
 
 /**
  * 商品已存在，继续入库界面 （底部弹出）
@@ -28,11 +29,11 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     private Button btn_add;
     private Button btn_cancel;
     private TextView tv_name;
-    private WarehouseItem warehouseItem;
-    public Warehouse_Add_Fragment(@NonNull Context context, WarehouseItem warehouseItem) {
+    private DataBean.ProductIn productIn;
+    public Warehouse_Add_Fragment(@NonNull Context context, DataBean.ProductIn productIn) {
         super(context);
         this.context=context;
-        this.warehouseItem=warehouseItem;
+        this.productIn=productIn;
     }
 
     @Override
@@ -45,7 +46,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
         btn_add.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
         tv_name=contentView.findViewById(R.id.tv_name);
-        tv_name.setText(warehouseItem.getProduct().getProductName());
+        tv_name.setText(productIn.getProductName());
     //    ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
         //存在问题：无法水平铺满
     //    layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;
@@ -62,6 +63,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     public void onClick(View v) {
         if(v==btn_add){
             //保存刷新数据库，退出
+            //
             cancel();
         }
         else if(v==btn_cancel){

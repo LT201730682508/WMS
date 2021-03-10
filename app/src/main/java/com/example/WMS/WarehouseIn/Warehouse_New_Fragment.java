@@ -89,6 +89,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         if (v==btn_commit){
             //更新数据
             //需要更新数据库信息代码
+            // /api-inventory/addProduct
             if(detail.getText().toString().equals("")||name.getText().toString().equals("")||price.getText().toString().equals("")||size.getText().toString().equals("")){
                 XToast.warning(requireContext(), "请输入完整信息").show();
             }
