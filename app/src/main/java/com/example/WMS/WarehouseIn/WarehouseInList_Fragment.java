@@ -57,6 +57,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -105,7 +106,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
-                initData();
+                getData();
                 handler.sendEmptyMessage(0);
 
 //                //这里获取数据的逻辑
@@ -136,44 +137,30 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        getData();
         btn_add.setOnClickListener(this);
         btn_scan.setOnClickListener(this);
-        initData();
     }
 
-    public void initData(){
-
-        My_Thread.Companion.new_thread(new perform_UI() {
-            @Override
-            public void show() {
-                handler.sendEmptyMessage(0);
-            }
-        }, new execute_IO() {
-            @Override
-            public void execute() {
-                warehouseItems = new ArrayList<DataBean.ProductIn>();
-                getData();
-//                DataBean.ProductIn productIn=new DataBean.ProductIn();
+//    public void initData(){
 //
-//                productIn.setProductName("苹果");
-//                productIn.setProductDescription("多汁的苹果");
+//        My_Thread.Companion.new_thread(new perform_UI() {
+//            @Override
+//            public void show() {
+//                handler.sendEmptyMessage(0);
 //
-//                productIn.setTotalAmount(1000);
-//                warehouseItems.add(productIn);
-//                warehouseItems.add(productIn);
+//                System.out.println("@@@@@@@@@@22223");
+//
+//            }
+//        }, new execute_IO() {
+//            @Override
+//            public void execute() {
+//                warehouseItems = new ArrayList<DataBean.ProductIn>();
 //                getData();
-//                productIn=new DataBean.ProductIn();
-//
-//                productIn.setProductName("相机");
-//                productIn.setProductDescription("质量不错的相机");
-//
-//                productIn.setTotalAmount(12000);
-//                warehouseItems.add(productIn);
-
-            }
-        });
-    }
+//                System.out.println("@@@@@@@@@@22221");
+//            }
+//        });
+//    }
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
@@ -187,18 +174,29 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
             @Override
             public void onResponse(Response response) {
-                System.out.println("response"+response);
+                System.out.println("@@@@@@@@@@1"+response);
             }
 
             @Override
 
-            public void onSuccess_List(String resultStr) {
-                    Gson gson= new Gson();
-                    DataBean.ProductIn[] wares=gson.fromJson(resultStr,DataBean.ProductIn[].class);
-                    System.out.println("a  "+resultStr);
+            public void onSuccess_List(final String resultStr) {
+                My_Thread.Companion.new_thread(new perform_UI() {
+                    @Override
+                    public void show() {
+                        handler.sendEmptyMessage(0);
+                        System.out.println("@@@@@@@@@@22223");
+                    }
+                }, new execute_IO() {
+                    @Override
+                    public void execute() {
+                        warehouseItems = new ArrayList<DataBean.ProductIn>();
+                        Gson gson= new Gson();
+                        DataBean.ProductIn[] wares=gson.fromJson(resultStr,DataBean.ProductIn[].class);
+                        System.out.println("@@@@@@@@@@2"+resultStr);
+                        warehouseItems.addAll(Arrays.asList(wares));
+                    }
+                });
 
-                    warehouseItems.add(wares[0]);
-                    warehouseItems.add(wares[1]);
             }
 
             @Override
@@ -223,6 +221,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         public void handleMessage(Message msg) {
             final MainActivity activity=mActivity.get();
             super.handleMessage(msg);
+
             if(activity!=null){
                 if(warehouseItems!=null&&warehouseItems.size()>0){
                     tv_nomedia.setVisibility(View.GONE);
@@ -243,6 +242,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 //                    });
                 }
                 else{
+
+                    System.out.println("@@@@@@@@@@222");
+
                     tv_nomedia.setVisibility(View.VISIBLE);
                     pb_loading.setVisibility(View.VISIBLE);
                 }

@@ -19,40 +19,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun test(){
-        var ok=OkHttpHelper.getInstance()
-        var list= arrayListOf<mydata>()
-        ok.get_for_list("http://172.21.245.42:8003/api-order/getInventory/2",object : BaseCallback<mydata>(){
-            override fun onFailure(request: Request?, e: IOException?) {
-                println("aaaa"+e)
-            }
 
-            override fun onResponse(response: Response?) {
-                println("aaaa"+response)
-            }
-
-            override fun onSuccess(response: Response?, t: mydata){
-                println("aaaa"+response)
-            }
-
-            override fun onError(response: Response?, code: Int, e: Exception?) {
-                println("aaaa"+response+e)
-            }
-
-            override fun onSuccess_List(resultStr: String?) {
-                var gson=Gson()
-                val list = gson.fromJson(
-                    resultStr,
-                    Array<mydata>::class.java
-                )
-                for(l in list){
-                    println("aaa"+l)
-                }
-            }
-        })
-    }
-   data class product(var productId:Int,var productName:String,var productDescription:String,var productCategory:String,var productCode:Int)
-   data class mydata(var id:Int,var warehouseId:Int,var totalAmount:Int,var product:product)
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,

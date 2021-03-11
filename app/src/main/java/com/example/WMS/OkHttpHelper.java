@@ -104,7 +104,15 @@ public class OkHttpHelper<T> {
             }
         });
     }
+    private void callbackSuccess_for_List(final BaseCallback callback,final String result){
 
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onSuccess_List(result);
+            }
+        });
+    }
     //实现一个枚举类,用来判断使用Get方法还是使用Post方法
     enum HttpMethodType{
         GET,
@@ -154,8 +162,7 @@ public class OkHttpHelper<T> {
                 String resultStr = response.body().string();
                 callback.onResponse(response);
                 if (response.isSuccessful()){
-                    callback.onSuccess_List(resultStr);
-
+                    callbackSuccess_for_List(callback,resultStr);
                 }
 
                 else{
