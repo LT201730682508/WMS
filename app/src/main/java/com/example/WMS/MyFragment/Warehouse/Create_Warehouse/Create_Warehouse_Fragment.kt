@@ -61,8 +61,10 @@ class Create_Warehouse_Fragment:Fragment() {
          make_sure.setOnClickListener {
              if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()){
                  XToast.warning(requireContext(), "请完善信息").show()
-             }else
-             (activity as MainActivity).fragment_Manager.pop()
+             }else{
+                 (activity as MainActivity).fragment_Manager.pop()
+             }
+
          }
 
     }

@@ -39,7 +39,7 @@
     </RelativeLayout>
 
 
-   <RelativeLayout
+    <RelativeLayout
     android:layout_width="wrap_content"
     android:layout_marginTop="30dp"
     android:layout_marginLeft="40dp"
@@ -200,4 +200,37 @@
             android:layout_below="@+id/item_icon6"
             android:layout_height="20dp"></TextView>
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_marginHorizontal="15dp"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:textColor="@color/black"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:background="@drawable/frame_line"
+        android:layout_alignParentBottom="true"
+        android:layout_height="20dp">
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:gravity="center|right"
+            android:text="您还没加入任何仓库,"
+            android:layout_height="20dp"></TextView>
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/red"
+            android:layout_width="0dp"
+            android:id="@+id/click_join"
+            android:gravity="center|left"
+            android:layout_weight="1"
+            android:text="点击申请加入或创建>"
+            android:layout_height="20dp"></TextView>
+
+    </LinearLayout>
+
 </RelativeLayout>

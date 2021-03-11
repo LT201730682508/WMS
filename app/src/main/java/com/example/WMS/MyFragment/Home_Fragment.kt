@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Data_report.Data_report_fragment
@@ -14,6 +15,9 @@ import com.example.WMS.MyFragment.Warehouse.Warehouse_Fragment
 import com.example.WMS.R
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment
 import com.example.WMS.WarehouseOut.WarehouseOutList_Fragment
+import com.example.WMS.custom_Dialog.Find_Company_Join
+import com.example.WMS.custom_Dialog.Join_or_Create
+import com.xuexiang.xui.XUI
 import kotlinx.android.synthetic.main.home.*
 
 class Home_Fragment: Fragment() {
@@ -23,7 +27,7 @@ class Home_Fragment: Fragment() {
     lateinit var item4: RelativeLayout
     lateinit var item5: RelativeLayout
     lateinit var item6: RelativeLayout
-
+    lateinit var click_join:TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,6 +35,7 @@ class Home_Fragment: Fragment() {
     ): View? {
         var view=inflater.inflate(R.layout.home,container,false)
         jump(view)
+        XUI.initTheme(activity)
         return view
     }
     fun jump(view:View){
@@ -58,6 +63,12 @@ class Home_Fragment: Fragment() {
         item6.setOnClickListener {
             var dataReportFragment= Data_report_fragment()
             (activity as MainActivity).fragment_Manager.hide_all(dataReportFragment)
+        }
+
+        click_join=view.findViewById(R.id.click_join)
+        click_join.setOnClickListener {
+            var joinOrCreate=Join_or_Create(requireContext())
+            joinOrCreate.show()
         }
     }
 }

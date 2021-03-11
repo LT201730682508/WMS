@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:paddingVertical="50dp"
+    android:background="@color/backgroundGray"
+    android:layout_height="wrap_content">
+    <com.xuexiang.xui.widget.edittext.ClearEditText
+        android:layout_width="match_parent"
+        android:layout_marginRight="100dp"
+        android:hint="请输入公司名称"
+        android:id="@+id/company_name"
+        android:layout_marginLeft="15dp"
+        android:layout_height="50dp"></com.xuexiang.xui.widget.edittext.ClearEditText>
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/make_sure"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/frame_line"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="15dp"
+        android:layout_gravity="right"
+        android:textColor="@color/black"
+        android:text="确定"/>
+</RelativeLayout>

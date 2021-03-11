@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="50dp">
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/company_name"
+        android:textColor="@color/skyblue"
+        android:text="京东"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="25dp"
+        android:layout_height="30dp"></TextView>
+    <Button
+        android:layout_width="60dp"
+        android:background="@drawable/myroundbutton"
+        android:layout_centerVertical="true"
+        android:id="@+id/join_it"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="25dp"
+        android:text="加入"
+        android:textSize="8dp"
+        android:gravity="center"
+        android:textColor="@color/xui_config_color_main_theme"
+        android:layout_height="30dp"></Button>
+</RelativeLayout>
