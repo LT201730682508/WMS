@@ -105,7 +105,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
-                initData();
+                getData();
+                //initData();
                 handler.sendEmptyMessage(0);
 
 //                //这里获取数据的逻辑
@@ -143,17 +144,19 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     }
 
     public void initData(){
-
+        warehouseItems = new ArrayList<DataBean.ProductIn>();
         My_Thread.Companion.new_thread(new perform_UI() {
             @Override
             public void show() {
-                handler.sendEmptyMessage(0);
+
+                //handler.sendEmptyMessage(0);
             }
         }, new execute_IO() {
             @Override
             public void execute() {
-                warehouseItems = new ArrayList<DataBean.ProductIn>();
+
                 getData();
+                System.out.println("--after getData---");
 //                DataBean.ProductIn productIn=new DataBean.ProductIn();
 //
 //                productIn.setProductName("苹果");
@@ -178,7 +181,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
         //入库接口没提供 先用着出库 改回来之后还要改databean
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutWarehouseRecordByWarehouseId/1",new BaseCallback<DataBean.ProductIn>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/1",new BaseCallback<DataBean.ProductIn>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -193,12 +196,18 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             @Override
 
             public void onSuccess_List(String resultStr) {
+
                     Gson gson= new Gson();
                     DataBean.ProductIn[] wares=gson.fromJson(resultStr,DataBean.ProductIn[].class);
                     System.out.println("a  "+resultStr);
+                    System.out.println(""+wares[0]);
+                    System.out.println(""+wares[1]);
+                    for (int i=0;i<wares.length;i++){
+                        warehouseItems.add(wares[i]);
+                    }
 
-                    warehouseItems.add(wares[0]);
-                    warehouseItems.add(wares[1]);
+                    handler.sendEmptyMessage(0);
+
             }
 
             @Override
@@ -229,6 +238,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     pb_loading.setVisibility(View.GONE);
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
+                    System.out.println("----------------------");
                     adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity);
                     rv_pager.setAdapter(adapter);
 //                    rv_pager.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
