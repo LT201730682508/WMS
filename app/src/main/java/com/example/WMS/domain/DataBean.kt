@@ -1,11 +1,12 @@
 package com.example.WMS.domain
 
 class DataBean {
+    //outPrice改回去inPrice
     data class ProductIn(var productId:Int,var productName:String,var totalAmount:Int,var productDescription:String,
-                       var outPrice:Int,var productCategory:String,var productCode:Int,var productImg:String,var updateTime:String)
+                       var InPrice:Int,var productCategory:String,var productCode:String,var productImg:String,var updateTime:String)
 
     data class ProductOut(var productId:Int,var productName:String,var totalAmount:Int,var productDescription:String,
-                        var outPrice:Int,var productCategory:String,var productCode:Int,var productImg:String,var updateTime:String)
+                        var outPrice:Int,var productCategory:String,var productCode:String,var productImg:String,var updateTime:String)
 
     data class Member(var userId:Int,var userName:String,var role:String)
 

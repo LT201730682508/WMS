@@ -107,7 +107,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                  * 刷新操作在这里实现
                  * */
                 getData();
-                handler.sendEmptyMessage(0);
+                
 
 //                //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
@@ -142,30 +142,12 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         btn_scan.setOnClickListener(this);
     }
 
-//    public void initData(){
-//
-//        My_Thread.Companion.new_thread(new perform_UI() {
-//            @Override
-//            public void show() {
-//                handler.sendEmptyMessage(0);
-//
-//                System.out.println("@@@@@@@@@@22223");
-//
-//            }
-//        }, new execute_IO() {
-//            @Override
-//            public void execute() {
-//                warehouseItems = new ArrayList<DataBean.ProductIn>();
-//                getData();
-//                System.out.println("@@@@@@@@@@22221");
-//            }
-//        });
-//    }
+
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
         //入库接口没提供 先用着出库 改回来之后还要改databean
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutWarehouseRecordByWarehouseId/1",new BaseCallback<DataBean.ProductIn>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/1",new BaseCallback<DataBean.ProductIn>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -178,6 +160,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
 
             @Override
+
 
             public void onSuccess_List(final String resultStr) {
                 My_Thread.Companion.new_thread(new perform_UI() {
@@ -196,6 +179,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                         warehouseItems.addAll(Arrays.asList(wares));
                     }
                 });
+
 
             }
 
@@ -228,6 +212,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     pb_loading.setVisibility(View.GONE);
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
+                    System.out.println("----------------------");
                     adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity);
                     rv_pager.setAdapter(adapter);
 //                    rv_pager.addOnScrollListener(new EndlessRecyclerOnScrollListener() {

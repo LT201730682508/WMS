@@ -76,7 +76,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         detail=view.findViewById(R.id.et_detail);
         detail.setText(productIn.getProductDescription());
         price=view.findViewById(R.id.et_price);
-        price.setText(productIn.getOutPrice());
+        price.setText(productIn.getInPrice());
         return view;
     }
 
