@@ -4,24 +4,24 @@ package com.example.WMS.WarehouseIn;
  * 入库商品列表
  */
 
-import android.app.Dialog;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.view.Gravity;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
+
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,34 +32,33 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
-import com.example.WMS.EndlessRecyclerOnScrollListener;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
+
 import com.example.WMS.My_Thread;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
+import com.example.WMS.Receiver_Supplier.Supplier_Fragment;
 import com.example.WMS.domain.DataBean;
-import com.example.WMS.domain.Product;
-import com.example.WMS.domain.DataBean.ProductIn;
+
 import com.example.WMS.execute_IO;
 import com.example.WMS.perform_UI;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
+
 import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
+
 
 public class WarehouseInList_Fragment extends Fragment implements View.OnClickListener{
     protected Context context;
@@ -73,8 +72,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private Base_Topbar base_topbar;
     private static ArrayList<DataBean.ProductIn> warehouseItems;
     private static MyAdapter<MyAdapter.VH> adapter;
-    private static final String[] warehouseName={"深圳","上海","北京","山西"};
-    private static String selectWarehouseName=warehouseName[0];
+    private static final String[] warehouseName={"深圳","上海"};
+    private static int pos=1;
+    private static String selectWarehouseName=warehouseName[pos-1];
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
 
@@ -106,8 +106,10 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
+
                 getData();
                 
+
 
 //                //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
@@ -122,8 +124,13 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectWarehouseName=warehouseName[position];
+                pos=position+1;
+                System.out.println("-----"+pos);
+
+                warehouseItems = new ArrayList<DataBean.ProductIn>();
+                getData();
                 //根据选中仓库加载对应的RecycleView
-                handler.sendEmptyMessage(0);
+                //handler.sendEmptyMessage(0);
             }
 
             @Override
@@ -143,11 +150,15 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     }
 
 
+    public void initData(){
+        warehouseItems = new ArrayList<DataBean.ProductIn>();
+        getData();
+    }
+
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        //入库接口没提供 先用着出库 改回来之后还要改databean
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/1",new BaseCallback<DataBean.ProductIn>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+pos,new BaseCallback<DataBean.ProductIn>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -181,6 +192,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 });
 
 
+
             }
 
             @Override
@@ -210,25 +222,16 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 if(warehouseItems!=null&&warehouseItems.size()>0){
                     tv_nomedia.setVisibility(View.GONE);
                     pb_loading.setVisibility(View.GONE);
-
+                    rv_pager.setVisibility(View.VISIBLE);
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
                     System.out.println("----------------------");
-                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity);
+                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName);
                     rv_pager.setAdapter(adapter);
-//                    rv_pager.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
-//                        @Override
-//                        public void onLoadMore() {
-//                            /**
-//                             * 下拉加载在此处实现
-//                             * */
-//
-//                            adapter.setLoadState(adapter.LOADING_END);
-//                        }
-//                    });
+
                 }
                 else{
-
                     System.out.println("@@@@@@@@@@222");
+                    rv_pager.setVisibility(View.GONE);
 
                     tv_nomedia.setVisibility(View.VISIBLE);
                     pb_loading.setVisibility(View.VISIBLE);
@@ -252,8 +255,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
         }
         else if(v==btn_scan){
-            //Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(context);
-            //warehouse_add_fragment.show();
+            Supplier_Fragment supplier_fragment = new Supplier_Fragment();
+            ((MainActivity)getActivity()).fragment_Manager.hide_all(supplier_fragment);
+
         }
     }
     class myTask extends AsyncTask {

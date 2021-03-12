@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,7 +77,11 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         detail=view.findViewById(R.id.et_detail);
         detail.setText(productIn.getProductDescription());
         price=view.findViewById(R.id.et_price);
-        price.setText(productIn.getInPrice());
+        price.setText(""+productIn.getInPrice());
+        size=view.findViewById(R.id.et_size);
+        size.setFocusable(false);
+        size.setOnClickListener(this);
+        size.setText(""+productIn.getTotalAmount());
         return view;
     }
 
@@ -91,6 +96,9 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         else if (v==picture){
 
             dialog.show();
+        }
+        else if(v==size){
+            Toast.makeText(context,"请使用入库改动商品数量",Toast.LENGTH_SHORT).show();
         }
     }
     public   void setImage(Activity activity,String str,ImageView imageView){
