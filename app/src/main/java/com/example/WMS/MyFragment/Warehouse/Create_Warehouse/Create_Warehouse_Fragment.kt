@@ -1,6 +1,8 @@
 package com.example.WMS.MyFragment.Warehouse.Create_Warehouse
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -9,12 +11,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.Open_Album
 import com.example.WMS.R
+import com.example.WMS.custom_Dialog.Alart_Warning_Dialog
 import com.example.WMS.custom_Dialog.take_Album_Dialog
 import com.xuexiang.xui.XUI
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton
@@ -61,10 +65,13 @@ class Create_Warehouse_Fragment:Fragment() {
          make_sure.setOnClickListener {
              if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()){
                  XToast.warning(requireContext(), "请完善信息").show()
-             }else
-             (activity as MainActivity).fragment_Manager.pop()
-         }
+             }else{
 
+                 var alartWarningDialog=Alart_Warning_Dialog(requireContext())
+                 alartWarningDialog.show()
+//                 (activity as MainActivity).fragment_Manager.pop()
+             }
+         }
     }
 
     override fun onActivityResult(

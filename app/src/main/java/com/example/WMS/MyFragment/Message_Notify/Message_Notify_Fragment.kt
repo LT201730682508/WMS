@@ -28,7 +28,7 @@ class Message_Notify_Fragment:Fragment() {
         baseTopbar= Base_Topbar(view,activity as MainActivity,true)
         message_recycler=view.findViewById(R.id.message_list)
         message_recycler.layoutManager=LinearLayoutManager(requireContext())
-        val mList1: List<String> = listOf("1", "3", "4", "5", "3","1", "3", "4", "5", "3","1", "3", "4", "5", "3","1", "3", "4", "5", "3","1", "3", "4", "5", "3")
+        val mList1: List<String> = listOf("1", "3", "4", "5")
         messageAdapter= Message_Adapter(mList1,activity as MainActivity)
         message_recycler.adapter=messageAdapter
     }
