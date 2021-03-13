@@ -19,6 +19,7 @@ import com.example.WMS.MainActivity
 import com.example.WMS.Open_Album
 import com.example.WMS.R
 import com.example.WMS.custom_Dialog.Alart_Warning_Dialog
+import com.example.WMS.custom_Dialog.Create_Company_Dialog
 import com.example.WMS.custom_Dialog.take_Album_Dialog
 import com.xuexiang.xui.XUI
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton
@@ -66,8 +67,13 @@ class Create_Warehouse_Fragment:Fragment() {
              if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()){
                  XToast.warning(requireContext(), "请完善信息").show()
              }else{
+                 var alartWarningDialog=Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
+                     override fun sure() {
+                         var createCompanyDialog= Create_Company_Dialog(requireContext())
+                         createCompanyDialog.show()
+                     }
 
-                 var alartWarningDialog=Alart_Warning_Dialog(requireContext())
+                 },"您还没有加入任何企业，是否自行创建？")
                  alartWarningDialog.show()
 //                 (activity as MainActivity).fragment_Manager.pop()
              }

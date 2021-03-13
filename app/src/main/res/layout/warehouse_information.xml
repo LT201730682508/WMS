@@ -49,6 +49,7 @@
             android:textColor="@color/skyblue"
             android:textSize="10dp"
             android:layout_height="25dp"></TextView>
+
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -91,5 +92,33 @@
             android:textColor="@color/skyblue"
             android:layout_marginRight="15dp"
             android:layout_height="wrap_content"></TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="50dp"
+        android:background="#FFFFFF"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_height="100dp">
+        <TextView
+            android:id="@+id/ware_name_modification"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="仓库名称修改"
+            android:textColor="@color/red"
+            android:layout_marginLeft="15dp"
+            android:gravity="center"
+            android:layout_height="wrap_content"></TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="仓库删除"
+            android:id="@+id/ware_delete"
+            android:textColor="@color/red"
+            android:gravity="center"
+            android:layout_height="wrap_content"></TextView>
+
+
     </LinearLayout>
 </LinearLayout>

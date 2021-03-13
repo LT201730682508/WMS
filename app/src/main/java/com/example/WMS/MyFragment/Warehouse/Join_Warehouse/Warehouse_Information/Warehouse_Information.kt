@@ -13,6 +13,8 @@ import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information
 import com.example.WMS.R
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment
 import com.example.WMS.WarehouseOut.WarehouseOutList_Fragment
+import com.example.WMS.custom_Dialog.Alart_Warning_Dialog
+import com.example.WMS.custom_Dialog.Ware_Name_Modify_Dialog
 
 class Warehouse_Information (var str:String):Fragment(){
     lateinit var ware_information: TextView
@@ -23,6 +25,8 @@ class Warehouse_Information (var str:String):Fragment(){
     lateinit var ware_number:TextView
     lateinit var warehouse_name:TextView
     lateinit var base_Top_Bar: Base_Topbar
+    lateinit var ware_name_modification:TextView
+    lateinit var ware_delete:TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +46,8 @@ class Warehouse_Information (var str:String):Fragment(){
         ware_in=view.findViewById(R.id.ware_in)
         ware_out=view.findViewById(R.id.ware_out)
         ware_menber=view.findViewById(R.id.ware_menber)
-
+        ware_name_modification=view.findViewById(R.id.ware_name_modification)
+        ware_delete=view.findViewById(R.id.ware_delete)
         ware_information.setOnClickListener {
             var warehouseDetailInformation=Warehouse_Detail_Information()
             (activity as MainActivity).fragment_Manager.hide_all(warehouseDetailInformation)
@@ -58,6 +63,19 @@ class Warehouse_Information (var str:String):Fragment(){
         ware_menber.setOnClickListener {
             var memberManagerFragment=Member_Manager_Fragment()
             (activity as MainActivity).fragment_Manager.hide_all(memberManagerFragment)
+        }
+        ware_name_modification.setOnClickListener {
+            var wareNameModifyDialog=Ware_Name_Modify_Dialog(requireContext())
+            wareNameModifyDialog.show()
+        }
+        ware_delete.setOnClickListener {
+            var alartWarningDialog= Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
+                override fun sure() {
+                    print("aaa")
+                }
+            },"您是否确定删除该仓库？")
+
+            alartWarningDialog.show()
         }
     }
 }

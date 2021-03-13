@@ -4,18 +4,21 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.WMS.R
 import kotlinx.android.synthetic.main.alart_warning_dialog.*
 import kotlinx.android.synthetic.main.find_company_join.*
 
-class Alart_Warning_Dialog( context: Context) : Dialog(context, R.style.CustomDialog) {
+class Alart_Warning_Dialog( context: Context,var showSure: Show_Sure,var str:String) : Dialog(context, R.style.CustomDialog) {
+    lateinit var dialog_message:TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var view = View.inflate(context, R.layout.alart_warning_dialog, null)
         setContentView(view)
-        initView(view)
+        initView(view,showSure)
         setCanceledOnTouchOutside(true)
+
 //        window!!.setGravity(Gravity.BOTTOM)
 //        window!!.setLayout(
 //            ViewGroup.LayoutParams.MATCH_PARENT,
@@ -23,14 +26,19 @@ class Alart_Warning_Dialog( context: Context) : Dialog(context, R.style.CustomDi
 //        )
     }
 
-    fun initView(view: View) {
+    fun initView(view: View,showSure: Show_Sure) {
+
+        dialog_message=view.findViewById(R.id.dialog_message)
+        dialog_message.text=str
         cancel.setOnClickListener {
             dismiss()
         }
         sure.setOnClickListener {
             dismiss()
-            var createCompanyDialog=Create_Company_Dialog(context)
-            createCompanyDialog.show()
+            showSure.sure()
         }
+    }
+    interface Show_Sure{
+        fun sure()
     }
 }
