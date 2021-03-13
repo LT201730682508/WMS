@@ -26,6 +26,7 @@ import com.xuexiang.xui.widget.button.roundbutton.RoundButton
 import com.xuexiang.xui.widget.edittext.ClearEditText
 import com.xuexiang.xui.widget.edittext.MultiLineEditText
 import com.xuexiang.xui.widget.toast.XToast
+import java.util.*
 
 
 class Create_Warehouse_Fragment:Fragment() {
@@ -67,14 +68,21 @@ class Create_Warehouse_Fragment:Fragment() {
              if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()){
                  XToast.warning(requireContext(), "请完善信息").show()
              }else{
-                 var alartWarningDialog=Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
-                     override fun sure() {
-                         var createCompanyDialog= Create_Company_Dialog(requireContext())
-                         createCompanyDialog.show()
+                 var objects=Object()
+                 Create_Warehouse_Model.getData(objects,object:Create_Warehouse_Model.Show{
+                     override fun show(str: String) {
+                         XToast.info(requireContext(),str).show()
                      }
 
-                 },"您还没有加入任何企业，是否自行创建？")
-                 alartWarningDialog.show()
+                 } )
+//                 var alartWarningDialog=Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
+//                     override fun sure() {
+//                         var createCompanyDialog= Create_Company_Dialog(requireContext())
+//                         createCompanyDialog.show()
+//                     }
+//
+//                 },"您还没有加入任何企业，是否自行创建？")
+//                 alartWarningDialog.show()
 //                 (activity as MainActivity).fragment_Manager.pop()
              }
          }
