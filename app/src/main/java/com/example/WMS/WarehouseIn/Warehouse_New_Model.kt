@@ -16,7 +16,7 @@ class Warehouse_New_Model {
 
 
              var okHttpHelper=OkHttpHelper.getInstance()
-             okHttpHelper.post_for_object("http://172.21.245.42:8003/api-order/inWarehouse",parms,object :BaseCallback<String>(){
+             okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/api-inventory/addProduct",parms,object :BaseCallback<String>(){
                  override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)
                  }
@@ -48,5 +48,5 @@ class Warehouse_New_Model {
  interface show{
      fun show(string: String)
  }
-    data class post_data(var id:Int,var supplierId:Int,var amount:Int,var inPrice:Int,var note:String)
+    data class post_data(var warehouseId:Int,var produc:Int,var amount:Int,var inPrice:Int,var note:String)
 }

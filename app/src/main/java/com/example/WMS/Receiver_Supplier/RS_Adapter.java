@@ -90,10 +90,13 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
             public void onClick(View v) {
                 if(opType==SUPPLIER){
                     //选中返回
+                    //返回当前选中供应商进入textview中
+                    activity.fragment_Manager.pop();
                 }
         else if(opType==RECEIVER){
                     //选中返回
-
+                    //返回当前选中客户进入textview中
+                    activity.fragment_Manager.pop();
                 }
             }
         });
