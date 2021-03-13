@@ -1,4 +1,4 @@
-package com.example.WMS.WarehouseIn;
+package com.example.WMS.Receiver_Supplier;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,46 +7,41 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-
 import com.example.WMS.R;
 import com.example.WMS.domain.DataBean;
-import com.example.WMS.domain.DataBean.ProductIn;
 
-/**
- * 商品已存在，继续入库界面 （底部弹出）
- */
-public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListener{
+public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     protected Context context;
     private Button btn_add;
     private Button btn_cancel;
-    private TextView tv_name;
-    private DataBean.ProductIn productIn;
-    public Warehouse_Add_Fragment(@NonNull Context context, DataBean.ProductIn productIn) {
+    private TextView title;
+    private int opType;
+    public RS_Add_Dialog(@NonNull Context context,int opType) {
         super(context);
         this.context=context;
-        this.productIn=productIn;
+        this.opType=opType;
     }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View contentView = LayoutInflater.from(context).inflate(R.layout.fragment_warehouse_in_add, null);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.receiver_supplier_add_dialog, null);
         setContentView(contentView);
         btn_add=contentView.findViewById(R.id.btn_add);
         btn_cancel=contentView.findViewById(R.id.btn_cancel);
         btn_add.setOnClickListener(this);
         btn_cancel.setOnClickListener(this);
-        tv_name=contentView.findViewById(R.id.tv_name);
-        tv_name.setText(productIn.getProductName());
+        title=contentView.findViewById(R.id.title);
+        if(opType==0){
+            title.setText("新增供应商");
+        }
+        else if(opType==1){
+            title.setText("新增客户");
+        }
         setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -64,5 +59,4 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
             cancel();
         }
     }
-
 }

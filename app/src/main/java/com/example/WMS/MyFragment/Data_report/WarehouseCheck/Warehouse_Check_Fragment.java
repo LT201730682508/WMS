@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.WMS.EndlessRecyclerOnScrollListener;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
 import com.example.WMS.My_Thread;
