@@ -73,7 +73,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static ArrayList<DataBean.ProductIn> warehouseItems;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static final String[] warehouseName={"深圳","上海"};
-    private static int pos=1;
+    private static int pos=1;//替代warehouseId
     private static String selectWarehouseName=warehouseName[pos-1];
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
@@ -96,6 +96,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
+
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);
@@ -106,9 +107,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
-
                 getData();
-                
 
 
 //                //这里获取数据的逻辑
@@ -151,7 +150,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
 
     public void initData(){
-        warehouseItems = new ArrayList<DataBean.ProductIn>();
+
         getData();
     }
 
@@ -251,7 +250,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if(v==btn_add){
-            Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName);
+            Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName,pos);
             ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
         }
         else if(v==btn_scan){

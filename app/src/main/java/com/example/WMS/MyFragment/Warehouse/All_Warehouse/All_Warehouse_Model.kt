@@ -2,7 +2,6 @@ package com.example.WMS.MyFragment.Warehouse.All_Warehouse
 
 import com.example.WMS.BaseCallback
 import com.example.WMS.OkHttpHelper
-import com.example.WMS.WarehouseIn.Warehouse_New_Model
 import com.example.WMS.domain.DataBean.ProductIn
 import com.google.gson.Gson
 import com.squareup.okhttp.Request

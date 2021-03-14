@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -68,6 +69,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
         View view=View.inflate(context,R.layout.fragment_receiver_supplier,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         rv_pager=view.findViewById(R.id.rv_pager);
+        rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         im_empty=view.findViewById(R.id.im_empty);
         tv_empty=view.findViewById(R.id.tv_nomedia);
         btn_add=view.findViewById(R.id.btn_add);

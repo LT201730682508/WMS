@@ -19,12 +19,25 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
+import com.example.WMS.My_Thread;
+import com.example.WMS.OkHttpHelper;
 import com.example.WMS.Open_Album;
 import com.example.WMS.R;
 import com.example.WMS.custom_Dialog.take_Album_Dialog;
 import com.example.WMS.domain.DataBean;
+import com.example.WMS.execute_IO;
+import com.example.WMS.perform_UI;
+import com.google.gson.Gson;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.xuexiang.xui.widget.edittext.ClearEditText;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * 点击item打开的修改详情页
@@ -32,17 +45,18 @@ import com.example.WMS.domain.DataBean;
 public class WarehouseInDetailFragment extends Fragment implements View.OnClickListener {
     protected Context context;
     private Button btn_commit;
-    private TextView name;
-    private TextView detail;
-    private TextView price;
+    private ClearEditText name;
+    private ClearEditText detail;
+    private ClearEditText category;
     private Base_Topbar base_topbar;
-    private TextView size;
+    private ClearEditText size;
     private ImageView picture;
-    private TextView warehouse_name;
+    private ClearEditText warehouse_name;
     private String warehouseName;
     private DataBean.ProductIn productIn;
     private String product_name;
     private Dialog dialog;
+    private DataBean.Product wares;
     public WarehouseInDetailFragment(String warehouseName, DataBean.ProductIn productIn){
         //根据仓库名和商品名读取数据库，显示已有数据
         this.warehouseName=warehouseName;
@@ -53,6 +67,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         super.onCreate(savedInstanceState);
         context=getActivity();
         dialog= new take_Album_Dialog(context);
+        getData();
     }
 
     @Nullable
@@ -63,6 +78,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
 
     private View initView() {
         View view=View.inflate(context, R.layout.fragment_warehouse_in_detail,null);
+
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),false);
         base_topbar.setTitle("入库");
         btn_commit=view.findViewById(R.id.commit);
@@ -73,16 +89,53 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         picture.setOnClickListener(this);
         size=view.findViewById(R.id.et_size);
         name=view.findViewById(R.id.et_name);
-        name.setText(productIn.getProductName());
         detail=view.findViewById(R.id.et_detail);
-        detail.setText(productIn.getProductDescription());
-        price=view.findViewById(R.id.et_price);
-        price.setText(""+productIn.getInPrice());
-        size=view.findViewById(R.id.et_size);
+        category=view.findViewById(R.id.et_category);
+        getData();
         size.setFocusable(false);
         size.setOnClickListener(this);
         size.setText(""+productIn.getTotalAmount());
         return view;
+    }
+
+    private void getData() {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getProductById/"+productIn.getProductId(),new BaseCallback<DataBean.ProductIn>(){
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("@@@@@@@@@@1"+response);
+            }
+
+            @Override
+
+
+            public void onSuccess_List(final String resultStr) {
+                Gson gson= new Gson();
+                wares=gson.fromJson(resultStr,DataBean.Product.class);
+                System.out.println("@@@@@@@@@@2"+resultStr);
+                category.setText(wares.getProductCategory());
+                detail.setText(wares.getProductDescription());
+                name.setText(wares.getProductName());
+
+            }
+
+            @Override
+            public void onSuccess(Response response, DataBean.ProductIn productIn) {
+
+                System.out.println("Success"+response);
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+        } );
     }
 
     @Override

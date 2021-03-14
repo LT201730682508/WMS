@@ -8,6 +8,12 @@ class DataBean {
     data class ProductOut(var productId:Int,var productName:String,var totalAmount:Int,var productDescription:String,
                         var outPrice:Int,var productCategory:String,var productCode:String,var productImg:String,var updateTime:String)
 
+    data class ProductIn_post(var productName:String,var productDescription:String,
+                              var productCategory:String,var productCode:String,var productImg:String)
+
+    data class Product(var productId: Int,var productName:String,var productDescription:String,
+                              var productCategory:String,var productCode:String,var productImg:String)
+
     data class Member(var userId:Int,var userName:String,var role:String)
 
     data class Warehouse_Join(var warehouseId:Int,var warehouseName:String)
