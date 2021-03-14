@@ -6,8 +6,10 @@ import android.os.Bundle
 import android.view.View
 import com.example.WMS.R
 import kotlinx.android.synthetic.main.create_company.*
+import kotlinx.android.synthetic.main.create_company.make_sure
+import kotlinx.android.synthetic.main.modify_warehouse_name.*
 
-class Ware_Name_Modify_Dialog ( context: Context) : Dialog(context, R.style.CustomDialog) {
+class Ware_Name_Modify_Dialog ( context: Context,var modify: Modify) : Dialog(context, R.style.CustomDialog) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,7 +20,16 @@ class Ware_Name_Modify_Dialog ( context: Context) : Dialog(context, R.style.Cust
 
     fun initView() {
         make_sure.setOnClickListener {
-            dismiss()
+            if(ware_name.text.toString().isEmpty()){
+
+            }else{
+                modify.modify(ware_name.text.toString())
+                dismiss()
+            }
+
         }
+    }
+    interface Modify{
+        fun modify(changName:String)
     }
 }

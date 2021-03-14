@@ -1,8 +1,6 @@
 package com.example.WMS.MyFragment.Warehouse.Create_Warehouse
 
 import android.app.Activity
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -11,22 +9,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.Open_Album
 import com.example.WMS.R
-import com.example.WMS.custom_Dialog.Alart_Warning_Dialog
-import com.example.WMS.custom_Dialog.Create_Company_Dialog
 import com.example.WMS.custom_Dialog.take_Album_Dialog
 import com.xuexiang.xui.XUI
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton
 import com.xuexiang.xui.widget.edittext.ClearEditText
 import com.xuexiang.xui.widget.edittext.MultiLineEditText
 import com.xuexiang.xui.widget.toast.XToast
-import java.util.*
 
 
 class Create_Warehouse_Fragment:Fragment() {
@@ -68,8 +62,8 @@ class Create_Warehouse_Fragment:Fragment() {
              if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()){
                  XToast.warning(requireContext(), "请完善信息").show()
              }else{
-                 var objects=Object()
-                 Create_Warehouse_Model.getData(objects,object:Create_Warehouse_Model.Show{
+                 var createWarehouseParams=Create_Warehouse_params(1,set_name.text.toString())
+                 Create_Warehouse_Model.getData(createWarehouseParams,object:Create_Warehouse_Model.Show{
                      override fun show(str: String) {
                          XToast.info(requireContext(),str).show()
                      }
@@ -110,4 +104,6 @@ class Create_Warehouse_Fragment:Fragment() {
             }
         }
     }
+
+    data class Create_Warehouse_params(var companyId:Int,var warehouseName:String)
 }

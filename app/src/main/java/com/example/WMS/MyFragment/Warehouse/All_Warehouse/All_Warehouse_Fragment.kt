@@ -28,6 +28,10 @@ class All_Warehouse_Fragment: Fragment() {
         base_Top_Bar= Base_Topbar(view,(activity as MainActivity),true)
         base_Top_Bar.setTitle("仓库管理")
         all_recycleview=view.findViewById(R.id.all_recycleview)
+        initdata()
+    }
+
+    fun initdata(){
         all_recycleview.layoutManager= LinearLayoutManager(context)
         All_Warehouse_Model.getData(object :All_Warehouse_Model.Show{
             override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
@@ -39,6 +43,13 @@ class All_Warehouse_Fragment: Fragment() {
 
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (isHidden) {
+        } else {
+           initdata()
+        }
+    }
     override fun onResume() {
         super.onResume()
     }

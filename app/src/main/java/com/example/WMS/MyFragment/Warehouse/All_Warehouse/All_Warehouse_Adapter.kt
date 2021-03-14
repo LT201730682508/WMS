@@ -30,7 +30,7 @@ class All_Warehouse_Adapter(var list: Array<All_Warehouse_Model.Warehouse>, var 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.ware_name.text=list[position].warehouseName
         holder.itemView.setOnClickListener {
-            var warehouseInformation= Warehouse_Information(holder.ware_name.text.toString())
+            var warehouseInformation= Warehouse_Information(list[position])
             activity.fragment_Manager.hide_all(warehouseInformation)
         }
 

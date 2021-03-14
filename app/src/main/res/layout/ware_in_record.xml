@@ -38,7 +38,7 @@
               android:layout_centerVertical="true"
               android:layout_height="50dp"></Spinner>
       </RelativeLayout>
-          <RelativeLayout
+        <!--  <RelativeLayout
               android:layout_width="match_parent"
 
               android:layout_height="55dp">
@@ -70,7 +70,7 @@
                   android:gravity="center"
                   android:textColor="@color/red"
                   android:layout_height="50dp"></TextView>
-          </RelativeLayout>
+          </RelativeLayout> -->
          <com.example.WMS.MyRecyclerView
              android:layout_marginTop="10dp"
              android:layout_width="match_parent"
