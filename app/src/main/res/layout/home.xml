@@ -13,6 +13,14 @@
         android:textColor="@color/skyblue"
         android:layout_height="50dp">
     </TextView>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:src="@drawable/user_img"
+        android:layout_marginTop="10dp"
+        android:id="@+id/set_user_information"
+        android:layout_height="30dp"></ImageView>
     <RelativeLayout
         android:id="@+id/talk_dialog"
         android:layout_below="@+id/ware_title"

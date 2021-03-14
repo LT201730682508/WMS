@@ -64,6 +64,12 @@ public class OkHttpHelper<T> {
         Request request = buildRequest(url,params,HttpMethodType.POST);
         doRequest(request,callback);
     }
+    //Post方法
+    public void post_for_form(String url, Map<String,String> params,BaseCallback callback){
+
+        Request request = buildRequest_form(url,params,HttpMethodType.POST);
+        doRequest(request,callback);
+    }
     public void post_for_list(String url, Object params,BaseCallback callback){
         Request request = buildRequest(url,params,HttpMethodType.POST);
         doRequest_for_list(request,callback);
@@ -74,6 +80,7 @@ public class OkHttpHelper<T> {
         //构建一个Request的对象
         Request.Builder builder = new Request.Builder();
         builder.url(url);
+        builder.addHeader("Content-Type","application/json");
 
         if (methodType == HttpMethodType.GET){
             builder.get();
@@ -84,7 +91,36 @@ public class OkHttpHelper<T> {
         }
         return builder.build();
     }
+    //构建Request的方法
+    private  Request buildRequest_form(String url,Map<String,String> params,HttpMethodType methodType){
 
+        //构建一个Request的对象
+        Request.Builder builder = new Request.Builder();
+        builder.url(url);
+
+        if (methodType == HttpMethodType.GET){
+            builder.get();
+        }
+        else if (methodType == HttpMethodType.POST){
+
+            RequestBody body = buildFormData(params);
+            builder.post(body);
+        }
+        return builder.build();
+    }
+    //构建RequestBody的方法
+    private RequestBody buildFormData(Map<String,String> params){
+
+        FormEncodingBuilder builder = new FormEncodingBuilder();
+
+        if (params != null){
+            //循环取出Map中的数据
+            for (Map.Entry<String,String> entry :params.entrySet()){
+                builder.add(entry.getKey(),entry.getValue());
+            }
+        }
+        return builder.build();
+    }
 
     //构建RequestBody的方法
     private RequestBody buildFormData(Object params){

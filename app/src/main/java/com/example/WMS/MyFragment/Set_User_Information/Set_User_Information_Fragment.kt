@@ -1,0 +1,80 @@
+package com.example.WMS.MyFragment.Set_User_Information
+
+import android.app.Activity
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.os.Build
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.example.WMS.Base_Topbar
+import com.example.WMS.MainActivity
+import com.example.WMS.Open_Album
+import com.example.WMS.R
+import com.example.WMS.custom_Dialog.take_Album_Dialog
+import com.xuexiang.xui.XUI
+import com.xuexiang.xui.widget.button.roundbutton.RoundButton
+import com.xuexiang.xui.widget.edittext.ClearEditText
+
+class Set_User_Information_Fragment:Fragment() {
+    lateinit var baseTopbar: Base_Topbar
+    lateinit var user_img:ImageView
+    lateinit var user_name:ClearEditText
+    lateinit var user_account:TextView
+    lateinit var sure:RoundButton
+    lateinit var dialog: take_Album_Dialog
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        var view=inflater.inflate(R.layout.set_user_information,container,false)
+        init(view)
+        return view
+    }
+    fun init(view:View) {
+        baseTopbar = Base_Topbar(view, activity as MainActivity, false)
+        user_img=view.findViewById(R.id.user_img)
+        user_name=view.findViewById(R.id.set_user_name)
+        user_account=view.findViewById(R.id.user_account)
+        sure=view.findViewById(R.id.sure)
+
+
+        user_img.setOnClickListener {
+            if(this::dialog.isLateinit){
+                dialog= take_Album_Dialog(requireContext())
+            }
+            dialog.show()
+        }
+        sure.setOnClickListener {
+            (activity as MainActivity).fragment_Manager.pop()
+        }
+    }
+
+    override fun onActivityResult(
+        requestCode: Int,
+        resultCode: Int,
+        data: Intent?
+    ) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            Open_Album.TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
+                val bitmap =
+                    BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(
+                        Open_Album.uri))
+                Glide.with(this).load(bitmap).into(user_img)
+            }
+            Open_Album.CHOOSE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
+                if (Build.VERSION.SDK_INT >= 19) Open_Album.handleImageOnKitKat(activity,data,user_img) else Open_Album.handleImageBeforeKitKat(activity,data,user_img)
+            }
+            else -> {
+            }
+        }
+    }
+}

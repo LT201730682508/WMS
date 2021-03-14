@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Data_report.Data_report_fragment
 import com.example.WMS.MyFragment.Message_Notify.Message_Notify_Fragment
+import com.example.WMS.MyFragment.Set_User_Information.Set_User_Information_Fragment
 import com.example.WMS.MyFragment.Warehouse.Warehouse_Fragment
 import com.example.WMS.R
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment
@@ -28,6 +31,7 @@ class Home_Fragment: Fragment() {
     lateinit var item5: RelativeLayout
     lateinit var item6: RelativeLayout
     lateinit var click_join:TextView
+    lateinit var set_user:ImageView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -69,6 +73,12 @@ class Home_Fragment: Fragment() {
         click_join.setOnClickListener {
             var joinOrCreate=Join_or_Create(requireContext())
             joinOrCreate.show()
+        }
+
+        set_user=view.findViewById(R.id.set_user_information)
+        set_user.setOnClickListener {
+            var setUserInformationFragment= Set_User_Information_Fragment()
+            (activity as MainActivity).fragment_Manager.hide_all(setUserInformationFragment)
         }
     }
 }
