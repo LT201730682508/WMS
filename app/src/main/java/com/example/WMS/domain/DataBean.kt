@@ -14,6 +14,10 @@ class DataBean {
     data class Product(var productId: Int,var productName:String,var productDescription:String,
                               var productCategory:String,var productCode:String,var productImg:String)
 
+    data class Supplier_add(var supplierName: String,var companyId: String)
+
+    data class Receiver_add(var receiverName: String,var companyId: String)
+
     data class Member(var userId:Int,var userName:String,var role:String)
 
     data class Warehouse_Join(var warehouseId:Int,var warehouseName:String)

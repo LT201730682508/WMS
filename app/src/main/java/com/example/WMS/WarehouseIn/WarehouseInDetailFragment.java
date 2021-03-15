@@ -137,6 +137,38 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
             }
         } );
     }
+    public void sendData(DataBean.ProductIn_post parms){
+        OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addProduct/"+"/",parms,new BaseCallback<DataBean.ProductIn_post>(){
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("@@@@@@@@@@1"+response);
+            }
+
+            @Override
+            public void onSuccess_List(String resultStr) {
+                System.out.println("@@@@@3"+resultStr);
+            }
+
+            @Override
+            public void onSuccess(Response response, DataBean.ProductIn_post productIn_post) {
+                System.out.println("@@@@@3"+response);
+            }
+            
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+
+        });
+    }
+
 
     @Override
     public void onClick(View v) {
