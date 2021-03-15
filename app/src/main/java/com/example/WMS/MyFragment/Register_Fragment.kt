@@ -7,10 +7,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import androidx.fragment.app.Fragment
+import com.example.WMS.BaseCallback
 import com.example.WMS.MainActivity
+import com.example.WMS.OkHttpHelper
 import com.example.WMS.R
+import com.squareup.okhttp.Request
+import com.squareup.okhttp.Response
 import com.xuexiang.xui.widget.toast.XToast
 import kotlinx.android.synthetic.main.register.*
+import java.io.IOException
+import java.lang.Exception
 
 class Register_Fragment:Fragment() {
     override fun onCreateView(
@@ -41,5 +47,34 @@ class Register_Fragment:Fragment() {
             return false
         }
         return true
+    }
+    fun register(username:String,password:String){
+        var map=HashMap<String,String>()
+        map.put("userName",username)
+        map.put("passWord",password)
+        var okHttpHelper= OkHttpHelper.getInstance()
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-user/register",map,object :
+            BaseCallback<String>(){
+            override fun onFailure(request: Request?, e: IOException?) {
+                println("@@@@@1"+e)
+            }
+            override fun onResponse(response: Response?) {
+                println("@@@@@2"+response)
+            }
+
+            override fun onSuccess_List(resultStr: String?) {
+                println("@@@@@3"+resultStr)
+            }
+
+            override fun onSuccess(response: Response?, t: String?) {
+                println("@@@@@3"+t)
+
+            }
+
+            override fun onError(response: Response?, code: Int, e: Exception?) {
+                println("@@@@@4"+code+e)
+            }
+
+        })
     }
 }

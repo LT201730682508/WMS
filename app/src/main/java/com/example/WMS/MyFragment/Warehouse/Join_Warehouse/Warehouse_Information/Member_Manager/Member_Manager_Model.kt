@@ -1,19 +1,19 @@
-package com.example.WMS.MyFragment.Warehouse.All_Warehouse
+package com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager
 
 import com.example.WMS.BaseCallback
+import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.OkHttpHelper
-import com.example.WMS.domain.DataBean.ProductIn
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import java.io.IOException
 
-class All_Warehouse_Model {
+class Member_Manager_Model {
     companion object{
-           fun getData(show:Show) {
+        fun getData(show:Show,token:String,warehouseId:Int) {
             val ok = OkHttpHelper.getInstance()
             ok.get_for_list(
-                "http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/1",
+                "http://121.199.22.134:8003/api-authority/getAllStaff",
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,
@@ -30,7 +30,7 @@ class All_Warehouse_Model {
                         val gson = Gson()
                         val wares = gson.fromJson(
                             resultStr,
-                            Array<Warehouse>::class.java
+                            Array<member_item>::class.java
                         )
                         show.show(wares)
                         for (ware in wares){
@@ -50,11 +50,11 @@ class All_Warehouse_Model {
                     }
                 })
         }
-    }
 
+    }
     interface Show{
-        fun show(wares: Array<Warehouse>)
+        fun show(wares: Array<member_item>)
     }
 
-    data class Warehouse(var warehouseId:Int,var warehouseName:String)
+    data class member_item(val userId:Int,val userName:String,val role:String)
 }

@@ -1,7 +1,9 @@
 package com.example.WMS.MyFragment
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
@@ -90,4 +92,40 @@ class Login_fragment: Fragment() {
             }
         }
     }
+
+    fun login(username:String,password:String){
+        var map=HashMap<String,String>()
+        map.put("userName",username)
+        map.put("passWord",password)
+        var okHttpHelper= OkHttpHelper.getInstance()
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-user/login",map,object :
+            BaseCallback<user_Login>(){
+            override fun onFailure(request: Request?, e: IOException?) {
+                println("@@@@@1"+e)
+            }
+            override fun onResponse(response: Response?) {
+                println("@@@@@2"+response)
+            }
+
+            override fun onSuccess_List(resultStr: String?) {
+                println("@@@@@3"+resultStr)
+            }
+
+            override fun onSuccess(response: Response?, t: user_Login?) {
+                println("@@@@@3"+t)
+                val editor = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE).edit()
+                editor.putString("userName",username)
+                editor.putString("passWord",password)
+                editor.putString("token",t!!.token)
+                editor.apply()
+
+            }
+
+            override fun onError(response: Response?, code: Int, e: Exception?) {
+                println("@@@@@4"+code+e)
+            }
+
+        })
+    }
+    data class user_Login(val userId:String,val token:String)
 }

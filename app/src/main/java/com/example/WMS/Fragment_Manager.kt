@@ -20,6 +20,11 @@ class Fragment_Manager {
         var transaction= my_activity.supportFragmentManager.beginTransaction()
         transaction.replace(R.id.Fragment_First,fragment).commit()
     }
+
+    fun return_login(){
+        var transaction= my_activity.supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.Fragment_First,loginFragment).commit()
+    }
     fun hide_all(fragment: Fragment){
         var transaction=my_activity.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.push_in,R.anim.pull_out_enter,R.anim.push_in_pop,R.anim.pull_out)

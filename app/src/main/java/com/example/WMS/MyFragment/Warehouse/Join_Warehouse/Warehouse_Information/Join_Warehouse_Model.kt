@@ -1,19 +1,19 @@
-package com.example.WMS.MyFragment.Warehouse.All_Warehouse
+package com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information
 
 import com.example.WMS.BaseCallback
 import com.example.WMS.OkHttpHelper
-import com.example.WMS.domain.DataBean.ProductIn
+import com.example.WMS.domain.DataBean
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import java.io.IOException
 
-class All_Warehouse_Model {
+class Join_Warehouse_Model {
     companion object{
-           fun getData(show:Show) {
+        fun getData(show:Show,token:String) {
             val ok = OkHttpHelper.getInstance()
             ok.get_for_list(
-                "http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/1",
+                "http://121.199.22.134:8003/api-inventory/getJoinedWarehouse/"+token,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,
@@ -36,6 +36,8 @@ class All_Warehouse_Model {
                         for (ware in wares){
                             println("@@@@@2"+ware)
                         }
+
+
                     }
                     override fun onError(
                         response: Response,
