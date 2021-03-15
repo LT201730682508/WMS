@@ -38,12 +38,11 @@
                 android:text="名称："
                 />
             <com.xuexiang.xui.widget.edittext.ClearEditText
-                android:id="@+id/et_size"
+                android:id="@+id/et_name"
                 android:layout_margin="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:layout_weight="1"
                 android:hint="请输入客户姓名"/>
@@ -60,12 +59,11 @@
                 android:text="地址："
                 />
             <com.xuexiang.xui.widget.edittext.ClearEditText
-                android:id="@+id/et_price"
+                android:id="@+id/et_address"
                 android:layout_margin="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
-                android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:layout_weight="1"
                 android:hint="请输入客户地址"/>
