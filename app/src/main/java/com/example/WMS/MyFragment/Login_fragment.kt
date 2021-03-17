@@ -117,6 +117,7 @@ class Login_fragment: Fragment() {
                 editor.putString("userName",username)
                 editor.putString("passWord",password)
                 editor.putString("token",t!!.token)
+                editor.putString("companyId",t.companyId.toString())
                 editor.apply()
 
             }
@@ -127,5 +128,5 @@ class Login_fragment: Fragment() {
 
         })
     }
-    data class user_Login(val userId:String,val token:String)
+    data class user_Login(val userId:String,val token:String,val companyId:Int)
 }
