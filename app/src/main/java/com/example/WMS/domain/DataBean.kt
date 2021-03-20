@@ -11,6 +11,8 @@ class DataBean {
     data class ProductIn_post(var productName:String,var productDescription:String,
                               var productCategory:String,var productCode:String,var productImg:String)
 
+    data class ProductIn_inWarehouse(var id:Int,var supplierId: String,var inPrice: Double,var amount: Int,var note: String)
+
     data class Product(var productId: Int,var productName:String,var productDescription:String,
                               var productCategory:String,var productCode:String,var productImg:String)
 

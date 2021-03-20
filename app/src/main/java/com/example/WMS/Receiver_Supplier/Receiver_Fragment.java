@@ -63,6 +63,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
         View view=View.inflate(context,R.layout.fragment_receiver_supplier,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         rv_pager=view.findViewById(R.id.rv_pager);
+        rv_pager.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         im_empty=view.findViewById(R.id.im_empty);
         tv_empty=view.findViewById(R.id.tv_nomedia);

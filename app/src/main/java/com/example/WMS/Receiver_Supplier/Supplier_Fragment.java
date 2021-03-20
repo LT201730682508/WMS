@@ -28,6 +28,7 @@ import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
+import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
 import com.example.WMS.domain.DataBean;
 import com.example.WMS.execute_IO;
 import com.example.WMS.perform_UI;
@@ -69,6 +70,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
         View view=View.inflate(context,R.layout.fragment_receiver_supplier,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         rv_pager=view.findViewById(R.id.rv_pager);
+        rv_pager.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         im_empty=view.findViewById(R.id.im_empty);
         tv_empty=view.findViewById(R.id.tv_nomedia);
@@ -153,7 +155,18 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-
+//        RS_Add_Dialog.OnSelectClickListener listener=new RS_Add_Dialog.OnSelectClickListener() {
+//            @Override
+//            public String getText_supplier() {
+//                return null;
+//            }
+//
+//            @Override
+//            public String getText_receiver() {
+//                return null;
+//            }
+//        };
+        
     }
 
     private static class MyHandler extends Handler {
@@ -174,7 +187,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
                     adapter=new RS_Adapter<RS_Adapter.VH>(R.layout.item_receiver_supplier, suppliers_list,0,activity);
                     rv_pager.setAdapter(adapter);
-                    rv_pager.setLayoutManager(new LinearLayoutManager(activity));
+
                 }
                 else{
 

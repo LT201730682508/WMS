@@ -13,8 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.WMS.MainActivity;
 
+import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model;
 import com.example.WMS.R;
+import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
 import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
+import com.example.WMS.WarehouseOut.WarehouseOutList_Fragment;
 import com.example.WMS.domain.DataBean;
 
 import java.util.ArrayList;
@@ -84,13 +87,14 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
         onClickMethod(holder,position);
     }
 
-    private void onClickMethod(VH holder, int position) {
+    private void onClickMethod(VH holder, final int position) {
         holder.rl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(opType==SUPPLIER){
                     //选中返回
                     //返回当前选中供应商进入textview中
+                    WarehouseInList_Fragment.setSupplierName( mDatas_Supplier.get(position).getSupplierName());
                     activity.fragment_Manager.pop();
                 }
         else if(opType==RECEIVER){

@@ -33,17 +33,13 @@ import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
-import com.example.WMS.My_Thread;
+
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.Receiver_Supplier.Receiver_Fragment;
-import com.example.WMS.Receiver_Supplier.Supplier_Fragment;
-import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
-import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
+
 import com.example.WMS.domain.DataBean;
-import com.example.WMS.domain.WarehouseItem;
-import com.example.WMS.execute_IO;
-import com.example.WMS.perform_UI;
+
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -58,6 +54,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static TextView tv_nomedia;
     private static ProgressBar pb_loading;
     private static Spinner spinner;
+    private Button btn_select;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Base_Topbar base_topbar;
     private Button btn_scan;
@@ -66,8 +63,11 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static final String[] warehouseName={"深圳","上海"};
     private static int pos=1;
     private static String selectWarehouseName=warehouseName[pos-1];
+    private static String receiverName="";
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
+    private long lastClickTime=0;
+    private long now=0;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +102,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);
         btn_scan=view.findViewById(R.id.scan);
+        btn_select=view.findViewById(R.id.select_receiver);
         //设置适配器
         ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(context, R.layout.myspinner,warehouseName);
         spinner.setAdapter(spinnerAdapter);
@@ -128,6 +129,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         btn_scan.setOnClickListener(this);
+        btn_select.setOnClickListener(this);
         initData();
     }
 
@@ -193,7 +195,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     pb_loading.setVisibility(View.GONE);
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-                    adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName);
+                    adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName,receiverName);
                     rv_pager.setAdapter(adapter);
                 }
                 else{
@@ -202,6 +204,9 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                 }
             }
         }
+    }
+    public void setReceiverName(String string){
+        btn_select.setText(string);
     }
     //返回该framgent时刷新数据
     @Override
@@ -215,9 +220,20 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         if(v==btn_scan){
-            Receiver_Fragment receiver_fragment = new Receiver_Fragment();
-            ((MainActivity)getActivity()).fragment_Manager.hide_all(receiver_fragment);
-
+            now = System.currentTimeMillis();
+            if(now - lastClickTime >1000) {
+                lastClickTime = now;
+                Receiver_Fragment receiver_fragment = new Receiver_Fragment();
+                ((MainActivity) getActivity()).fragment_Manager.hide_all(receiver_fragment);
+            }
+        }
+        else if(v==btn_select){
+            now = System.currentTimeMillis();
+            if(now - lastClickTime >1000) {
+                lastClickTime = now;
+                Receiver_Fragment receiver_fragment = new Receiver_Fragment();
+                ((MainActivity) getActivity()).fragment_Manager.hide_all(receiver_fragment);
+            }
         }
     }
 

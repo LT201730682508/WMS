@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 
 import com.example.WMS.BaseCallback;
 import com.example.WMS.MainActivity;
@@ -20,6 +21,7 @@ import com.example.WMS.domain.DataBean;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.xuexiang.xui.widget.edittext.ClearEditText;
+import com.xuexiang.xui.widget.layout.XUIButton;
 import com.xuexiang.xui.widget.toast.XToast;
 
 import java.io.IOException;
@@ -32,11 +34,14 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     private ClearEditText address;
     private ClearEditText name;
     private int opType;
+
     public RS_Add_Dialog(@NonNull Context context,int opType) {
         super(context);
         this.context=context;
         this.opType=opType;
     }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,5 +144,6 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
             //不保存数据库，退出
             cancel();
         }
+
     }
 }

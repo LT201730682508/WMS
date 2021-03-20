@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,14 +70,18 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button btn_add;
     private Button btn_scan;
+    private static Button btn_select;
     private Base_Topbar base_topbar;
     private static ArrayList<DataBean.ProductIn> warehouseItems;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static final String[] warehouseName={"深圳","上海"};
     private static int pos=1;//替代warehouseId
     private static String selectWarehouseName=warehouseName[pos-1];
+    private static String supplierName="";
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
+    private long lastClickTime=0;
+    private long now=0;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,6 +121,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         });
         btn_add=view.findViewById(R.id.add);
         btn_scan=view.findViewById(R.id.scan);
+        btn_select=view.findViewById(R.id.select_supplier);
         //设置适配器
         ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(context, R.layout.myspinner,warehouseName);
         spinner.setAdapter(spinnerAdapter);
@@ -146,8 +152,13 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         getData();
         btn_add.setOnClickListener(this);
         btn_scan.setOnClickListener(this);
+        btn_select.setOnClickListener(this);
     }
 
+    public static void setSupplierName(String string){
+        //有数据后记得测试这里
+        btn_select.setText(string);
+    }
 
     public void initData(){
 
@@ -224,7 +235,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     rv_pager.setVisibility(View.VISIBLE);
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
                     System.out.println("----------------------");
-                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName);
+                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName,supplierName);
                     rv_pager.setAdapter(adapter);
 
                 }
@@ -249,14 +260,26 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     }
     @Override
     public void onClick(View v) {
+
         if(v==btn_add){
-            Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName,pos);
-            ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
+            now = System.currentTimeMillis();
+            if(now - lastClickTime >1000) {
+                lastClickTime = now;
+                Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName,pos);
+                ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
+            }
+
         }
         else if(v==btn_scan){
-            Supplier_Fragment supplier_fragment = new Supplier_Fragment();
-            ((MainActivity)getActivity()).fragment_Manager.hide_all(supplier_fragment);
 
+        }
+        else if(v==btn_select){
+            now = System.currentTimeMillis();
+            if(now - lastClickTime >1000) {
+                lastClickTime = now;
+                Supplier_Fragment supplier_fragment = new Supplier_Fragment();
+                ((MainActivity) getActivity()).fragment_Manager.hide_all(supplier_fragment);
+            }
         }
     }
     class myTask extends AsyncTask {
