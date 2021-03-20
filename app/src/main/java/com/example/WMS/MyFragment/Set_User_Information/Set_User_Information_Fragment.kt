@@ -21,6 +21,7 @@ import com.example.WMS.custom_Dialog.take_Album_Dialog
 import com.xuexiang.xui.XUI
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton
 import com.xuexiang.xui.widget.edittext.ClearEditText
+import kotlinx.android.synthetic.main.set_user_information.*
 
 class Set_User_Information_Fragment:Fragment() {
     lateinit var baseTopbar: Base_Topbar
@@ -54,6 +55,10 @@ class Set_User_Information_Fragment:Fragment() {
         }
         sure.setOnClickListener {
             (activity as MainActivity).fragment_Manager.pop()
+        }
+
+        exit.setOnClickListener {
+            (activity as MainActivity).fragment_Manager.return_login()
         }
     }
 

@@ -49,8 +49,19 @@
         android:id="@+id/sure"
         android:layout_width="60dp"
         android:layout_height="30dp"
+
+        android:layout_centerInParent="true"
+
+        android:text="确定"/>
+
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/exit"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="50dp"
-        android:text="确定"/>
+        android:textColor="@color/red"
+        android:text="退出登录"/>
 </RelativeLayout>
