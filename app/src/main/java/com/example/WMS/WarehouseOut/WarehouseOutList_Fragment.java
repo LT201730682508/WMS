@@ -220,12 +220,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         if(v==btn_scan){
-            now = System.currentTimeMillis();
-            if(now - lastClickTime >1000) {
-                lastClickTime = now;
-                Receiver_Fragment receiver_fragment = new Receiver_Fragment();
-                ((MainActivity) getActivity()).fragment_Manager.hide_all(receiver_fragment);
-            }
+           
         }
         else if(v==btn_select){
             now = System.currentTimeMillis();
