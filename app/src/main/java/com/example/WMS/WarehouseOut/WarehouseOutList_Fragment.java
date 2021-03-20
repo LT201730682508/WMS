@@ -220,7 +220,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         if(v==btn_scan){
-           
+
         }
         else if(v==btn_select){
             now = System.currentTimeMillis();
