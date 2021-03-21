@@ -54,7 +54,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static TextView tv_nomedia;
     private static ProgressBar pb_loading;
     private static Spinner spinner;
-    private Button btn_select;
+    private static Button btn_select;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Base_Topbar base_topbar;
     private Button btn_scan;
@@ -69,12 +69,13 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private MyHandler handler;
     private long lastClickTime=0;
     private long now=0;
+    private static String receiverId;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
-        token="385e5f984e094268b7b04510063242ee";
+        token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
 
     }
     @Nullable
@@ -126,7 +127,6 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
 
         return view;
     }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -194,7 +194,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     pb_loading.setVisibility(View.GONE);
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-                    adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName,receiverName,token);
+                    adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName,receiverName,token,receiverId);
                     rv_pager.setAdapter(adapter);
                 }
                 else{
@@ -204,8 +204,10 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             }
         }
     }
-    public void setReceiverName(String string){
+    public static void setReceiverName(String string,String id){
         btn_select.setText(string);
+        receiverName=string;
+        //receiverId=id;
     }
     //返回该framgent时刷新数据
     @Override

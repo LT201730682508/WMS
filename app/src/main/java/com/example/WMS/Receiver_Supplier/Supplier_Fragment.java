@@ -78,13 +78,6 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
         im_empty=view.findViewById(R.id.im_empty);
         tv_empty=view.findViewById(R.id.tv_nomedia);
         btn_add=view.findViewById(R.id.btn_add);
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0,token);
-                rs_add_dialog.show();
-            }
-        });
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -104,7 +97,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        btn_add.setOnClickListener(this);
         initData();
     }
 
@@ -158,18 +151,11 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-//        RS_Add_Dialog.OnSelectClickListener listener=new RS_Add_Dialog.OnSelectClickListener() {
-//            @Override
-//            public String getText_supplier() {
-//                return null;
-//            }
-//
-//            @Override
-//            public String getText_receiver() {
-//                return null;
-//            }
-//        };
-        
+        if(v==btn_add){
+            RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0,token);
+            rs_add_dialog.show();
+        }
+
     }
 
     private static class MyHandler extends Handler {

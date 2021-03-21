@@ -78,7 +78,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static final String[] warehouseName={"深圳","上海"};
     private static int pos=1;//替代warehouseId
     private static String selectWarehouseName=warehouseName[pos-1];
-    private static String supplierName="";
+    private static String supplierName="111";
+    private static String supplierId="";
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
     private long lastClickTime=0;
@@ -89,7 +90,10 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         super.onCreate(savedInstanceState);
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
-        token="385e5f984e094268b7b04510063242ee";
+        //token="385e5f984e094268b7b04510063242ee";
+        token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
+
+
     }
     @Nullable
     @Override
@@ -155,9 +159,11 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         btn_select.setOnClickListener(this);
     }
 
-    public static void setSupplierName(String string){
+    public static void setSupplierName(String string,String id){
         //有数据后记得测试这里
         btn_select.setText(string);
+        supplierName=string;
+        supplierId=id;
     }
 
 //    public void initData(){
@@ -227,7 +233,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     rv_pager.setVisibility(View.VISIBLE);
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
                     System.out.println("----------------------");
-                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName,supplierName,token);
+                    adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName,supplierName,token,supplierId);
                     rv_pager.setAdapter(adapter);
 
                 }
@@ -248,6 +254,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         if(isHidden()){
         }else {
             onResume();
+
         }
     }
     @Override

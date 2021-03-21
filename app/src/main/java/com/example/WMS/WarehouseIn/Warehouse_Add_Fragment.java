@@ -50,12 +50,14 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     private LabelTextView tv_supplier;
     private String supplierName;
     private String token;
-    public Warehouse_Add_Fragment(Context context,DataBean.ProductIn productIn,String supplierName,String token) {
+    private String id;
+    public Warehouse_Add_Fragment(Context context,DataBean.ProductIn productIn,String supplierName,String token,String id) {
         super(context);
         this.context=context;
         this.productIn=productIn;
         this.supplierName=supplierName;
         this.token=token;
+        this.id=id;
     }
 
 //    @NonNull
@@ -92,7 +94,8 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
         tv_name=contentView.findViewById(R.id.tv_name);
         tv_name.setText(productIn.getProductName());
         et_size=contentView.findViewById(R.id.et_size);
-
+        tv_supplier=contentView.findViewById(R.id.select_supplier);
+        tv_supplier.setText(supplierName);
         et_price=contentView.findViewById(R.id.et_price);
         et_price.setText(productIn.getInPrice()+"");
         et_note=contentView.findViewById(R.id.et_note);
@@ -107,7 +110,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
         if(v==btn_add){
             //保存刷新数据库，退出
             //
-            DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getProductId(),"10",
+            DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getProductId(),id,
                     Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
             sendData(post_data);
 

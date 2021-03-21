@@ -12,7 +12,6 @@ import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_in_Record_Fragment
 import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_out_Record_Fragment
-import com.example.WMS.MyFragment.Data_report.WarehouseCheck.Warehouse_Check_Fragment
 import com.example.WMS.R
 
 class Data_report_fragment :Fragment(){
@@ -43,8 +42,7 @@ class Data_report_fragment :Fragment(){
             (activity as MainActivity).fragment_Manager.hide_all(wareOutRecordFragment)
         }
         ware_check.setOnClickListener {
-            //var wareCheckFragment= Warehouse_Check_Fragment()
-            //(activity as MainActivity).fragment_Manager.hide_all(wareCheckFragment)
+
         }
     }
 }

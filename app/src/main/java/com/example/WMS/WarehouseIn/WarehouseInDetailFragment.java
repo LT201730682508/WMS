@@ -102,7 +102,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getProductById/"+productIn.getProductId()+"?userToken="+token,new BaseCallback<DataBean.ProductIn>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getProductById/"+productIn.getId()+"?userToken="+token,new BaseCallback<DataBean.ProductIn>(){
 
             @Override
             public void onFailure(Request request, IOException e) {

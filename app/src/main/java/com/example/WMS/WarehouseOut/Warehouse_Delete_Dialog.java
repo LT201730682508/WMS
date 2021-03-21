@@ -36,16 +36,18 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
     private ClearEditText et_size;
     private ClearEditText et_price;
     private MultiLineEditText et_note;
-    private LabelTextView tv_supplier;
+    private LabelTextView tv_receiver;
     private String receiverName;
     private String token;
     private DataBean.ProductOut productOut;
-    public Warehouse_Delete_Dialog(@NonNull Context context, DataBean.ProductOut productOut,String receiverName,String token) {
+    private String id;
+    public Warehouse_Delete_Dialog(@NonNull Context context, DataBean.ProductOut productOut,String receiverName,String token,String id) {
         super(context);
         this.context=context;
         this.productOut=productOut;
         this.receiverName=receiverName;
         this.token=token;
+        this.id=id;
     }
 
     @Override
@@ -60,7 +62,8 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
         tv_name=contentView.findViewById(R.id.tv_name);
         tv_name.setText(productOut.getProductName());
         et_size=contentView.findViewById(R.id.et_size);
-
+        tv_receiver=contentView.findViewById(R.id.select_receiver);
+        tv_receiver.setText(receiverName);
         et_price=contentView.findViewById(R.id.et_price);
         et_price.setText(productOut.getOutPrice()+"");
         et_note=contentView.findViewById(R.id.et_note);
@@ -81,7 +84,7 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
         if(v==btn_add){
             //保存刷新数据库，退出
             //
-            DataBean.ProductOut_outWarehouse post_data=new DataBean.ProductOut_outWarehouse(productOut.getProductId(),"10",
+            DataBean.ProductOut_outWarehouse post_data=new DataBean.ProductOut_outWarehouse(productOut.getProductId(),id,
                     Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
             sendData(post_data);
             cancel();

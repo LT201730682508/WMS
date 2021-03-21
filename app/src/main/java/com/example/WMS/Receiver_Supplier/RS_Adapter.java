@@ -1,5 +1,7 @@
 package com.example.WMS.Receiver_Supplier;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,6 +64,7 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
     private int mResId;
     private int opType;
     private MainActivity activity;
+
     public RS_Adapter(int mResId, ArrayList<DataBean.Supplier> data,  int opType,MainActivity activity) {
         this.mDatas_Supplier = data;
         this.mResId = mResId;
@@ -94,12 +97,14 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
                 if(opType==SUPPLIER){
                     //选中返回
                     //返回当前选中供应商进入textview中
-                    WarehouseInList_Fragment.setSupplierName( mDatas_Supplier.get(position).getSupplierName());
+
+                    WarehouseInList_Fragment.setSupplierName( mDatas_Supplier.get(position).getSupplierName(),mDatas_Supplier.get(position).getSupplierId()+"");
                     activity.fragment_Manager.pop();
                 }
         else if(opType==RECEIVER){
                     //选中返回
                     //返回当前选中客户进入textview中
+                    WarehouseOutList_Fragment.setReceiverName( mDatas_Receiver.get(position).getReceiverName(),mDatas_Receiver.get(position).getReceiverId()+"");
                     activity.fragment_Manager.pop();
                 }
             }

@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,33 +18,6 @@ import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
 import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
 import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
 import com.example.WMS.domain.DataBean;
-import com.example.WMS.domain.WarehouseItem;
-
-import java.util.ArrayList;
-
-
-import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
-import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
-import com.example.WMS.WarehouseIn.Warehouse_New_Fragment;
-import com.example.WMS.WarehouseOut.WarehouseOutDetailFragment;
-import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
-import com.example.WMS.domain.WarehouseItem;
 
 import java.util.ArrayList;
 
@@ -117,6 +88,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     private ArrayList<DataBean.ProductOut> mDatasOut;
     private MainActivity activity;
     private String token;
+    private String id;
     public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity) {
         this.mDatas = data;
         this.mResId = mResId;
@@ -126,7 +98,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     private String warehouseName;
     private String supplierName;
     private String receiverName;
-    public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity,String warehouseName,String supplierName,String token) {
+    public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity,String warehouseName,String supplierName,String token,String id) {
         this.mDatas = data;
         this.mResId = mResId;
         this.opType = opType;
@@ -134,8 +106,9 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         this.warehouseName=warehouseName;
         this.supplierName=supplierName;
         this.token=token;
+        this.id=id;
     }
-    public MyAdapter(int mResId,ArrayList<DataBean.ProductOut> data, int opType,MainActivity activity,String warehouseName,String receiverName,String token) {
+    public MyAdapter(int mResId,ArrayList<DataBean.ProductOut> data, int opType,MainActivity activity,String warehouseName,String receiverName,String token,String id) {
         this.mDatasOut = data;
         this.mResId = mResId;
         this.opType = opType;
@@ -143,6 +116,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         this.warehouseName=warehouseName;
         this.receiverName=receiverName;
         this.token=token;
+        this.id=id;
     }
 
     @NonNull
@@ -204,12 +178,12 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             @Override
             public void onClick(View v) {
                 if(opType==WAREHOUSE_IN){//入库Adater
-                    Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(activity,mDatas.get(position),supplierName,token);
+                    Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(activity,mDatas.get(position),supplierName,token,id);
                     //activity.fragment_Manager.hide_all(warehouse_add_fragment);
                     warehouse_add_fragment.show();
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
-                    Warehouse_Delete_Dialog warehouse_delete_dialog=new Warehouse_Delete_Dialog(activity,mDatasOut.get(position),receiverName,token);
+                    Warehouse_Delete_Dialog warehouse_delete_dialog=new Warehouse_Delete_Dialog(activity,mDatasOut.get(position),receiverName,token,id);
                     warehouse_delete_dialog.show();
                 }
 
