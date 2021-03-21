@@ -30,6 +30,7 @@ class Set_User_Information_Fragment:Fragment() {
     lateinit var user_account:TextView
     lateinit var sure:RoundButton
     lateinit var dialog: take_Album_Dialog
+    lateinit var exit:RoundButton
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,7 +46,7 @@ class Set_User_Information_Fragment:Fragment() {
         user_name=view.findViewById(R.id.set_user_name)
         user_account=view.findViewById(R.id.user_account)
         sure=view.findViewById(R.id.sure)
-
+        exit=view.findViewById(R.id.exit)
 
         user_img.setOnClickListener {
             if(this::dialog.isLateinit){
