@@ -51,7 +51,10 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     private Base_Topbar base_topbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
-
+    private String token;
+    public Supplier_Fragment(String token) {
+        this.token=token;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,7 +81,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0);
+                RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0,token);
                 rs_add_dialog.show();
             }
         });
@@ -112,7 +115,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getSupplierByCompanyId/1",new BaseCallback<DataBean.Supplier>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getSupplierByCompanyId/1?userToken="+token,new BaseCallback<DataBean.Supplier>(){
 
             @Override
             public void onFailure(Request request, IOException e) {

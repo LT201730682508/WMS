@@ -34,11 +34,12 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     private ClearEditText address;
     private ClearEditText name;
     private int opType;
-
-    public RS_Add_Dialog(@NonNull Context context,int opType) {
+    private String token;
+    public RS_Add_Dialog(@NonNull Context context,int opType,String token) {
         super(context);
         this.context=context;
         this.opType=opType;
+        this.token=token;
     }
 
 
@@ -67,7 +68,7 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     }
     public void sendSupplierData(DataBean.Supplier_add parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addSupplier/",parms,new BaseCallback<DataBean.Supplier_add>(){
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addSupplier/?userToken="+token,parms,new BaseCallback<DataBean.Supplier_add>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -97,7 +98,7 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     }
     public void sendReceiverData(DataBean.Receiver_add parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addReceiver/",parms,new BaseCallback<DataBean.Receiver_add>(){
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addReceiver/?userToken="+token,parms,new BaseCallback<DataBean.Receiver_add>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -129,11 +130,11 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     public void onClick(View v) {
         if(v==btn_add){
             if(opType==0){
-                DataBean.Supplier_add post_data=new DataBean.Supplier_add(name.getText().toString(),"1");
+                DataBean.Supplier_add post_data=new DataBean.Supplier_add(name.getText().toString(),"1",address.getText().toString());
                 sendSupplierData(post_data);
             }
             else if(opType==1){
-                DataBean.Receiver_add post_data=new DataBean.Receiver_add(name.getText().toString(),"1");
+                DataBean.Receiver_add post_data=new DataBean.Receiver_add(name.getText().toString(),"1",address.getText().toString());
                 sendReceiverData(post_data);
             }
 

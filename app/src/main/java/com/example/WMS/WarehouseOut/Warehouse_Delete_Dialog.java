@@ -12,9 +12,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.WMS.BaseCallback;
+import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.domain.DataBean;
 import com.example.WMS.domain.DataBean.ProductOut;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.xuexiang.xui.widget.edittext.ClearEditText;
+import com.xuexiang.xui.widget.edittext.MultiLineEditText;
+import com.xuexiang.xui.widget.textview.label.LabelTextView;
+
+import java.io.IOException;
 
 /**
  * 商品已存在，继续入库界面 （底部弹出）
@@ -24,11 +33,19 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
     private Button btn_add;
     private Button btn_cancel;
     private TextView tv_name;
+    private ClearEditText et_size;
+    private ClearEditText et_price;
+    private MultiLineEditText et_note;
+    private LabelTextView tv_supplier;
+    private String receiverName;
+    private String token;
     private DataBean.ProductOut productOut;
-    public Warehouse_Delete_Dialog(@NonNull Context context, DataBean.ProductOut productOut) {
+    public Warehouse_Delete_Dialog(@NonNull Context context, DataBean.ProductOut productOut,String receiverName,String token) {
         super(context);
         this.context=context;
         this.productOut=productOut;
+        this.receiverName=receiverName;
+        this.token=token;
     }
 
     @Override
@@ -42,6 +59,11 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
         btn_cancel.setOnClickListener(this);
         tv_name=contentView.findViewById(R.id.tv_name);
         tv_name.setText(productOut.getProductName());
+        et_size=contentView.findViewById(R.id.et_size);
+
+        et_price=contentView.findViewById(R.id.et_price);
+        et_price.setText(productOut.getOutPrice()+"");
+        et_note=contentView.findViewById(R.id.et_note);
     //    ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
         //存在问题：无法水平铺满
     //    layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;
@@ -58,12 +80,48 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
     public void onClick(View v) {
         if(v==btn_add){
             //保存刷新数据库，退出
+            //
+            DataBean.ProductOut_outWarehouse post_data=new DataBean.ProductOut_outWarehouse(productOut.getProductId(),"10",
+                    Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
+            sendData(post_data);
             cancel();
         }
         else if(v==btn_cancel){
             //不保存数据库，退出
             cancel();
         }
+    }
+
+    public void sendData(DataBean.ProductOut_outWarehouse parms){
+        OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/outWarehouse/?userToken="+token,parms,new BaseCallback<DataBean.ProductOut_outWarehouse>(){
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("@@@@@@@@@@1"+response);
+            }
+
+            @Override
+            public void onSuccess_List(String resultStr) {
+                System.out.println("@@@@@3"+resultStr);
+            }
+
+            @Override
+            public void onSuccess(Response response, DataBean.ProductOut_outWarehouse productOut_outWarehouse) {
+                System.out.println("@@@@@3"+response);
+            }
+
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+
+        });
     }
 
 }

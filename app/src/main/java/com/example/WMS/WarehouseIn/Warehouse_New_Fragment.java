@@ -58,9 +58,11 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private String warehouseName;
     private int warehouseId;
     private Dialog dialog;
-    public Warehouse_New_Fragment(String warehouseName,int warehouseId){
+    private String token;
+    public Warehouse_New_Fragment(String warehouseName,int warehouseId,String token){
         this.warehouseName=warehouseName;
         this.warehouseId=warehouseId;
+        this.token=token;
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,7 +123,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     }
     public void sendData(DataBean.ProductIn_post parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addProduct/"+warehouseId+"/",parms,new BaseCallback<DataBean.ProductIn_post>(){
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addProduct/"+warehouseId+"/?userToken="+token,parms,new BaseCallback<DataBean.ProductIn_post>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);

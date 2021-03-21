@@ -109,11 +109,11 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
     private void bindView(VH holder, int position) {
         if(opType==SUPPLIER){
             holder.setText(R.id.tv_name, mDatas_Supplier.get(position).getSupplierName());
-            holder.setText(R.id.tv_address,mDatas_Supplier.get(position).getSupplierId()+"");
+            holder.setText(R.id.tv_address,mDatas_Supplier.get(position).getSupplierAddress());
         }
         else if(opType==RECEIVER){
             holder.setText(R.id.tv_name, mDatas_Receiver.get(position).getReceiverName());
-            holder.setText(R.id.tv_address,mDatas_Receiver.get(position).getReceiverId()+"");
+            holder.setText(R.id.tv_address,mDatas_Receiver.get(position).getReceiverAddress());
         }
 
 

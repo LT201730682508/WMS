@@ -13,12 +13,14 @@ class DataBean {
 
     data class ProductIn_inWarehouse(var id:Int,var supplierId: String,var inPrice: Double,var amount: Int,var note: String)
 
+    data class ProductOut_outWarehouse(var id:Int,var receiverId: String,var OutPrice: Double,var amount: Int,var note: String)
+
     data class Product(var productId: Int,var productName:String,var productDescription:String,
                               var productCategory:String,var productCode:String,var productImg:String)
 
-    data class Supplier_add(var supplierName: String,var companyId: String)
+    data class Supplier_add(var supplierName: String,var companyId: String,var supplierAddress:String)
 
-    data class Receiver_add(var receiverName: String,var companyId: String)
+    data class Receiver_add(var receiverName: String,var companyId: String,var receiverAddress: String)
 
     data class Member(var userId:Int,var userName:String,var role:String)
 
@@ -26,9 +28,9 @@ class DataBean {
 
     data class Warehouse_All(var warehouseId:Int,var warehouseName:String)
 
-    data class Supplier(var supplierId:Int,var supplierName:String)
+    data class Supplier(var supplierId:Int,var supplierName:String,var supplierAddress:String)
 
-    data class Receiver(var receiverId:Int,var receiverName:String)
+    data class Receiver(var receiverId:Int,var receiverName:String,var receiverAddress:String)
 
     data class InWarehouseRecord(var inId:Int,var userName: String,var productId: Int,var productName: String,var productImg: String,
                                  var warehouseId: Int,var warehouseName: String,var amount:Int,var inPrice: Int,var supplierName: String,
