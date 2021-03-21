@@ -178,12 +178,12 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             @Override
             public void onClick(View v) {
                 if(opType==WAREHOUSE_IN){//入库Adater
-                    Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(activity,mDatas.get(position),supplierName,token,id);
+                    Warehouse_Add_Fragment warehouse_add_fragment=new Warehouse_Add_Fragment(activity,mDatas.get(position),token);
                     //activity.fragment_Manager.hide_all(warehouse_add_fragment);
                     warehouse_add_fragment.show();
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
-                    Warehouse_Delete_Dialog warehouse_delete_dialog=new Warehouse_Delete_Dialog(activity,mDatasOut.get(position),receiverName,token,id);
+                    Warehouse_Delete_Dialog warehouse_delete_dialog=new Warehouse_Delete_Dialog(activity,mDatasOut.get(position),token);
                     warehouse_delete_dialog.show();
                 }
 

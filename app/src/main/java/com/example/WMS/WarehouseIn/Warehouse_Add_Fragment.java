@@ -3,6 +3,7 @@ package com.example.WMS.WarehouseIn;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -51,13 +52,11 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     private String supplierName;
     private String token;
     private String id;
-    public Warehouse_Add_Fragment(Context context,DataBean.ProductIn productIn,String supplierName,String token,String id) {
+    public Warehouse_Add_Fragment(Context context,DataBean.ProductIn productIn,String token) {
         super(context);
         this.context=context;
         this.productIn=productIn;
-        this.supplierName=supplierName;
         this.token=token;
-        this.id=id;
     }
 
 //    @NonNull
@@ -95,6 +94,8 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
         tv_name.setText(productIn.getProductName());
         et_size=contentView.findViewById(R.id.et_size);
         tv_supplier=contentView.findViewById(R.id.select_supplier);
+        SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
+        supplierName=preferences.getString("supplierName", "defaultname");
         tv_supplier.setText(supplierName);
         et_price=contentView.findViewById(R.id.et_price);
         et_price.setText(productIn.getInPrice()+"");
@@ -110,6 +111,8 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
         if(v==btn_add){
             //保存刷新数据库，退出
             //
+            SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
+            id=preferences.getString("supplierId", "-1");
             DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getProductId(),id,
                     Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
             sendData(post_data);

@@ -159,11 +159,10 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         btn_select.setOnClickListener(this);
     }
 
-    public static void setSupplierName(String string,String id){
+    public static void setSupplierName(String string){
         //有数据后记得测试这里
         btn_select.setText(string);
-        supplierName=string;
-        supplierId=id;
+
     }
 
 //    public void initData(){
@@ -173,7 +172,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
 
     private void getData() {
-        SharedPreferences settings = context.getSharedPreferences("user", Context.MODE_PRIVATE);
+        //SharedPreferences settings = context.getSharedPreferences("user", Context.MODE_PRIVATE);
         //token=settings.getString("token","0");
         System.out.println("_______________"+token);
 

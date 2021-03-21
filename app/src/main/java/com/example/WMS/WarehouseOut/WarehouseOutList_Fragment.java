@@ -64,12 +64,13 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static int pos=1;
     private static String selectWarehouseName=warehouseName[pos-1];
     private static String receiverName="";
+    private static String receiverId;
     private static String token;
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
     private long lastClickTime=0;
     private long now=0;
-    private static String receiverId;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -204,10 +205,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             }
         }
     }
-    public static void setReceiverName(String string,String id){
+    public static void setReceiverName(String string){
         btn_select.setText(string);
-        receiverName=string;
-        //receiverId=id;
     }
     //返回该framgent时刷新数据
     @Override

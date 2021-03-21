@@ -97,14 +97,23 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
                 if(opType==SUPPLIER){
                     //选中返回
                     //返回当前选中供应商进入textview中
-
-                    WarehouseInList_Fragment.setSupplierName( mDatas_Supplier.get(position).getSupplierName(),mDatas_Supplier.get(position).getSupplierId()+"");
+                    SharedPreferences preferences=activity.getSharedPreferences("supplier",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=preferences.edit();
+                    editor.putString("supplierName",mDatas_Supplier.get(position).getSupplierName());
+                    editor.putString("supplierId",mDatas_Supplier.get(position).getSupplierId()+"");
+                    editor.commit();
+                    WarehouseInList_Fragment.setSupplierName( mDatas_Supplier.get(position).getSupplierName());
                     activity.fragment_Manager.pop();
                 }
         else if(opType==RECEIVER){
                     //选中返回
                     //返回当前选中客户进入textview中
-                    WarehouseOutList_Fragment.setReceiverName( mDatas_Receiver.get(position).getReceiverName(),mDatas_Receiver.get(position).getReceiverId()+"");
+                    SharedPreferences preferences=activity.getSharedPreferences("receiver",Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor=preferences.edit();
+                    editor.putString("receiverName",mDatas_Receiver.get(position).getReceiverName());
+                    editor.putString("receiverId",mDatas_Receiver.get(position).getReceiverId()+"");
+                    editor.commit();
+                    WarehouseOutList_Fragment.setReceiverName( mDatas_Receiver.get(position).getReceiverName());
                     activity.fragment_Manager.pop();
                 }
             }
