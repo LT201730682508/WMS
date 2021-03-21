@@ -38,7 +38,7 @@ import java.io.IOException;
 /**
  * 商品已存在，继续入库界面 （底部弹出）
  */
-public class Warehouse_Add_Fragment extends DialogFragment implements View.OnClickListener{
+public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListener{
     protected Context context;
     private Button btn_add;
     private Button btn_cancel;
@@ -49,56 +49,59 @@ public class Warehouse_Add_Fragment extends DialogFragment implements View.OnCli
     private DataBean.ProductIn productIn;
     private LabelTextView tv_supplier;
     private String supplierName;
-    public Warehouse_Add_Fragment(Context context,DataBean.ProductIn productIn,String supplierName) {
-        super();
+    private String token;
+    public Warehouse_Add_Fragment(Context context,DataBean.ProductIn productIn,String supplierName,String token) {
+        super(context);
         this.context=context;
         this.productIn=productIn;
         this.supplierName=supplierName;
+        this.token=token;
     }
 
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater=getActivity().getLayoutInflater();
-        View view=inflater.inflate(R.layout.fragment_warehouse_in_add,null);
-        btn_add=view.findViewById(R.id.btn_add);
-        btn_cancel=view.findViewById(R.id.btn_cancel);
-        btn_add.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
-        tv_name=view.findViewById(R.id.tv_name);
-        tv_name.setText(productIn.getProductName());
-        et_size=view.findViewById(R.id.et_size);
-        et_size.setText(productIn.getInPrice());
-        et_price=view.findViewById(R.id.et_price);
-        et_note=view.findViewById(R.id.et_note);
-        tv_supplier=view.findViewById(R.id.select_supplier);
-        tv_supplier.setText(supplierName);
-        builder.setView(view);
-        return builder.create();
-    }
-
+//    @NonNull
 //    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        View contentView = LayoutInflater.from(context).inflate(R.layout.fragment_warehouse_in_add, null);
-//        setContentView(contentView);
-//        btn_add=contentView.findViewById(R.id.btn_add);
-//        btn_cancel=contentView.findViewById(R.id.btn_cancel);
+//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+//        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+//        LayoutInflater inflater=getActivity().getLayoutInflater();
+//        View view=inflater.inflate(R.layout.fragment_warehouse_in_add,null);
+//        btn_add=view.findViewById(R.id.btn_add);
+//        btn_cancel=view.findViewById(R.id.btn_cancel);
 //        btn_add.setOnClickListener(this);
 //        btn_cancel.setOnClickListener(this);
-//        tv_name=contentView.findViewById(R.id.tv_name);
+//        tv_name=view.findViewById(R.id.tv_name);
 //        tv_name.setText(productIn.getProductName());
-//        et_size=contentView.findViewById(R.id.et_size);
+//        et_size=view.findViewById(R.id.et_size);
 //        et_size.setText(productIn.getInPrice());
-//        et_price=contentView.findViewById(R.id.et_price);
-//        et_note=contentView.findViewById(R.id.et_note);
-//        btn_select=contentView.findViewById(R.id.select_supplier);
-//        setCanceledOnTouchOutside(true);
-//        getWindow().setGravity(Gravity.BOTTOM);
-//        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//        getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+//        et_price=view.findViewById(R.id.et_price);
+//        et_note=view.findViewById(R.id.et_note);
+//        tv_supplier=view.findViewById(R.id.select_supplier);
+//        tv_supplier.setText(supplierName);
+//        builder.setView(view);
+//        return builder.create();
 //    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        View contentView = LayoutInflater.from(context).inflate(R.layout.fragment_warehouse_in_add, null);
+        setContentView(contentView);
+        btn_add=contentView.findViewById(R.id.btn_add);
+        btn_cancel=contentView.findViewById(R.id.btn_cancel);
+        btn_add.setOnClickListener(this);
+        btn_cancel.setOnClickListener(this);
+        tv_name=contentView.findViewById(R.id.tv_name);
+        tv_name.setText(productIn.getProductName());
+        et_size=contentView.findViewById(R.id.et_size);
+
+        et_price=contentView.findViewById(R.id.et_price);
+        et_price.setText(productIn.getInPrice()+"");
+        et_note=contentView.findViewById(R.id.et_note);
+        //btn_select=contentView.findViewById(R.id.select_supplier);
+        setCanceledOnTouchOutside(true);
+        getWindow().setGravity(Gravity.BOTTOM);
+        getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+    }
     @Override
     public void onClick(View v) {
         if(v==btn_add){
@@ -108,18 +111,19 @@ public class Warehouse_Add_Fragment extends DialogFragment implements View.OnCli
                     Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
             sendData(post_data);
 
-
-            ((MainActivity)getActivity()).fragment_Manager.pop();
+            cancel();
+            //((MainActivity)getActivity()).fragment_Manager.pop();
         }
         else if(v==btn_cancel){
             //不保存数据库，退出
-            ((MainActivity)getActivity()).fragment_Manager.pop();
+            cancel();
+            //((MainActivity)getActivity()).fragment_Manager.pop();
         }
 
     }
     public void sendData(DataBean.ProductIn_inWarehouse parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/inWarehouse/",parms,new BaseCallback<DataBean.ProductIn_inWarehouse>(){
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/inWarehouse/?userToken="+token,parms,new BaseCallback<DataBean.ProductIn_inWarehouse>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);

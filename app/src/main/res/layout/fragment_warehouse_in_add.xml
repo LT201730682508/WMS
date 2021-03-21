@@ -31,7 +31,7 @@
             android:layout_centerVertical="true"
             android:textColor="@color/black"
             android:layout_width="100dp"
-            android:text="请选择供应商"
+            android:text="供应商"
             android:textSize="10sp"
             android:layout_height="wrap_content"/>
     </RelativeLayout>

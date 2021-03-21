@@ -55,6 +55,8 @@ class Login_fragment: Fragment() {
         }
         signIn_signInButton.setOnClickListener {
             if(check_null()){
+                login(signIn_account.text.toString(),signIn_passWord.text.toString())
+                login(signIn_account.getText().toString(),signIn_passWord.getText().toString())
                 var homeFragment= Home_Fragment()
                 (activity as MainActivity).fragment_Manager.replace_all(homeFragment)
             }else{
@@ -94,11 +96,15 @@ class Login_fragment: Fragment() {
     }
 
     fun login(username:String,password:String){
-        var map=HashMap<String,String>()
-        map.put("userName",username)
-        map.put("passWord",password)
+//        var map=HashMap<String,String>()
+//        map.put("userName",username)
+//        map.put("passWord",password)
+        //user_password(username,password)
+        var username_password=user_password(username,password)
+        println("@@@@@1"+username)
+        println("@@@@@1"+password)
         var okHttpHelper= OkHttpHelper.getInstance()
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-user/login",map,object :
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-authentication/login/",username_password,object :
             BaseCallback<user_Login>(){
             override fun onFailure(request: Request?, e: IOException?) {
                 println("@@@@@1"+e)
@@ -117,6 +123,7 @@ class Login_fragment: Fragment() {
                 editor.putString("userName",username)
                 editor.putString("passWord",password)
                 editor.putString("token",t!!.token)
+                println("@@@@@3"+t!!.token)
                 editor.apply()
 
             }
@@ -127,5 +134,11 @@ class Login_fragment: Fragment() {
 
         })
     }
-    data class user_Login(val userId:String,val token:String)
+    data class user_password(val userId:String,val password:String)
+
+    //data class user_Login(val userId:String,val token:String)
+
+    data class userinfo(val userId: Int,val username: String,val companyId:Int,
+                         val companyName:String,val hasInvitation:Int)
+    data class user_Login(val userInfo:userinfo,val expire:Int,val token:String)
 }
