@@ -13,7 +13,7 @@ class Join_Warehouse_Model {
         fun getData(show:Show,token:String) {
             val ok = OkHttpHelper.getInstance()
             ok.get_for_list(
-                "http://121.199.22.134:8003/api-inventory/getJoinedWarehouse/"+token,
+                "http://121.199.22.134:8003/api-inventory/getJoinedWarehouse?userToken="+token,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,

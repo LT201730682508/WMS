@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.example.WMS.MainActivity
@@ -31,6 +28,7 @@ class Home_Fragment: Fragment() {
     lateinit var item5: RelativeLayout
     lateinit var item6: RelativeLayout
     lateinit var click_join:TextView
+    lateinit var join_create_re:LinearLayout
     lateinit var set_user:ImageView
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,7 +66,10 @@ class Home_Fragment: Fragment() {
             var dataReportFragment= Data_report_fragment()
             (activity as MainActivity).fragment_Manager.hide_all(dataReportFragment)
         }
-
+        join_create_re=view.findViewById(R.id.join_create)
+        if((activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId!=0){
+            join_create_re.visibility=View.GONE
+        }
         click_join=view.findViewById(R.id.click_join)
         click_join.setOnClickListener {
             var joinOrCreate=Join_or_Create(requireContext())

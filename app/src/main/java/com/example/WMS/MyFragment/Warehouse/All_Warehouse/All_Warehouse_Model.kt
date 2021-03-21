@@ -1,6 +1,7 @@
 package com.example.WMS.MyFragment.Warehouse.All_Warehouse
 
 import com.example.WMS.BaseCallback
+import com.example.WMS.MyFragment.Login_fragment
 import com.example.WMS.OkHttpHelper
 import com.example.WMS.domain.DataBean.ProductIn
 import com.google.gson.Gson
@@ -10,10 +11,10 @@ import java.io.IOException
 
 class All_Warehouse_Model {
     companion object{
-           fun getData(show:Show) {
+           fun getData(show:Show,userLogin: Login_fragment.user_Login) {
             val ok = OkHttpHelper.getInstance()
             ok.get_for_list(
-                "http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/1",
+                "http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/"+userLogin.userInfo.userId+"?userToken="+userLogin.token,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,

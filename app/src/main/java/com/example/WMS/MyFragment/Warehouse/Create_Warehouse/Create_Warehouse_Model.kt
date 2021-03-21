@@ -1,6 +1,7 @@
 package com.example.WMS.MyFragment.Warehouse.Create_Warehouse
 
 import com.example.WMS.BaseCallback
+import com.example.WMS.MyFragment.Login_fragment
 import com.example.WMS.OkHttpHelper
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
@@ -10,9 +11,9 @@ import java.lang.Exception
 class Create_Warehouse_Model {
 
     companion object{
-        fun getData(parms: Create_Warehouse_Fragment.Create_Warehouse_params, show: Show){
+        fun getData(parms: Create_Warehouse_Fragment.Create_Warehouse_params, show: Show,userLogin: Login_fragment.user_Login){
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addWarehouse/"+parms.warehouseName+"/"+1,parms,object :
+            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addWarehouse/"+parms.warehouseName+"/"+userLogin.userInfo.companyId+"?userToken="+userLogin.token ,parms,object :
                 BaseCallback<String>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)

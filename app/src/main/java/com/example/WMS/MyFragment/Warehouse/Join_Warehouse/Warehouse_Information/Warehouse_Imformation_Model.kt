@@ -1,6 +1,7 @@
 package com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information
 
 import com.example.WMS.BaseCallback
+import com.example.WMS.MyFragment.Login_fragment
 import com.example.WMS.MyFragment.Warehouse.Create_Warehouse.Create_Warehouse_Fragment
 import com.example.WMS.MyFragment.Warehouse.Create_Warehouse.Create_Warehouse_Model
 import com.example.WMS.OkHttpHelper
@@ -12,9 +13,9 @@ import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class Warehouse_Imformation_Model {
     companion object{
-        fun getData_Delete(parms: Any, show: Warehouse_imfor_Show){
+        fun getData_Delete(parms: Any, show: Warehouse_imfor_Show,userLogin: Login_fragment.user_Login){
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/deleteWarehouseByWarehouseId",parms,object :
+            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/deleteWarehouseByWarehouseId/1?userToken="+userLogin.token,parms,object :
                 BaseCallback<String>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)
@@ -38,9 +39,9 @@ class Warehouse_Imformation_Model {
 
             })
         }
-        fun getData_Modefy(parms:Any, show: Warehouse_imfor_Show){
+        fun getData_Modefy(parms:Any, show: Warehouse_imfor_Show,userLogin: Login_fragment.user_Login){
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/modifyWarehouseName",parms,object :
+            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/modifyWarehouseName?userToken="+userLogin.token,parms,object :
                 BaseCallback<String>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)

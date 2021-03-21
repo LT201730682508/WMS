@@ -15,6 +15,8 @@ import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.Open_Album
 import com.example.WMS.R
+import com.example.WMS.custom_Dialog.Alart_Warning_Dialog
+import com.example.WMS.custom_Dialog.Create_Company_Dialog
 import com.example.WMS.custom_Dialog.take_Album_Dialog
 import com.xuexiang.xui.XUI
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton
@@ -62,22 +64,27 @@ class Create_Warehouse_Fragment:Fragment() {
              if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()){
                  XToast.warning(requireContext(), "请完善信息").show()
              }else{
-                 var createWarehouseParams=Create_Warehouse_params(1,set_name.text.toString())
-                 Create_Warehouse_Model.getData(createWarehouseParams,object:Create_Warehouse_Model.Show{
-                     override fun show(str: String) {
-                         XToast.info(requireContext(),str).show()
-                     }
+                 if((activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId!=0){
+                     var createWarehouseParams=Create_Warehouse_params(1,set_name.text.toString())
+                     Create_Warehouse_Model.getData(createWarehouseParams,object:Create_Warehouse_Model.Show{
+                         override fun show(str: String) {
+                             XToast.info(requireContext(),str).show()
+                             if(str=="创建仓库成功"){
+                                 (activity as MainActivity).fragment_Manager.pop()
+                             }
+                         }
+                     },(activity as MainActivity).fragment_Manager.userinfo)
+                 }else{
 
-                 } )
-//                 var alartWarningDialog=Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
-//                     override fun sure() {
-//                         var createCompanyDialog= Create_Company_Dialog(requireContext())
-//                         createCompanyDialog.show()
-//                     }
-//
-//                 },"您还没有加入任何企业，是否自行创建？")
-//                 alartWarningDialog.show()
-//                 (activity as MainActivity).fragment_Manager.pop()
+                     var alartWarningDialog= Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
+                         override fun sure() {
+                             var createCompanyDialog= Create_Company_Dialog(requireContext())
+                             createCompanyDialog.show()
+                         }
+                     },"您还没有加入任何企业，是否自行创建？")
+                     alartWarningDialog.show()
+                 }
+
              }
          }
     }

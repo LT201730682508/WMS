@@ -77,7 +77,7 @@ class Ware_in_Record_Fragment :Fragment(){
                         ware_in_recycle.adapter=wareInListAdapter
                     }
 
-                })
+                },(activity as MainActivity).fragment_Manager.userinfo)
 
 
             }

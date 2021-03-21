@@ -216,6 +216,7 @@
         android:textColor="@color/black"
         android:layout_marginBottom="50dp"
         android:gravity="center"
+        android:id="@+id/join_create"
         android:background="@drawable/frame_line"
         android:layout_alignParentBottom="true"
         android:layout_height="20dp">

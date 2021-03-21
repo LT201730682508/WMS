@@ -39,7 +39,7 @@ class All_Warehouse_Fragment: Fragment() {
                 all_recycleview.adapter=allWarehouseAdapter
             }
 
-        })
+        },(activity as MainActivity).fragment_Manager.userinfo)
 
     }
 

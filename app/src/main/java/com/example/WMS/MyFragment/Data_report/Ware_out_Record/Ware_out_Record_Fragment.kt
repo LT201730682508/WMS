@@ -70,12 +70,12 @@ class Ware_out_Record_Fragment :Fragment(){
                         ware_in_recycle.adapter=wareOutAdapter
                     }
 
-                })
+                },(activity as MainActivity).fragment_Manager.userinfo)
 
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-        val mList1: List<String> = listOf("1", "3", "4", "5", "3","1", "3", "4", "5", "3","1", "3", "4", "5", "3","1", "3", "4", "5", "3","1", "3", "4", "5", "3")
+       
 
 
 //

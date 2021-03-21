@@ -81,7 +81,7 @@ class Warehouse_Information (var item: All_Warehouse_Model.Warehouse):Fragment()
                             }
                         }
 
-                    })
+                    },(activity as MainActivity).fragment_Manager.userinfo)
                 }
 
 
@@ -97,7 +97,7 @@ class Warehouse_Information (var item: All_Warehouse_Model.Warehouse):Fragment()
                                XToast.info(requireContext(),str).show()
                           }
 
-                      })
+                      },(activity as MainActivity).fragment_Manager.userinfo)
                 }
             },"您是否确定删除该仓库？")
 

@@ -1,6 +1,7 @@
 package com.example.WMS.MyFragment.Data_report.Ware_in_Record
 
 import com.example.WMS.BaseCallback
+import com.example.WMS.MyFragment.Login_fragment
 import com.example.WMS.OkHttpHelper
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
@@ -10,9 +11,9 @@ import java.lang.Exception
 
 class Ware_In_Record_Model  {
     companion object{
-        fun getData(parms: Any, result:Ware_Record  ){
+        fun getData(parms: Any, result:Ware_Record,userLogin: Login_fragment.user_Login ){
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.get_for_list("http://121.199.22.134:8003/api-inventory/getInWarehouseRecordByWarehouseId/2",object :
+            okHttpHelper.get_for_list("http://121.199.22.134:8003/api-inventory/getInWarehouseRecordByWarehouseId/2?userToken="+userLogin.token,object :
                 BaseCallback<In_Record>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)
