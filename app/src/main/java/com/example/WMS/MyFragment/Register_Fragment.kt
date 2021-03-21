@@ -1,6 +1,8 @@
 package com.example.WMS.MyFragment
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,7 +36,7 @@ class Register_Fragment:Fragment() {
     }
         signUp_signUpButton.setOnClickListener {
             if (check_null()){
-                (activity as MainActivity).supportFragmentManager.popBackStack()
+                register(signUp_account.text.toString(),signUp_password.text.toString())
             }else{
                 XToast.warning(requireContext(),"请完善需要的账号密码").show()
             }
@@ -48,12 +50,12 @@ class Register_Fragment:Fragment() {
         }
         return true
     }
-    fun register(username:String,password:String){
+    fun register(username:String,password:String ){
         var map=HashMap<String,String>()
         map.put("userName",username)
-        map.put("passWord",password)
+        map.put("password",password)
         var okHttpHelper= OkHttpHelper.getInstance()
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-user/register",map,object :
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-authentication/register",map,object :
             BaseCallback<String>(){
             override fun onFailure(request: Request?, e: IOException?) {
                 println("@@@@@1"+e)
@@ -68,13 +70,23 @@ class Register_Fragment:Fragment() {
 
             override fun onSuccess(response: Response?, t: String?) {
                 println("@@@@@3"+t)
-
+                if(t=="注册成功"){
+                  XToast.success(requireContext(),t).show()
+                    (activity as MainActivity).supportFragmentManager.popBackStack()
+                }
             }
 
             override fun onError(response: Response?, code: Int, e: Exception?) {
                 println("@@@@@4"+code+e)
+                var handler= Handler(Looper.getMainLooper())
+                handler.post{
+                    XToast.error(requireContext(),response!!.body().toString()).show()
+                }
+
             }
 
         })
     }
+
+
 }

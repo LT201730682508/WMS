@@ -9,12 +9,14 @@ class Fragment_Manager {
     var my_activity:MainActivity
     var fragment_show:Fragment
     var loginFragment:Login_fragment
+    lateinit var userinfo:Login_fragment.user_Login
     constructor(activity:MainActivity){
         my_activity=activity
         loginFragment=Login_fragment()
         fragment_show=loginFragment
         my_activity.supportFragmentManager.beginTransaction().add(R.id.Fragment_First,loginFragment).commit()
     }
+
 
     fun replace_all(fragment: Fragment) {
         var transaction= my_activity.supportFragmentManager.beginTransaction()

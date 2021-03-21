@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:hint="输入账号"
                 android:lines="1"
-                android:inputType="number"
+                android:inputType="text"
                 />
 
         </LinearLayout>
