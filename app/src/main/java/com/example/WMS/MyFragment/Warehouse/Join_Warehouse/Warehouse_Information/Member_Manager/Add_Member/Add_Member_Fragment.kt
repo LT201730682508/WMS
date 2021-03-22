@@ -19,7 +19,7 @@ class Add_Member_Fragment:Fragment() {
     lateinit var search_results:RelativeLayout
     lateinit var invite:Button
     lateinit var select_title:String
-
+    lateinit var new_member_name:TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,6 +36,7 @@ class Add_Member_Fragment:Fragment() {
         search_results=view.findViewById(R.id.search_results)
         invite=view.findViewById(R.id.invite)
         search_img=view.findViewById(R.id.search_img)
+        new_member_name=view.findViewById(R.id.new_member_name)
         search_text=view.findViewById(R.id.search_text)
         search_no=view.findViewById(R.id.search_no)
         val mList: List<String> = listOf("初级员工", "高级员工", "管理员", "仓库主任", "CEO")
@@ -56,7 +57,15 @@ class Add_Member_Fragment:Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
         title_spinner.visibility=View.VISIBLE
+        search_img.setOnClickListener {
+            val memberparams= Add_Member_Model.member_params((activity as MainActivity).fragment_Manager.userinfo.token,search_text.text.toString().toInt())
+            Add_Member_Model.search_user(object :Add_Member_Model.Companion.show{
+                override fun shou(str: String) {
 
+                }
+
+            },memberparams)
+        }
         invite.setOnClickListener {
             Toast.makeText(activity,"已发出邀请",Toast.LENGTH_SHORT).show()
         }

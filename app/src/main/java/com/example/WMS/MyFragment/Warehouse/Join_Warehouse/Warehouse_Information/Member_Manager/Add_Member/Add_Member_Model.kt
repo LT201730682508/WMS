@@ -11,10 +11,10 @@ class Add_Member_Model {
 
 
     companion object{
-        fun search_user(memberParams: member_params) {
+        fun search_user(show:show,memberParams: member_params) {
             val ok = OkHttpHelper.getInstance()
             ok.get_for_list(
-                "http://121.199.22.134:8003/api-authority/getInviteUserInfo/"+memberParams.token+"/"+memberParams.userId,
+                "http://121.199.22.134:8003/api-authority/getInviteUserInfo/"+memberParams.userId+"?userToken="+memberParams.token,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,
@@ -38,7 +38,7 @@ class Add_Member_Model {
                     }
 
                     override fun onSuccess(response: Response?, t: String?) {
-
+                        show.shou(t!!)
                     }
                 })
         }
@@ -75,7 +75,9 @@ class Add_Member_Model {
                     }
                 })
         }
-
+        interface show{
+            fun shou(str:String)
+        }
     }
 
     data class member_params(val token:String,val userId:Int)

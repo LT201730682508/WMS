@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,7 +14,7 @@ import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information
 import com.example.WMS.R
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 
-class Member_Manager_Fragment:Fragment() {
+class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
     lateinit var base_Top_Bar: Base_Topbar
     lateinit var memberListAdapter:Member_List_Adapter
     lateinit var member_Recycle:RecyclerView
@@ -37,9 +36,13 @@ class Member_Manager_Fragment:Fragment() {
         add_new_member=view.findViewById(R.id.add_new_member)
         member_Recycle=view.findViewById(R.id.member_list)
         member_Recycle.layoutManager=LinearLayoutManager(context)
-        val mList: List<String> = listOf("1", "3", "4", "5", "3")
-        memberListAdapter= Member_List_Adapter(mList,activity as MainActivity)
-        member_Recycle.adapter=memberListAdapter
+        Member_Manager_Model.getData(object :Member_Manager_Model.Show{
+            override fun show(wares: Array<Member_Manager_Model.member_item>) {
+                memberListAdapter= Member_List_Adapter(wares,activity as MainActivity)
+                member_Recycle.adapter=memberListAdapter
+            }
+
+        },(activity as MainActivity).fragment_Manager.userinfo,wareHouseid)
 
         title_manager.setOnClickListener {
             var titleManagerFragment=Title_Manager_Fragment()

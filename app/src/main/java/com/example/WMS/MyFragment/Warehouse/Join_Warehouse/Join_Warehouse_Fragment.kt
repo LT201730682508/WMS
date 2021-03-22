@@ -4,14 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
 import com.example.WMS.R
 
 class Join_Warehouse_Fragment:Fragment() {
@@ -35,11 +34,14 @@ class Join_Warehouse_Fragment:Fragment() {
     }
     fun initdata(){
         join_recycleview.layoutManager= LinearLayoutManager(context)
-        var mList= arrayListOf<All_Warehouse_Model.Warehouse>()
-        var aa=All_Warehouse_Model.Warehouse(1,"第一仓库")
-        mList.add(aa)
-        joinWarehouseAdapter= Join_Warehouse_Adapter(mList,activity as MainActivity)
-        join_recycleview.adapter=joinWarehouseAdapter
+        Join_Warehouse_Model.getData(object :Join_Warehouse_Model.Show{
+            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+                joinWarehouseAdapter= Join_Warehouse_Adapter(wares,activity as MainActivity)
+                join_recycleview.adapter=joinWarehouseAdapter
+            }
+
+        },(activity as MainActivity).fragment_Manager.userinfo)
+
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
