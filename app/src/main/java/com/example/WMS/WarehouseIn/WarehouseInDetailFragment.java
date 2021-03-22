@@ -57,10 +57,12 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     private String product_name;
     private Dialog dialog;
     private DataBean.Product wares;
-    public WarehouseInDetailFragment(String warehouseName, DataBean.ProductIn productIn){
+    private String token;
+    public WarehouseInDetailFragment(String warehouseName, DataBean.ProductIn productIn,String token){
         //根据仓库名和商品名读取数据库，显示已有数据
         this.warehouseName=warehouseName;
         this.productIn=productIn;
+        this.token=token;
     }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -100,7 +102,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getProductById/"+productIn.getProductId(),new BaseCallback<DataBean.ProductIn>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getProductById/"+productIn.getId()+"?userToken="+token,new BaseCallback<DataBean.ProductIn>(){
 
             @Override
             public void onFailure(Request request, IOException e) {

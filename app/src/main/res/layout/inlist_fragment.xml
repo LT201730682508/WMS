@@ -34,6 +34,24 @@
             android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp">
+
+            <Button
+                android:id="@+id/select_supplier"
+                android:text="请选择供应商"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:background="@color/gray"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp">
             <Button
                 android:id="@+id/add"
                 android:text="新增商品"
@@ -57,6 +75,7 @@
         </LinearLayout>
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_marginTop="5dp"
             android:id="@+id/swipeRefreshLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">

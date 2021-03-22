@@ -56,6 +56,7 @@ class Login_fragment: Fragment() {
         signIn_signInButton.setOnClickListener {
             if(check_null()){
                 login(signIn_account.text.toString(),signIn_passWord.text.toString())
+
             }else{
                 XToast.warning(requireContext(),"请输入正确的账号密码").show()
             }
@@ -112,9 +113,11 @@ class Login_fragment: Fragment() {
 
             override fun onSuccess(response: Response?, t: user_Login?) {
                 println("@@@@@3"+t)
+
                 (activity as MainActivity).fragment_Manager.userinfo=t!!
                 var homeFragment= Home_Fragment()
                 (activity as MainActivity).fragment_Manager.replace_all(homeFragment)
+
             }
 
             override fun onError(response: Response?, code: Int, e: Exception?) {
@@ -124,6 +127,8 @@ class Login_fragment: Fragment() {
         })
     }
 
+
     data class user_Info(val userId:Int,val userName:String,val companyId:Int,val companyName:String,val hasInvitation:Int)
     data class user_Login(var userInfo:user_Info,val token:String)
+
 }

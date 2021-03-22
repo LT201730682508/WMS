@@ -28,6 +28,7 @@ import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
+import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
 import com.example.WMS.domain.DataBean;
 import com.example.WMS.execute_IO;
 import com.example.WMS.perform_UI;
@@ -50,7 +51,10 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     private Base_Topbar base_topbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
-
+    private String token;
+    public Supplier_Fragment(String token) {
+        this.token=token;
+    }
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,17 +73,11 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
         View view=View.inflate(context,R.layout.fragment_receiver_supplier,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         rv_pager=view.findViewById(R.id.rv_pager);
+        rv_pager.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         im_empty=view.findViewById(R.id.im_empty);
         tv_empty=view.findViewById(R.id.tv_nomedia);
         btn_add=view.findViewById(R.id.btn_add);
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0);
-                rs_add_dialog.show();
-            }
-        });
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -99,7 +97,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        btn_add.setOnClickListener(this);
         initData();
     }
 
@@ -110,7 +108,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getSupplierByCompanyId/1",new BaseCallback<DataBean.Supplier>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getSupplierByCompanyId/1?userToken="+token,new BaseCallback<DataBean.Supplier>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -153,6 +151,10 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        if(v==btn_add){
+            RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0,token);
+            rs_add_dialog.show();
+        }
 
     }
 
@@ -174,7 +176,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
                     adapter=new RS_Adapter<RS_Adapter.VH>(R.layout.item_receiver_supplier, suppliers_list,0,activity);
                     rv_pager.setAdapter(adapter);
-                    rv_pager.setLayoutManager(new LinearLayoutManager(activity));
+
                 }
                 else{
 
