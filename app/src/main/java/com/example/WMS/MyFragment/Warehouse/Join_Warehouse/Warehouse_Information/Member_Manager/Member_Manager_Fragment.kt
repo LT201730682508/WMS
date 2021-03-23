@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +21,7 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
     lateinit var member_Recycle:RecyclerView
     lateinit var add_new_member: ExtendedFloatingActionButton
     lateinit var title_manager: ExtendedFloatingActionButton
+    lateinit var empty_rl:RelativeLayout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -35,17 +37,24 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
         title_manager=view.findViewById(R.id.title_manager)
         add_new_member=view.findViewById(R.id.add_new_member)
         member_Recycle=view.findViewById(R.id.member_list)
+        empty_rl=view.findViewById(R.id.empty_rl)
         member_Recycle.layoutManager=LinearLayoutManager(context)
         Member_Manager_Model.getData(object :Member_Manager_Model.Show{
             override fun show(wares: Array<Member_Manager_Model.member_item>) {
-                memberListAdapter= Member_List_Adapter(wares,activity as MainActivity)
-                member_Recycle.adapter=memberListAdapter
+                if(wares.size==0){
+                    empty_rl.visibility==View.VISIBLE
+                    member_Recycle.visibility=View.GONE
+                }else{
+                    memberListAdapter= Member_List_Adapter(wareHouseid,wares,activity as MainActivity)
+                    member_Recycle.adapter=memberListAdapter
+                }
+
             }
 
         },(activity as MainActivity).fragment_Manager.userinfo,wareHouseid)
 
         title_manager.setOnClickListener {
-            var titleManagerFragment=Title_Manager_Fragment()
+            var titleManagerFragment=Title_Manager_Fragment(wareHouseid)
             (activity  as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
         }
         add_new_member.setOnClickListener {

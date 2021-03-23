@@ -15,7 +15,7 @@ class Title_Manager_Model {
         fun get_title_list(token: String,warehouseId:Int,show:titleShow) {
             val ok = OkHttpHelper.getInstance()
             ok.get_for_list(
-                "http://121.199.22.134:8003/api-authority/getAllRole/"+token+"/"+warehouseId,
+                "http://121.199.22.134:8003/api-authority/getAllRole/"+warehouseId+"?userToken="+token,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,
@@ -35,6 +35,7 @@ class Title_Manager_Model {
                             Array<titleItem>::class.java
                         )
                         show.show(titleList)
+                        println("@@@@@2"+resultStr)
                     }
                     override fun onError(
                         response: Response,
@@ -50,10 +51,10 @@ class Title_Manager_Model {
                 })
         }
 
-        fun modify_member_title(changeParams: changeParams) {
+        fun modify_member_title(changeParams: changeParams,token: String,modifyShow: modify_show) {
             val ok = OkHttpHelper.getInstance()
             ok.post_for_object(
-                "http://121.199.22.134:8003/api-authority/changeRoleInfo",changeParams,
+                "http://121.199.22.134:8003/api-authority/changeRoleInfo?userToken="+token,changeParams,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,
@@ -77,7 +78,7 @@ class Title_Manager_Model {
                     }
 
                     override fun onSuccess(response: Response?, t: String?) {
-
+                        modifyShow.show(t!!)
                     }
                 })
         }
@@ -87,6 +88,11 @@ class Title_Manager_Model {
     interface titleShow{
         fun show(list:Array<titleItem>)
     }
-    data class titleItem(val role:String,val authorities:Int)
-    data class changeParams(val token:String,val warehouseId:Int,val role:String,val authorities:String)
+
+    interface modify_show{
+        fun show(string: String)
+    }
+    data class addtitleItem(val role:String,val authorities:String)
+    data class titleItem(val id:Int,val role:String,val authorities:String)
+    data class changeParams(val warehouse_id:Int,val role:String,val authorities:String)
 }

@@ -11,18 +11,23 @@ import com.xuexiang.xui.widget.button.SmoothCheckBox
 import com.xuexiang.xui.widget.toast.XToast
 import kotlinx.android.synthetic.main.title_manager_item.view.*
 
-class Title_Manager_Adapter(var list:ArrayList<String>,var activity: MainActivity): RecyclerView.Adapter<Title_Manager_Adapter.ViewHolder>() {
+class Title_Manager_Adapter(
+    val warehouseId: Int,
+    var list: Array<Title_Manager_Model.titleItem>,
+    var activity: MainActivity): RecyclerView.Adapter<Title_Manager_Adapter.ViewHolder>() {
     val TYPEONE=1
     val TYPETWO=2
     open class ViewHolder(itemview:View): RecyclerView.ViewHolder(itemview) {
     }
     class ViewHolder_Tilte(itemview: View):ViewHolder(itemview){
+        var makesure:Button=itemview.findViewById(R.id.title_make_sure)
         var title:EditText=itemview.findViewById(R.id.title)
         var in_check: SmoothCheckBox=itemview.findViewById(R.id.in_check)
         var out_check: SmoothCheckBox=itemview.findViewById(R.id.out_check)
         var data_search_check: SmoothCheckBox=itemview.findViewById(R.id.data_search_check)
         var add_check: SmoothCheckBox=itemview.findViewById(R.id.add_check)
         var delete_check: SmoothCheckBox=itemview.findViewById(R.id.delete_check)
+        var manager_check:SmoothCheckBox=itemview.findViewById(R.id.manager_check)
     }
     class ViewHolder_Add(itemview: View):ViewHolder(itemview){
           var add_img=itemview.findViewById<ImageView>(R.id.add_title)
@@ -47,29 +52,100 @@ class Title_Manager_Adapter(var list:ArrayList<String>,var activity: MainActivit
         }
         return viewHolder
     }
+   
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(position==list.size){
             holder.itemView.setOnClickListener {
-                list.add("1")
-                notifyDataSetChanged()
+//                var item=Title_Manager_Model.titleItem(1,"员工"+(list.size+1),"a")
+//                list.plus(item)
+                var changeParams=Title_Manager_Model.changeParams(warehouseId,"员工"+(list.size+1),"a")
+                Title_Manager_Model.modify_member_title(changeParams,(activity as MainActivity).fragment_Manager.userinfo.token,object :Title_Manager_Model.modify_show{
+                    override fun show(string: String) {
+                        if(string=="OK"){
+                            XToast.success(activity,"新增成功").show()
+                            Title_Manager_Model.get_title_list((activity as MainActivity).fragment_Manager.userinfo.token,warehouseId,object :Title_Manager_Model.titleShow{
+                                override fun show(listnew: Array<Title_Manager_Model.titleItem>) {
+                                     list=listnew
+                                    notifyDataSetChanged()
+                                }
+                            })
+                        }
+                    }
+                })
+
             }
         }
         else{
-            var OnCheckedChangeListener= SmoothCheckBox.OnCheckedChangeListener{checkBox, isChecked->
-                if(isChecked){
-                    XToast.warning(activity, "已勾选").show()
-                }else{
-                    XToast.warning(activity, "已取消").show()
-                }
+//            holder.itemView.in_check.setOnCheckedChangeListener(OnCheckedChangeListener)
+//            holder.itemView.out_check.setOnCheckedChangeListener(OnCheckedChangeListener)
+//            holder.itemView.add_check.setOnCheckedChangeListener(OnCheckedChangeListener)
+//            holder.itemView.data_search_check.setOnCheckedChangeListener(OnCheckedChangeListener)
+//            holder.itemView.delete_check.setOnCheckedChangeListener(OnCheckedChangeListener)
+            holder.itemView.title.setText(list[position].role)
+            holder.itemView.title_make_sure.setOnClickListener {
+                var str= arrayListOf<Char>()
+                if (holder.itemView.in_check.isChecked){
+                    str.add('b') }
+                if (holder.itemView.out_check.isChecked){
+                str.add('c') }
+                if (holder.itemView.add_check.isChecked){
+                    str.add('d') }
+                if (holder.itemView.manager_check.isChecked){
+                    str.add('e') }
+                if (holder.itemView.data_search_check.isChecked){
+                    str.add('f') }
+                if (holder.itemView.delete_check.isChecked){
+                    str.add('g') }
+
+                var changeParams=Title_Manager_Model.changeParams(warehouseId,list[position].role,str.toString())
+                Title_Manager_Model.modify_member_title(changeParams,(activity as MainActivity).fragment_Manager.userinfo.token,object :Title_Manager_Model.modify_show{
+                    override fun show(string: String) {
+                        if(string=="OK"){
+                            XToast.success(activity,"修改成功").show()
+                        }
+                    }
+                })
             }
-            holder.itemView.in_check.setOnCheckedChangeListener(OnCheckedChangeListener)
-            holder.itemView.out_check.setOnCheckedChangeListener(OnCheckedChangeListener)
-            holder.itemView.add_check.setOnCheckedChangeListener(OnCheckedChangeListener)
-            holder.itemView.data_search_check.setOnCheckedChangeListener(OnCheckedChangeListener)
-            holder.itemView.delete_check.setOnCheckedChangeListener(OnCheckedChangeListener)
+            if(list[position].authorities.contains("b")){
+                holder.itemView.in_check.isChecked=true
+            }else{
+                holder.itemView.in_check.isChecked=false
+            }
+            if(list[position].authorities.contains("c")){
+                holder.itemView.out_check.isChecked=true
+            }else{
+                holder.itemView.out_check.isChecked=false
+            }
+            if(list[position].authorities.contains("d")){
+                holder.itemView.add_check.isChecked=true
+            }else{
+                holder.itemView.add_check.isChecked=false
+            }
+            if(list[position].authorities.contains("e")){
+                holder.itemView.manager_check.isChecked=true
+            }else{
+                holder.itemView.manager_check.isChecked=false
+            }
+            if(list[position].authorities.contains("f")){
+                holder.itemView.data_search_check.isChecked=true
+            }else{
+                holder.itemView.data_search_check.isChecked=false
+            }
+            if(list[position].authorities.contains("g")){
+                holder.itemView.delete_check.isChecked=true
+            }else{
+                holder.itemView.delete_check.isChecked=false
+            }
+
         }
     }
     override fun getItemCount(): Int {
         return list.size+1
     }
+
+
+
+
 }
+
+

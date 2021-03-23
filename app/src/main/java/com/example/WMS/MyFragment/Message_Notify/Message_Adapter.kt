@@ -7,11 +7,14 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.WMS.MainActivity
-import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Adapter
 import com.example.WMS.R
+import com.xuexiang.xui.widget.toast.XToast
 
-class Message_Adapter(var list:List<String>,var activity: MainActivity): RecyclerView.Adapter<Message_Adapter.ViewHolder>() {
+class Message_Adapter(
+    var list: Array<Message_Notify_Model.invite_item>,
+    var activity: MainActivity): RecyclerView.Adapter<Message_Adapter.ViewHolder>() {
     class ViewHolder(itemview: View) : RecyclerView.ViewHolder(itemview){
         var message_img=itemview.findViewById<ImageView>(R.id.message_img)
         var message_ware_name=itemview.findViewById<TextView>(R.id.message_ware_name)
@@ -30,6 +33,24 @@ class Message_Adapter(var list:List<String>,var activity: MainActivity): Recycle
     }
 
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
-
+        Glide.with(activity).load(R.drawable.touxiang).into(holder.message_img)
+          holder.message_ware_name.text=list[position].warehouseName
+          holder.message_ware_title.text=list[position].role
+        holder.join_it.setOnClickListener {
+              Message_Notify_Model.accept_Invite(list[position].InvitationId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
+                  override fun show(str: String) {
+                      if(str=="OK")
+                      XToast.success(activity,"成功加入").show()
+                  }
+              })
+        }
+        holder.delete.setOnClickListener {
+            Message_Notify_Model.refuse_Invite(list[position].InvitationId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
+                override fun show(str: String) {
+                    if(str=="OK")
+                        XToast.success(activity,"已拒绝").show()
+                }
+            })
+        }
     }
 }

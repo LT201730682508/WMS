@@ -11,6 +11,7 @@ import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information
 import com.example.WMS.R
 
 class Member_List_Adapter(
+    var warhouseId:Int,
     var list: Array<Member_Manager_Model.member_item>,
     var activity: MainActivity):RecyclerView.Adapter<Member_List_Adapter.ViewHolder>() {
     class ViewHolder(itemview: View): RecyclerView.ViewHolder(itemview) {
@@ -29,7 +30,7 @@ class Member_List_Adapter(
         holder.member_name.text=list[position].userName
         holder.member_title.text=list[position].role
         holder.itemView.setOnClickListener {
-            var memberImformationFragment=Member_Imformation_Fragment()
+            var memberImformationFragment=Member_Imformation_Fragment(warhouseId,list[position])
             activity .fragment_Manager.hide_all(memberImformationFragment)
         }
     }

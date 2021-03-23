@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ class Message_Notify_Fragment:Fragment() {
     lateinit var baseTopbar:Base_Topbar
     lateinit var messageAdapter:Message_Adapter
     lateinit var message_recycler:RecyclerView
+    lateinit var empty_rl:RelativeLayout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -27,9 +29,19 @@ class Message_Notify_Fragment:Fragment() {
     fun init(view:View){
         baseTopbar= Base_Topbar(view,activity as MainActivity,true)
         message_recycler=view.findViewById(R.id.message_list)
+        empty_rl=view.findViewById(R.id.empty_rl)
         message_recycler.layoutManager=LinearLayoutManager(requireContext())
-        val mList1: List<String> = listOf("1", "3", "4", "5")
-        messageAdapter= Message_Adapter(mList1,activity as MainActivity)
-        message_recycler.adapter=messageAdapter
+        Message_Notify_Model.get_Invite(object :Message_Notify_Model.after_Show{
+            override fun show(list: Array<Message_Notify_Model.invite_item>) {
+                if(list.size==0){
+                    empty_rl.visibility=View.VISIBLE
+                    message_recycler.visibility=View.GONE
+                }
+                messageAdapter= Message_Adapter(list,activity as MainActivity)
+                message_recycler.adapter=messageAdapter
+            }
+
+        },(activity as MainActivity).fragment_Manager.userinfo)
+
     }
 }

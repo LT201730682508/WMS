@@ -73,6 +73,8 @@ class Register_Fragment:Fragment() {
                 if(t=="注册成功"){
                   XToast.success(requireContext(),t).show()
                     (activity as MainActivity).supportFragmentManager.popBackStack()
+                }else{
+                    XToast.warning(requireContext(),t!!).show()
                 }
             }
 

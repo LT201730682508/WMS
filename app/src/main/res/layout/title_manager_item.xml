@@ -108,7 +108,7 @@
         android:layout_height="30dp">
         <TextView
             android:layout_width="wrap_content"
-            android:text="人员邀请："
+            android:text="人员邀请与管理："
             android:layout_marginLeft="25dp"
             android:textColor="@color/black"
             android:id="@+id/add_text"
@@ -134,7 +134,25 @@
             android:layout_height="30dp">
             <TextView
                 android:layout_width="wrap_content"
-                android:text="货物删除："
+                android:text="职级管理："
+                android:layout_marginLeft="25dp"
+                android:textColor="@color/black"
+                android:id="@+id/manager_text"
+                android:gravity="center"
+                android:layout_height="30dp"></TextView>
+            <com.xuexiang.xui.widget.button.SmoothCheckBox
+                android:layout_width="20dp"
+                android:id="@+id/manager_check"
+                android:layout_height="30dp"></com.xuexiang.xui.widget.button.SmoothCheckBox>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="30dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="货物删除及添加："
                 android:layout_marginLeft="25dp"
                 android:textColor="@color/black"
                 android:id="@+id/delete_text"
@@ -145,5 +163,18 @@
                 android:id="@+id/delete_check"
                 android:layout_height="30dp"></com.xuexiang.xui.widget.button.SmoothCheckBox>
         </LinearLayout>
+
     </LinearLayout>
+
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/title_make_sure"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/third_ll"
+        android:layout_marginRight="20dp"
+        android:layout_gravity="right"
+        android:text="确定"></com.xuexiang.xui.widget.button.roundbutton.RoundButton>
 </RelativeLayout>
