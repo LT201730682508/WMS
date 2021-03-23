@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
@@ -31,6 +32,7 @@ class Join_Warehouse_Adapter(var list: Array<All_Warehouse_Model.Warehouse>, var
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.ware_name.text=list[position].warehouseName
+        Glide.with(activity).load(list[position].warehouseImg).into(holder.imageView)
         holder.itemView.setOnClickListener {
             var warehouseInformation= Warehouse_Information(list[position])
             activity.fragment_Manager.hide_all(warehouseInformation)

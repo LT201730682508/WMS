@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
@@ -24,11 +26,12 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
     lateinit var ware_out: TextView
     lateinit var ware_menber: TextView
     lateinit var ware_address:TextView
-    lateinit var ware_number:TextView
+    lateinit var warehouse_des:TextView
     lateinit var warehouse_name:TextView
     lateinit var base_Top_Bar: Base_Topbar
     lateinit var ware_name_modification:TextView
     lateinit var ware_delete:TextView
+    lateinit var warehouse_img:ImageView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,16 +46,19 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
         base_Top_Bar.setTitle("我加入的仓库")
         warehouse_name=view.findViewById(R.id.warehouse_name)
         ware_address=view.findViewById(R.id.warehouse_address)
-        ware_number=view.findViewById(R.id.warehouse_number)
+        warehouse_des=view.findViewById(R.id.warehouse_des)
         ware_information=view.findViewById(R.id.information)
+        warehouse_img=view.findViewById(R.id.warehouse_img)
         ware_in=view.findViewById(R.id.ware_in)
         ware_out=view.findViewById(R.id.ware_out)
         ware_menber=view.findViewById(R.id.ware_menber)
         ware_name_modification=view.findViewById(R.id.ware_name_modification)
         ware_delete=view.findViewById(R.id.ware_delete)
 
-
+        Glide.with(this).load(item.warehouseImg).into(warehouse_img)
         warehouse_name.text=item.warehouseName
+        ware_address.text=item.warehouseAddress
+        warehouse_des.text=item.warehouseDescription
         ware_information.setOnClickListener {
             var warehouseDetailInformation=Warehouse_Detail_Information()
             (activity as MainActivity).fragment_Manager.hide_all(warehouseDetailInformation)

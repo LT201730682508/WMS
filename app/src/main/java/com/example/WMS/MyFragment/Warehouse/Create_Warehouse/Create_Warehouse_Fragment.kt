@@ -2,7 +2,9 @@ package com.example.WMS.MyFragment.Warehouse.Create_Warehouse
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,6 +25,9 @@ import com.xuexiang.xui.widget.button.roundbutton.RoundButton
 import com.xuexiang.xui.widget.edittext.ClearEditText
 import com.xuexiang.xui.widget.edittext.MultiLineEditText
 import com.xuexiang.xui.widget.toast.XToast
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 
 class Create_Warehouse_Fragment:Fragment() {
@@ -33,6 +38,8 @@ class Create_Warehouse_Fragment:Fragment() {
     lateinit var set_address:ClearEditText
     lateinit var topbar:Base_Topbar
     lateinit var dialog:take_Album_Dialog
+    lateinit var bitmap:Bitmap
+    var hasImg:Boolean=false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -55,26 +62,31 @@ class Create_Warehouse_Fragment:Fragment() {
 
 
          set_img.setOnClickListener {
-             if(this::dialog.isLateinit){
+             if(!this::dialog.isInitialized){
                  dialog= take_Album_Dialog(requireContext())
              }
              dialog.show()
          }
          make_sure.setOnClickListener {
-             if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()){
+             if (ware_introduction.isEmpty||set_name.text.toString().isEmpty()||set_address.text.toString().isEmpty()||!hasImg){
                  XToast.warning(requireContext(), "请完善信息").show()
              }else{
                  if((activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId!=0){
-                     var createWarehouseParams=Create_Warehouse_params(1,set_name.text.toString())
-                     Create_Warehouse_Model.getData(createWarehouseParams,object:Create_Warehouse_Model.Show{
-                         override fun show(str: String) {
-                             XToast.info(requireContext(),str).show()
-                             if(str=="创建仓库成功"){
-                                 (activity as MainActivity).fragment_Manager.pop()
+                     var map=HashMap<String,String>()
+                     map.put("warehouseName",set_name.text.toString())
+                     map.put("warehouseAddress",set_address.text.toString())
+                     map.put("warehouseDescription",ware_introduction.contentText)
+                     map.put("companyId",(activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId.toString())
+                     Create_Warehouse_Model.getData(map,saveBitmapFile((set_img.getDrawable() as BitmapDrawable).getBitmap(),"warehouseImg"),"warehouseImg",object:Create_Warehouse_Model.Show{
+                             override fun show(str: String) {
+                                 XToast.info(requireContext(),str).show()
+                                 if(str=="创建仓库成功"){
+                                     (activity as MainActivity).fragment_Manager.pop()
+                                 }
                              }
-                         }
-                     },(activity as MainActivity).fragment_Manager.userinfo)
-                 }else{
+                         },(activity as MainActivity).fragment_Manager.userinfo)
+                     }
+                 else{
 
                      var alartWarningDialog= Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
                          override fun sure() {
@@ -89,6 +101,26 @@ class Create_Warehouse_Fragment:Fragment() {
          }
     }
 
+   fun saveBitmapFile(bitmap:Bitmap?,str:String):File{
+           var file = File(requireContext().getFilesDir().getPath().toString()+str+".jpg");//将要保存图片的路径
+           if(!file.exists()){
+               try {
+                   file.createNewFile();
+               } catch ( e:Exception) {
+                   print("@@@@@"+e)
+               }
+           }
+           try {
+               var bos = BufferedOutputStream(FileOutputStream(file))
+               bitmap?.compress(Bitmap.CompressFormat.JPEG, 20, bos)
+               bos.flush()
+               bos.close()
+           } catch (e: Exception) {
+               print("@@@@@"+e)
+           }
+           return file
+   }
+
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
@@ -97,20 +129,23 @@ class Create_Warehouse_Fragment:Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         set_img.layoutParams.height=500
         set_img.layoutParams.width=500
+        hasImg=true
         when (requestCode) {
             Open_Album.TAKE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
-                val bitmap =
+                bitmap =
                     BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(
                         Open_Album.uri))
                 Glide.with(this).load(bitmap).into(set_img)
             }
             Open_Album.CHOOSE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
+
+
+
                 if (Build.VERSION.SDK_INT >= 19) Open_Album.handleImageOnKitKat(activity,data,set_img) else Open_Album.handleImageBeforeKitKat(activity,data,set_img)
             }
             else -> {
             }
         }
-    }
 
-    data class Create_Warehouse_params(var companyId:Int,var warehouseName:String)
+    }
 }

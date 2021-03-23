@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
         layout="@layout/base_top_bar"></include>
@@ -9,13 +11,16 @@
         android:layout_width="match_parent"
         android:background="#FFFFFF"
         android:layout_height="200dp">
-        <ImageView
-            android:layout_width="100dp"
-            android:id="@+id/warehouse_img"
-            android:layout_centerVertical="true"
+        <com.makeramen.roundedimageview.RoundedImageView
             android:layout_marginLeft="15dp"
-            android:src="@drawable/all"
-            android:layout_height="100dp"></ImageView>
+            android:src="@drawable/touxiang"
+            android:id="@+id/warehouse_img"
+            android:layout_width="100dp"
+            app:riv_oval="true"
+            android:scaleType="centerCrop"
+            android:layout_centerVertical="true"
+            android:adjustViewBounds="true"
+            android:layout_height="100dp"></com.makeramen.roundedimageview.RoundedImageView>
         <TextView
             android:layout_width="wrap_content"
             android:layout_toRightOf="@+id/warehouse_img"
@@ -45,7 +50,7 @@
             android:text="1000名员工"
             android:gravity="center"
             android:layout_marginTop="10dp"
-            android:id="@+id/warehouse_number"
+            android:id="@+id/warehouse_des"
             android:textColor="@color/skyblue"
             android:textSize="10dp"
             android:layout_height="25dp"></TextView>

@@ -57,5 +57,5 @@ class All_Warehouse_Model {
         fun show(wares: Array<Warehouse>)
     }
 
-    data class Warehouse(var warehouseId:Int,var warehouseName:String)
+    data class Warehouse(var warehouseId:Int,var warehouseName:String,val warehouseAddress:String,val warehouseDescription:String,val warehouseImg:String)
 }

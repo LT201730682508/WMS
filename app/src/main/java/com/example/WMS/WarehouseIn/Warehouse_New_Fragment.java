@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
@@ -36,6 +38,9 @@ import com.xuexiang.xui.widget.toast.XToast;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,6 +64,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private int warehouseId;
     private Dialog dialog;
     private String token;
+    private Boolean hasImg=false;
     public Warehouse_New_Fragment(String warehouseName,int warehouseId,String token){
         this.warehouseName=warehouseName;
         this.warehouseId=warehouseId;
@@ -100,7 +106,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             //更新数据
             //需要更新数据库信息代码
             // /api-inventory/addProduct
-            if(detail.getText().toString().equals("")||name.getText().toString().equals("")||category.getText().toString().equals("")||size.getText().toString().equals("")){
+            if(detail.getText().toString().equals("")||name.getText().toString().equals("")||category.getText().toString().equals("")||size.getText().toString().equals("")||!hasImg){
                 XToast.warning(requireContext(), "请输入完整信息").show();
             }
             else{
@@ -108,10 +114,15 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                  * (var warehouseId:Int,var productName:String,var productDescription:String,
                  *                          var productCategory:String,var productCode:String,var productImg:String)
                  * */
-                DataBean.ProductIn_post post_data=new DataBean.ProductIn_post(name.getText().toString(),detail.getText().toString(),category.getText().toString(),"productCode_bigmelon","productCode_bigmelon");
-                sendData(post_data);
-                XToast.success(requireContext(), "入库成功").show();
-                ((MainActivity)getActivity()).fragment_Manager.pop();
+                Map<String,String> map=new  HashMap<>();
+                map.put("productName",name.getText().toString());
+                map.put("productDescription",detail.getText().toString());
+                map.put("productCategory",category.getText().toString());
+                map.put("warehouseId","1");
+                map.put("productCode","productCode_bigmelon");
+
+                //DataBean.ProductIn_post post_data=new DataBean.ProductIn_post(name.getText().toString(),detail.getText().toString(),category.getText().toString(),"productCode_bigmelon","productCode_bigmelon");
+                sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
 
             }
 
@@ -121,9 +132,28 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             dialog.show();
         }
     }
-    public void sendData(DataBean.ProductIn_post parms){
+
+    public File saveBitmapFile(Bitmap bitmap,String img){
+        File file = new File(requireContext().getFilesDir().getPath().toString()+img+".jpg");//将要保存图片的路径
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (Exception e) {
+            }
+        }
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bos);
+            bos.flush();
+            bos.close();
+        } catch ( Exception e) {
+
+        }
+        return file;
+    }
+    public void sendData(Map<String,String> parms, File file,String img){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addProduct/"+warehouseId+"/?userToken="+token,parms,new BaseCallback<DataBean.ProductIn_post>(){
+        okHttpHelper.post_for_form("http://121.199.22.134:8003/api-inventory/addProduct"+"?userToken="+token,parms,file,img,new BaseCallback<String>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -140,8 +170,16 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             }
 
             @Override
-            public void onSuccess(Response response, DataBean.ProductIn_post productIn_post) {
-                System.out.println("@@@@@3"+response);
+            public void onSuccess(Response response, String str) {
+                System.out.println("@@@@@3"+str);
+                if(str.equals("创建商品成功")){
+                    XToast.success(requireActivity(),str).show();
+                    ((MainActivity)getActivity()).fragment_Manager.pop();
+                }else {
+                    XToast.warning(requireActivity(),str).show();
+                }
+
+
             }
 
 //            override fun onSuccess(response: Response?, t: String?) {
@@ -165,6 +203,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        hasImg=true;
         switch (requestCode){
             case Open_Album.TAKE_PHOTO:{
                 if (resultCode == Activity.RESULT_OK){

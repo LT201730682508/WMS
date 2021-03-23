@@ -5,15 +5,16 @@ import com.example.WMS.MyFragment.Login_fragment
 import com.example.WMS.OkHttpHelper
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
+import java.io.File
 import java.io.IOException
 import java.lang.Exception
 
 class Create_Warehouse_Model {
 
     companion object{
-        fun getData(parms: Create_Warehouse_Fragment.Create_Warehouse_params, show: Show,userLogin: Login_fragment.user_Login){
+        fun getData(parms: Map<String,String>, file:File,img:String,show: Show,userLogin: Login_fragment.user_Login){
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addWarehouse/"+parms.warehouseName+"/"+userLogin.userInfo.companyId+"?userToken="+userLogin.token ,parms,object :
+            okHttpHelper.post_for_form("http://121.199.22.134:8003/api-inventory/addWarehouse" +"?userToken="+userLogin.token ,parms,file,img,object :
                 BaseCallback<String>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)
@@ -32,7 +33,7 @@ class Create_Warehouse_Model {
                 }
 
                 override fun onError(response: Response?, code: Int, e: Exception?) {
-                    println("@@@@@4"+code+e)
+                    println("@@@@@4"+response+code+e)
                 }
 
             })

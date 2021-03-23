@@ -9,11 +9,13 @@ import com.google.gson.JsonParseException;
 import com.squareup.okhttp.Callback;
 import com.squareup.okhttp.FormEncodingBuilder;
 import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.MultipartBuilder;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.okhttp.Response;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -65,9 +67,9 @@ public class OkHttpHelper<T> {
         doRequest(request,callback);
     }
     //Post方法
-    public void post_for_form(String url, Map<String,String> params,BaseCallback callback){
+    public void post_for_form(String url, Map<String,String> params,File file,String img,BaseCallback callback){
 
-        Request request = buildRequest_form(url,params,HttpMethodType.POST);
+        Request request = buildRequest_form(url,params,HttpMethodType.POST,file,img);
         doRequest(request,callback);
     }
     public void post_for_list(String url, Object params,BaseCallback callback){
@@ -92,7 +94,7 @@ public class OkHttpHelper<T> {
         return builder.build();
     }
     //构建Request的方法
-    private  Request buildRequest_form(String url,Map<String,String> params,HttpMethodType methodType){
+    private  Request buildRequest_form(String url,Map<String,String> params,HttpMethodType methodType,File file,String img){
 
         //构建一个Request的对象
         Request.Builder builder = new Request.Builder();
@@ -103,22 +105,26 @@ public class OkHttpHelper<T> {
         }
         else if (methodType == HttpMethodType.POST){
 
-            RequestBody body = buildFormData(params);
+            RequestBody body = buildFormData(params,file,img);
             builder.post(body);
         }
         return builder.build();
     }
     //构建RequestBody的方法
-    private RequestBody buildFormData(Map<String,String> params){
-
-        FormEncodingBuilder builder = new FormEncodingBuilder();
-
+    private RequestBody buildFormData(Map<String,String> params, File file,String img){
+    //   FormEncodingBuilder builder = new FormEncodingBuilder();
+        MultipartBuilder builder = new MultipartBuilder().type(MultipartBuilder.FORM);
         if (params != null){
             //循环取出Map中的数据
             for (Map.Entry<String,String> entry :params.entrySet()){
-                builder.add(entry.getKey(),entry.getValue());
+                builder.addFormDataPart(entry.getKey(),entry.getValue());
             }
         }
+        MediaType MEDIA_TYPE_JPG = MediaType.parse("application/x-www-form-urlencoded");
+
+        RequestBody body = RequestBody.create(MEDIA_TYPE_JPG, file);
+        String filename = file.getName();
+        builder.addFormDataPart(img,filename+".jpg",body);
         return builder.build();
     }
 
