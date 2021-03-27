@@ -56,7 +56,6 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private ClearEditText name;
     private ClearEditText detail;
     private ClearEditText category;
-    private ClearEditText size;
     private Base_Topbar base_topbar;
     private ImageView picture;
     private ClearEditText warehouse_name;
@@ -93,7 +92,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         warehouse_name.setText(warehouseName);
         picture=view.findViewById(R.id.iv_picture);
         picture.setOnClickListener(this);
-        size=view.findViewById(R.id.et_size);
+
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
         category=view.findViewById(R.id.et_category);
@@ -106,7 +105,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             //更新数据
             //需要更新数据库信息代码
             // /api-inventory/addProduct
-            if(detail.getText().toString().equals("")||name.getText().toString().equals("")||category.getText().toString().equals("")||size.getText().toString().equals("")||!hasImg){
+            if(detail.getText().toString().equals("")||name.getText().toString().equals("")||category.getText().toString().equals("")||!hasImg){
                 XToast.warning(requireContext(), "请输入完整信息").show();
             }
             else{

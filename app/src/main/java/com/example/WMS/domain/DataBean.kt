@@ -8,8 +8,8 @@ class DataBean {
     data class ProductOut(var id:Int,var productId:Int,var productName:String,var totalAmount:Int,var productDescription:String,
                         var outPrice:Int,var productCategory:String,var productCode:String,var productImg:String,var updateTime:String)
 
-    data class ProductIn_post(var productName:String,var productDescription:String,
-                              var productCategory:String,var productCode:String,var productImg:String)
+    data class ProductIn_post(var productId: Int ,var productName: String, var productDescription: String,
+                              var productCategory: String, var productCode: String, var productImg: String)
 
     data class ProductIn_inWarehouse(var id:Int,var supplierId: String,var inPrice: Double,var amount: Int,var note: String)
 

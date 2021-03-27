@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 
+import com.bumptech.glide.Glide;
 import com.example.WMS.BaseCallback;
 import com.example.WMS.MainActivity;
 import com.example.WMS.OkHttpHelper;
@@ -52,6 +54,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     private String supplierName;
     private String token;
     private String id;
+    private ImageView imageView;
     public Warehouse_Add_Fragment(Context context,DataBean.ProductIn productIn,String token) {
         super(context);
         this.context=context;
@@ -60,27 +63,6 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     }
 
 
-//    @NonNull
-//    @Override
-//    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-//        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-//        LayoutInflater inflater=getActivity().getLayoutInflater();
-//        View view=inflater.inflate(R.layout.fragment_warehouse_in_add,null);
-//        btn_add=view.findViewById(R.id.btn_add);
-//        btn_cancel=view.findViewById(R.id.btn_cancel);
-//        btn_add.setOnClickListener(this);
-//        btn_cancel.setOnClickListener(this);
-//        tv_name=view.findViewById(R.id.tv_name);
-//        tv_name.setText(productIn.getProductName());
-//        et_size=view.findViewById(R.id.et_size);
-//        et_size.setText(productIn.getInPrice());
-//        et_price=view.findViewById(R.id.et_price);
-//        et_note=view.findViewById(R.id.et_note);
-//        tv_supplier=view.findViewById(R.id.select_supplier);
-//        tv_supplier.setText(supplierName);
-//        builder.setView(view);
-//        return builder.create();
-//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +83,8 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
         et_price=contentView.findViewById(R.id.et_price);
         et_price.setText(productIn.getInPrice()+"");
         et_note=contentView.findViewById(R.id.et_note);
+        imageView=contentView.findViewById(R.id.iv_picture);
+        Glide.with(context).load(productIn.getProductImg()).into(imageView);
         //btn_select=contentView.findViewById(R.id.select_supplier);
         setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
@@ -114,7 +98,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
             //
             SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
             id=preferences.getString("supplierId", "-1");
-            DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getProductId(),id,
+            DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getId(),id,
                     Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
             sendData(post_data);
 

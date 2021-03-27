@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.example.WMS.BaseCallback;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
@@ -42,6 +44,7 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
     private String token;
     private DataBean.ProductOut productOut;
     private String id;
+    private ImageView imageView;
     public Warehouse_Delete_Dialog(@NonNull Context context, DataBean.ProductOut productOut,String token) {
         super(context);
         this.context=context;
@@ -69,6 +72,8 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
         et_price=contentView.findViewById(R.id.et_price);
         et_price.setText(productOut.getOutPrice()+"");
         et_note=contentView.findViewById(R.id.et_note);
+        imageView=contentView.findViewById(R.id.iv_picture);
+        Glide.with(context).load(productOut.getProductImg()).into(imageView);
     //    ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
         //存在问题：无法水平铺满
     //    layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;
@@ -88,7 +93,7 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
             //
             SharedPreferences preferences=context.getSharedPreferences("receiver", Context.MODE_PRIVATE);
             id=preferences.getString("receiverId", "-1");
-            DataBean.ProductOut_outWarehouse post_data=new DataBean.ProductOut_outWarehouse(productOut.getProductId(),id,
+            DataBean.ProductOut_outWarehouse post_data=new DataBean.ProductOut_outWarehouse(productOut.getId(),id,
                     Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
             sendData(post_data);
             cancel();
