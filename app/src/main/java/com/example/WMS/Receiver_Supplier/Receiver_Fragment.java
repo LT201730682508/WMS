@@ -44,7 +44,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
     private Base_Topbar base_topbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
-    private String token;
+    private static String token;
     public Receiver_Fragment(String token) {
         this.token=token;
     }
@@ -107,8 +107,9 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
     }
 
     private void getData() {
+        String companyId="1";
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getReceiverByCompanyId/1?userToken="+token,new BaseCallback<DataBean.Receiver>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getReceiverByCompanyId/"+companyId+"?userToken="+token,new BaseCallback<DataBean.Receiver>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -171,7 +172,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
 
-                    adapter=new RS_Adapter<RS_Adapter.VH>(receivers_list, R.layout.item_receiver_supplier, 1,activity);
+                    adapter=new RS_Adapter<RS_Adapter.VH>(receivers_list, R.layout.item_receiver_supplier, 1,activity,token);
                     rv_pager.setAdapter(adapter);
                     rv_pager.setLayoutManager(new LinearLayoutManager(activity));
                 }

@@ -51,7 +51,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     private Base_Topbar base_topbar;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
-    private String token;
+    private static String token;
     public Supplier_Fragment(String token) {
         this.token=token;
     }
@@ -174,7 +174,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
                     //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
 
-                    adapter=new RS_Adapter<RS_Adapter.VH>(R.layout.item_receiver_supplier, suppliers_list,0,activity);
+                    adapter=new RS_Adapter<RS_Adapter.VH>(R.layout.item_receiver_supplier, suppliers_list,0,activity,token);
                     rv_pager.setAdapter(adapter);
 
                 }

@@ -76,6 +76,10 @@ public class OkHttpHelper<T> {
         Request request = buildRequest(url,params,HttpMethodType.POST);
         doRequest_for_list(request,callback);
     }
+    public void delete_for_list(String url, BaseCallback callback){
+        Request request = buildRequest(url,null,HttpMethodType.POST);
+        doRequest_for_list(request,callback);
+    }
     //构建Request的方法
     private  Request buildRequest(String url,Object params,HttpMethodType methodType){
 

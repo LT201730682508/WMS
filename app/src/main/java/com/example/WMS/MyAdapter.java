@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,11 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
+import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
 import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
 import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
 import com.example.WMS.domain.DataBean;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<MyAdapter.VH> {
@@ -28,6 +34,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         private RelativeLayout rl;
         private FrameLayout fl;
         private Button btn_add;
+        private ImageView imageView;
 
         public static  VH getHolder(int mResId, ViewGroup parent, int viewType){
             VH holder;
@@ -42,6 +49,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             rl=v.findViewById(R.id.item_rl);
             fl=v.findViewById(R.id.item_fl);
             btn_add=v.findViewById(R.id.btn_add);
+            imageView=v.findViewById(R.id.iv_icon);
 
         }
         private <T extends View> T getView(int id) {
@@ -70,12 +78,6 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         public VH setInPrice(int id,int inPrice){
             TextView textView = getView(id);
             textView.setText(""+inPrice);
-            return this;
-        }
-
-        public VH setChecked(int id, boolean isChecked) {
-            CheckBox checkBox = getView(id);
-            checkBox.setChecked(isChecked);
             return this;
         }
     }
@@ -156,16 +158,18 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                 if(opType==WAREHOUSE_IN){//入库Adater
                     if(mDatas.get(position).getTotalAmount()==0){
                         //执行删除list刷新ui操作
-                        Toast.makeText(activity,"当前可删除",Toast.LENGTH_SHORT).show();
+                        DeleteData(mDatas.get(position).getId());
+                        Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Toast.makeText(activity,"不为0不可删除",Toast.LENGTH_SHORT).show();
                     }
                 }
                 else if(opType==WAREHOUSE_OUT){//出库Adater
-                    if(mDatas.get(position).getTotalAmount()==0){
+                    if(mDatasOut.get(position).getTotalAmount()==0){
                         //执行删除list刷新ui操作
-                        Toast.makeText(activity,"当前可删除",Toast.LENGTH_SHORT).show();
+                        DeleteData(mDatasOut.get(position).getId());
+                        Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Toast.makeText(activity,"不为0不可删除",Toast.LENGTH_SHORT).show();
@@ -191,6 +195,37 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         });
 
     }
+    public void DeleteData(int id){
+        OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
+        okHttpHelper.delete_for_list("http://121.199.22.134:8003/api-inventory/deleteInventoryProductById/"+id+"?userToken="+token,new BaseCallback<Integer>(){
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("@@@@@@@@@@1"+response);
+            }
+
+            @Override
+            public void onSuccess_List(String resultStr) {
+                System.out.println("@@@@@3"+resultStr);
+            }
+
+            @Override
+            public void onSuccess(Response response, Integer integer) {
+                System.out.println("@@@@@3"+response);
+            }
+
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+
+        });
+    }
     //public abstract void bindView(VH holder,int position);
     public void bindView(VH holder,int position){
         if(opType==WAREHOUSE_IN){
@@ -198,12 +233,15 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_inPrice,mDatas.get(position).getInPrice());
             holder.setDetail(R.id.tv_detail,mDatas.get(position).getProductDescription());
+
+            Glide.with(activity).load(mDatas.get(position).getProductImg()).into(holder.imageView);
         }
         else if(opType==WAREHOUSE_OUT){
             holder.setText(R.id.tv_name, mDatasOut.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatasOut.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_outPrice,mDatasOut.get(position).getOutPrice());
             holder.setDetail(R.id.tv_detail,mDatasOut.get(position).getProductDescription());
+            Glide.with(activity).load(mDatasOut.get(position).getProductImg()).into(holder.imageView);
         }
     }
     @Override

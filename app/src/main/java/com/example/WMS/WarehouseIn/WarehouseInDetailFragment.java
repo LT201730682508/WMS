@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.WMS.BaseCallback;
@@ -35,9 +38,14 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.xuexiang.xui.widget.edittext.ClearEditText;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 点击item打开的修改详情页
@@ -55,6 +63,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     private String warehouseName;
     private DataBean.ProductIn productIn;
     private String product_name;
+    private ImageView imageView;
     private Dialog dialog;
     private DataBean.Product wares;
     private String token;
@@ -93,6 +102,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
         category=view.findViewById(R.id.et_category);
+        imageView=view.findViewById(R.id.iv_picture);
         getData();
         size.setFocusable(false);
         size.setOnClickListener(this);
@@ -102,7 +112,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getProductById/"+productIn.getId()+"?userToken="+token,new BaseCallback<DataBean.ProductIn>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getProductById/"+productIn.getProductId()+"?userToken="+token,new BaseCallback<DataBean.ProductIn>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -125,6 +135,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
                 detail.setText(wares.getProductDescription());
                 name.setText(wares.getProductName());
 
+                setImage(getActivity(),wares.getProductImg(),imageView);
             }
 
             @Override
@@ -139,9 +150,27 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
             }
         } );
     }
-    public void sendData(DataBean.ProductIn_post parms){
+    public File saveBitmapFile(Bitmap bitmap, String img){
+        File file = new File(requireContext().getFilesDir().getPath().toString()+img+".jpg");//将要保存图片的路径
+        if(!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (Exception e) {
+            }
+        }
+        try {
+            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bos);
+            bos.flush();
+            bos.close();
+        } catch ( Exception e) {
+
+        }
+        return file;
+    }
+    public void sendData(Map<String,String> parms, File file, String img){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addProduct/"+"/",parms,new BaseCallback<DataBean.ProductIn_post>(){
+        okHttpHelper.post_for_form("http://121.199.22.134:8003/api-inventory/modifyProductInfo?userToken="+token,parms,file,img,new BaseCallback<DataBean.ProductIn_post>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -178,6 +207,13 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
             //更新数据
             //需要更新数据库信息代码
             // /api-inventory/modifyProduct
+            Map<String,String> map=new HashMap<>();
+            map.put("productId",productIn.getProductId()+"");
+            map.put("productName",name.getText().toString());
+            map.put("productDescription",detail.getText().toString());
+            map.put("productCategory",category.getText().toString());
+            map.put("productCode","url");
+            sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
             ((MainActivity)getActivity()).fragment_Manager.pop();
         }
         else if (v==picture){
