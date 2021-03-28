@@ -135,7 +135,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 pos=position+1;
                 System.out.println("-----"+pos);
 
-                warehouseItems = new ArrayList<DataBean.ProductIn>();
+                //warehouseItems = new ArrayList<DataBean.ProductIn>();
                 getData();
                 //根据选中仓库加载对应的RecycleView
                 //handler.sendEmptyMessage(0);
@@ -252,6 +252,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         super.onHiddenChanged(hidden);
         if(isHidden()){
         }else {
+            getData();
             onResume();
 
         }

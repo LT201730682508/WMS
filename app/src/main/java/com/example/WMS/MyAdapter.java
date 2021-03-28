@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
+import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
 import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
 import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
 import com.example.WMS.domain.DataBean;
