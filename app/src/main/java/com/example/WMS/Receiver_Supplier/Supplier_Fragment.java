@@ -52,15 +52,16 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
     private static String token;
+
     public Supplier_Fragment(String token) {
         this.token=token;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
-
     }
 
     @Nullable
@@ -86,14 +87,12 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
                  * 刷新操作在这里实现
                  * */
                 initData();
-                //handler.sendEmptyMessage(0);
-
-//                //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
         return view;
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
@@ -121,9 +120,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
             }
 
             @Override
-
             public void onSuccess_List(String resultStr) {
-
                 Gson gson= new Gson();
                 DataBean.Supplier[] wares=gson.fromJson(resultStr,DataBean.Supplier[].class);
                 System.out.println("a  "+resultStr);
@@ -132,8 +129,6 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
                     suppliers_list.add(wares[i]);
                 }
                 handler.sendEmptyMessage(0);
-
-
             }
 
             @Override
@@ -141,12 +136,11 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
             }
 
-
             @Override
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-        } );
+        });
     }
 
     @Override
@@ -155,7 +149,6 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
             RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0,token);
             rs_add_dialog.show();
         }
-
     }
 
     private static class MyHandler extends Handler {
@@ -171,21 +164,17 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
                 if(suppliers_list!=null&&suppliers_list.size()>0){
                     im_empty.setVisibility(View.GONE);
                     tv_empty.setVisibility(View.GONE);
-
-                    //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
-
                     adapter=new RS_Adapter<RS_Adapter.VH>(R.layout.item_receiver_supplier, suppliers_list,0,activity,token);
                     rv_pager.setAdapter(adapter);
-
                 }
                 else{
-
                     im_empty.setVisibility(View.VISIBLE);
                     tv_empty.setVisibility(View.VISIBLE);
                 }
             }
         }
     }
+
     //返回该framgent时刷新数据
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -195,5 +184,4 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
             onResume();
         }
     }
-
 }

@@ -29,20 +29,16 @@ import java.util.ArrayList;
 
 public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<MyAdapter.VH> {
     public static class VH extends RecyclerView.ViewHolder{
-        //public final TextView title;
         private SparseArray<View> views = new SparseArray<>();
         private RelativeLayout rl;
         private FrameLayout fl;
         private Button btn_add;
         private ImageView imageView;
-
         public static  VH getHolder(int mResId, ViewGroup parent, int viewType){
             VH holder;
             View v = LayoutInflater.from(parent.getContext()).inflate(mResId, parent, false);
             holder = new VH(v);
             return holder;
-
-
         }
         public VH(View v) {
             super(v);
@@ -50,7 +46,6 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             fl=v.findViewById(R.id.item_fl);
             btn_add=v.findViewById(R.id.btn_add);
             imageView=v.findViewById(R.id.iv_icon);
-
         }
         private <T extends View> T getView(int id) {
             T t = (T) views.get(id);
@@ -81,9 +76,9 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             return this;
         }
     }
+
     private final int WAREHOUSE_IN=0;
     private final int WAREHOUSE_OUT=1;
-    //private final int WAREHOUSE_CHECK=2;
     private int opType;//WAREHOUSE_IN是入库，WAREHOUSE_OUT是出库后续继续添加
     private int mResId;
     private ArrayList<DataBean.ProductIn> mDatas;
@@ -91,15 +86,10 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     private MainActivity activity;
     private String token;
     private String id;
-    public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity) {
-        this.mDatas = data;
-        this.mResId = mResId;
-        this.opType = opType;
-        this.activity=activity;
-    }
     private String warehouseName;
     private String supplierName;
     private String receiverName;
+
     public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity,String warehouseName,String supplierName,String token,String id) {
         this.mDatas = data;
         this.mResId = mResId;
@@ -110,6 +100,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         this.token=token;
         this.id=id;
     }
+
     public MyAdapter(int mResId,ArrayList<DataBean.ProductOut> data, int opType,MainActivity activity,String warehouseName,String receiverName,String token,String id) {
         this.mDatasOut = data;
         this.mResId = mResId;
@@ -124,17 +115,13 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     @NonNull
     @Override
     public MyAdapter.VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        //LayoutInflater.from指定写法
-        //View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_inlist, parent, false);
-        //return new MyAdapter.VH(v);
         return VH.getHolder(mResId,parent,viewType);
     }
+
     @Override
     public void onBindViewHolder(@NonNull MyAdapter.VH holder, int position) {
         bindView(holder,position);
         onClickMethod(holder,position);
-
-
     }
 
     public void onClickMethod(VH holder, final int position){
@@ -159,6 +146,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     if(mDatas.get(position).getTotalAmount()==0){
                         //执行删除list刷新ui操作
                         DeleteData(mDatas.get(position).getId());
+                        notifyItemRemoved(position);
                         Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
                     }
                     else{
@@ -169,6 +157,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     if(mDatasOut.get(position).getTotalAmount()==0){
                         //执行删除list刷新ui操作
                         DeleteData(mDatasOut.get(position).getId());
+                        notifyItemRemoved(position);
                         Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
                     }
                     else{
@@ -195,6 +184,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         });
 
     }
+
     public void DeleteData(int id){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
         okHttpHelper.delete_for_list("http://121.199.22.134:8003/api-inventory/deleteInventoryProductById/"+id+"?userToken="+token,new BaseCallback<Integer>(){
@@ -226,14 +216,13 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
 
         });
     }
-    //public abstract void bindView(VH holder,int position);
+
     public void bindView(VH holder,int position){
         if(opType==WAREHOUSE_IN){
             holder.setText(R.id.tv_name, mDatas.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_inPrice,mDatas.get(position).getInPrice());
             holder.setDetail(R.id.tv_detail,mDatas.get(position).getProductDescription());
-
             Glide.with(activity).load(mDatas.get(position).getProductImg()).into(holder.imageView);
         }
         else if(opType==WAREHOUSE_OUT){
@@ -253,8 +242,5 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             return mDatasOut.size();
         }
         return 0;
-
     }
-
-
 }

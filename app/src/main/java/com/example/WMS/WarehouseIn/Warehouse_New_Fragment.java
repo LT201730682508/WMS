@@ -64,11 +64,13 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private Dialog dialog;
     private String token;
     private Boolean hasImg=false;
+
     public Warehouse_New_Fragment(String warehouseName,int warehouseId,String token){
         this.warehouseName=warehouseName;
         this.warehouseId=warehouseId;
         this.token=token;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,7 +94,6 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         warehouse_name.setText(warehouseName);
         picture=view.findViewById(R.id.iv_picture);
         picture.setOnClickListener(this);
-
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
         category=view.findViewById(R.id.et_category);
@@ -119,15 +120,10 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 map.put("productCategory",category.getText().toString());
                 map.put("warehouseId","1");
                 map.put("productCode","productCode_bigmelon");
-
-                //DataBean.ProductIn_post post_data=new DataBean.ProductIn_post(name.getText().toString(),detail.getText().toString(),category.getText().toString(),"productCode_bigmelon","productCode_bigmelon");
                 sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
-
             }
-
         }
         else if (v==picture){
-
             dialog.show();
         }
     }
@@ -150,6 +146,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         }
         return file;
     }
+
     public void sendData(Map<String,String> parms, File file,String img){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
         okHttpHelper.post_for_form("http://121.199.22.134:8003/api-inventory/addProduct"+"?userToken="+token,parms,file,img,new BaseCallback<String>(){
@@ -177,28 +174,18 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 }else {
                     XToast.warning(requireActivity(),str).show();
                 }
-
-
             }
-
-//            override fun onSuccess(response: Response?, t: String?) {
-//                println("@@@@@3"+t)
-//                var hander = Handler(Looper.myLooper()!!)
-//                hander.post{
-//                    show.show(t!!)
-//                }
-//            }
 
             @Override
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-
         });
     }
     public   void setImage(Activity activity,String str,ImageView imageView){
         Glide.with(activity).load(str).into(imageView);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

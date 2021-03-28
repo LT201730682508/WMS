@@ -45,6 +45,7 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
     private DataBean.ProductOut productOut;
     private String id;
     private ImageView imageView;
+
     public Warehouse_Delete_Dialog(@NonNull Context context, DataBean.ProductOut productOut,String token) {
         super(context);
         this.context=context;
@@ -74,18 +75,12 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
         et_note=contentView.findViewById(R.id.et_note);
         imageView=contentView.findViewById(R.id.iv_picture);
         Glide.with(context).load(productOut.getProductImg()).into(imageView);
-    //    ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
-        //存在问题：无法水平铺满
-    //    layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;
-       // layoutParams.width = 1300;
-     //   setCancelable(true);
-        // requestWindowFeature(Window.FEATURE_NO_TITLE);
-     //   contentView.setLayoutParams(layoutParams);
         setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
     }
+
     @Override
     public void onClick(View v) {
         if(v==btn_add){
@@ -127,13 +122,10 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
                 System.out.println("@@@@@3"+response);
             }
 
-
             @Override
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-
         });
     }
-
 }
