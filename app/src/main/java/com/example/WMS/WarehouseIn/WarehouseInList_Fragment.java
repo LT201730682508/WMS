@@ -80,33 +80,31 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static String selectWarehouseName=warehouseName[pos-1];
     private static String supplierName="111";
     private static String supplierId="";
-    //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
     private long lastClickTime=0;
     private long now=0;
     private static String token;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
-        //token="385e5f984e094268b7b04510063242ee";
         token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
-
-
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return initView();
     }
+
     //子类实现方法
     public View initView(){
         View view=View.inflate(context,R.layout.inlist_fragment,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
-
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);
@@ -134,16 +132,12 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 selectWarehouseName=warehouseName[position];
                 pos=position+1;
                 System.out.println("-----"+pos);
-
-                //warehouseItems = new ArrayList<DataBean.ProductIn>();
                 getData();
-                //根据选中仓库加载对应的RecycleView
-                //handler.sendEmptyMessage(0);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //todo-something
             }
         });
         return view;
@@ -152,8 +146,6 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
-        //getData();
         btn_add.setOnClickListener(this);
         btn_scan.setOnClickListener(this);
         btn_select.setOnClickListener(this);
@@ -162,23 +154,11 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     public static void setSupplierName(String string){
         //有数据后记得测试这里
         btn_select.setText(string);
-
     }
 
-//    public void initData(){
-//
-//        getData();
-//    }
-
-
     private void getData() {
-        //SharedPreferences settings = context.getSharedPreferences("user", Context.MODE_PRIVATE);
-        //token=settings.getString("token","0");
-        System.out.println("_______________"+token);
-
         OkHttpHelper ok= OkHttpHelper.getInstance();
         ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+pos+"?userToken="+token,new BaseCallback<DataBean.ProductIn>(){
-
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -190,21 +170,16 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
 
             @Override
-
-
             public void onSuccess_List(final String resultStr) {
                 warehouseItems = new ArrayList<DataBean.ProductIn>();
                 Gson gson= new Gson();
                 DataBean.ProductIn[] wares=gson.fromJson(resultStr,DataBean.ProductIn[].class);
                 warehouseItems.addAll(Arrays.asList(wares));
                 handler.sendEmptyMessage(0);
-
-
             }
 
             @Override
             public void onSuccess(Response response, DataBean.ProductIn productIn) {
-
                 System.out.println("Success"+response);
             }
 
@@ -212,7 +187,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-        } );
+        });
     }
 
     private static class MyHandler extends Handler{
@@ -224,28 +199,24 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         public void handleMessage(Message msg) {
             final MainActivity activity=mActivity.get();
             super.handleMessage(msg);
-
             if(activity!=null){
                 if(warehouseItems!=null&&warehouseItems.size()>0){
                     tv_nomedia.setVisibility(View.GONE);
                     pb_loading.setVisibility(View.GONE);
                     rv_pager.setVisibility(View.VISIBLE);
-                    //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
-                    System.out.println("----------------------");
                     adapter=new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist,0,activity,selectWarehouseName,supplierName,token,supplierId);
                     rv_pager.setAdapter(adapter);
-
                 }
                 else{
                     System.out.println("@@@@@@@@@@222");
                     rv_pager.setVisibility(View.GONE);
-
                     tv_nomedia.setVisibility(View.VISIBLE);
                     pb_loading.setVisibility(View.VISIBLE);
                 }
             }
         }
     }
+
     //返回该framgent时刷新数据
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -254,12 +225,11 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         }else {
             getData();
             onResume();
-
         }
     }
+
     @Override
     public void onClick(View v) {
-
         if(v==btn_add){
             now = System.currentTimeMillis();
             if(now - lastClickTime >1000) {
@@ -267,10 +237,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName,pos,token);
                 ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
             }
-
         }
         else if(v==btn_scan){
-
+            //todo-something
         }
         else if(v==btn_select){
             now = System.currentTimeMillis();
@@ -281,8 +250,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
         }
     }
-    class myTask extends AsyncTask {
 
+    class myTask extends AsyncTask {
         @Override
         protected Object doInBackground(Object[] objects) {
             return null;

@@ -38,7 +38,6 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
         private SparseArray<View> views = new SparseArray<>();
         public VH(View itemView) {
             super(itemView);
-
             rl=itemView.findViewById(R.id.item_rl);
             fl_delete=itemView.findViewById(R.id.item_fl_2);
             //fl_write=itemView.findViewById(R.id.item_fl);
@@ -71,6 +70,7 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
     private int opType;
     private MainActivity activity;
     private String token;
+
     public RS_Adapter(int mResId, ArrayList<DataBean.Supplier> data,  int opType,MainActivity activity,String token) {
         this.mDatas_Supplier = data;
         this.mResId = mResId;
@@ -78,6 +78,7 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
         this.activity=activity;
         this.token=token;
     }
+
     public RS_Adapter( ArrayList<DataBean.Receiver> data,int mResId,  int opType,MainActivity activity,String token) {
         this.mDatas_Receiver = data;
         this.mResId = mResId;
@@ -85,6 +86,7 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
         this.activity=activity;
         this.token=token;
     }
+
     @NonNull
     @Override
     public RS_Adapter.VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -130,16 +132,20 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
             public void onClick(View v) {
                 if(opType==SUPPLIER){
                     DeleteData(mDatas_Supplier.get(position).getSupplierId());
+                    notifyItemRemoved(position);
                     Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
                 }
                 else if(opType==RECEIVER){
                     DeleteData(mDatas_Receiver.get(position).getReceiverId());
+                    notifyItemRemoved(position);
                     Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
                 }
+
 
             }
         });
     }
+
     public void DeleteData(int id){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
         String opStr="";
@@ -173,14 +179,13 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
                 System.out.println("@@@@@3"+response);
             }
 
-
             @Override
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-
         });
     }
+
     private void bindView(VH holder, int position) {
         if(opType==SUPPLIER){
             holder.setText(R.id.tv_name, mDatas_Supplier.get(position).getSupplierName());
@@ -190,8 +195,6 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
             holder.setText(R.id.tv_name, mDatas_Receiver.get(position).getReceiverName());
             holder.setText(R.id.tv_address,mDatas_Receiver.get(position).getReceiverAddress());
         }
-
-
     }
 
     @Override

@@ -67,12 +67,14 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     private Dialog dialog;
     private DataBean.Product wares;
     private String token;
+
     public WarehouseInDetailFragment(String warehouseName, DataBean.ProductIn productIn,String token){
         //根据仓库名和商品名读取数据库，显示已有数据
         this.warehouseName=warehouseName;
         this.productIn=productIn;
         this.token=token;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +91,6 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
 
     private View initView() {
         View view=View.inflate(context, R.layout.fragment_warehouse_in_detail,null);
-
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),false);
         base_topbar.setTitle("入库");
         btn_commit=view.findViewById(R.id.commit);
@@ -113,7 +114,6 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
         ok.get_for_list("http://121.199.22.134:8003/api-inventory/getProductById/"+productIn.getProductId()+"?userToken="+token,new BaseCallback<DataBean.ProductIn>(){
-
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -125,8 +125,6 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
             }
 
             @Override
-
-
             public void onSuccess_List(final String resultStr) {
                 Gson gson= new Gson();
                 wares=gson.fromJson(resultStr,DataBean.Product.class);
@@ -134,13 +132,11 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
                 category.setText(wares.getProductCategory());
                 detail.setText(wares.getProductDescription());
                 name.setText(wares.getProductName());
-
                 setImage(getActivity(),wares.getProductImg(),imageView);
             }
 
             @Override
             public void onSuccess(Response response, DataBean.ProductIn productIn) {
-
                 System.out.println("Success"+response);
             }
 
@@ -156,6 +152,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
             try {
                 file.createNewFile();
             } catch (Exception e) {
+
             }
         }
         try {
@@ -190,16 +187,13 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
             public void onSuccess(Response response, DataBean.ProductIn_post productIn_post) {
                 System.out.println("@@@@@3"+response);
             }
-            
 
             @Override
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-
         });
     }
-
 
     @Override
     public void onClick(View v) {
@@ -217,16 +211,17 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
             ((MainActivity)getActivity()).fragment_Manager.pop();
         }
         else if (v==picture){
-
             dialog.show();
         }
         else if(v==size){
             Toast.makeText(context,"请使用入库改动商品数量",Toast.LENGTH_SHORT).show();
         }
     }
-    public   void setImage(Activity activity,String str,ImageView imageView){
+
+    public void setImage(Activity activity,String str,ImageView imageView){
         Glide.with(activity).load(str).into(imageView);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -245,7 +240,6 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
                 if(resultCode == Activity.RESULT_OK){
                     if (Build.VERSION.SDK_INT >= 19) Open_Album.handleImageOnKitKat(getActivity(),data,picture);
                     else Open_Album.handleImageBeforeKitKat(getActivity(),data,picture);
-
                 }else {}
                 break;
             }
