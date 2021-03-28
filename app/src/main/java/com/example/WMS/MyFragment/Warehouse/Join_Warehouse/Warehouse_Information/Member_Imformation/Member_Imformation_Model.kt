@@ -6,12 +6,13 @@ import com.example.WMS.OkHttpHelper
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
+import com.xuexiang.xui.widget.toast.XToast
 import java.io.IOException
 
 class Member_Imformation_Model {
 
     companion object{
-        fun modify_member_title(modify_params:modify_params) {
+        fun modify_member_title(modify_params:modify_params,result:result) {
             val ok = OkHttpHelper.getInstance()
             ok.post_for_object(
                 "http://121.199.22.134:8003/api-authority/changeStaffInfo",modify_params,
@@ -38,14 +39,15 @@ class Member_Imformation_Model {
                     }
 
                     override fun onSuccess(response: Response?, t: String?) {
-
-
-
+                        result.result()
                     }
                 })
         }
 
     }
 
-    data class modify_params(val token:String,val warehouseId:Int,val userId:Int,val role:String)
+    data class modify_params(val token:String,val warehouseId:Int,val user_name:String,val role:String)
+    interface result{
+        fun result()
+    }
 }

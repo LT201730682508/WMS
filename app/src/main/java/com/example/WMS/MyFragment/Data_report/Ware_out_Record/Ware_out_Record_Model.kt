@@ -14,9 +14,9 @@ import java.net.URL
 
 class Ware_out_Record_Model {
     companion object{
-        fun getData(parms: Any, result:Ware_Record,userLogin: Login_fragment.user_Login){
+        fun getData(warehouseId: Int, result:Ware_Record,userLogin: Login_fragment.user_Login){
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.get_for_list("http://121.199.22.134:8003/api-inventory/getOutWarehouseRecordByWarehouseId/2?userToken="+userLogin.token,object :
+            okHttpHelper.get_for_list("http://121.199.22.134:8003/api-inventory/getOutWarehouseRecordByWarehouseId/"+warehouseId+"?userToken="+userLogin.token,object :
                 BaseCallback<Out_Record>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)

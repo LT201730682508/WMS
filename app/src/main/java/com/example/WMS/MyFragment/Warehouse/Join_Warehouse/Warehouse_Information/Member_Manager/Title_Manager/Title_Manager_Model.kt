@@ -7,6 +7,7 @@ import com.example.WMS.OkHttpHelper
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
+import com.xuexiang.xui.widget.toast.XToast
 import java.io.IOException
 
 class Title_Manager_Model {
@@ -75,6 +76,7 @@ class Title_Manager_Model {
                         e: Exception
                     ) {
                         println("error$response$e")
+                        modifyShow.error(response.message().toString())
                     }
 
                     override fun onSuccess(response: Response?, t: String?) {
@@ -91,8 +93,9 @@ class Title_Manager_Model {
 
     interface modify_show{
         fun show(string: String)
+        fun error(string: String)
     }
     data class addtitleItem(val role:String,val authorities:String)
     data class titleItem(val id:Int,val role:String,val authorities:String)
-    data class changeParams(val warehouse_id:Int,val role:String,val authorities:String)
+    data class changeParams(val id:Int,val role:String,val authorities:String)
 }

@@ -57,5 +57,5 @@ class Member_Manager_Model {
         fun show(wares: Array<member_item>)
     }
 
-    data class member_item(val id:Int,val userId:Int,val userName:String,val role:String)
+    data class member_item(val id:Int,val userName:String,val role:String)
 }

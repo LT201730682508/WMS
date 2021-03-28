@@ -10,7 +10,7 @@ import com.example.WMS.R
 import kotlinx.android.synthetic.main.find_company_join.*
 import kotlinx.android.synthetic.main.join_or_create.*
 
-class Join_or_Create (context: Context ) : Dialog(context, R.style.CustomDialog) {
+class Join_or_Create (context: Context ,val token:String,val changeInfo: Create_Company_Dialog.change_Info) : Dialog(context, R.style.CustomDialog) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var view = View.inflate(context, R.layout.join_or_create, null)
@@ -27,7 +27,7 @@ class Join_or_Create (context: Context ) : Dialog(context, R.style.CustomDialog)
     fun initView(view: View) {
         create_company.setOnClickListener {
             dismiss()
-            var createCompanyDialog=Create_Company_Dialog(context )
+            var createCompanyDialog=Create_Company_Dialog(context ,token,changeInfo)
             createCompanyDialog.show()
         }
         join_company.setOnClickListener {

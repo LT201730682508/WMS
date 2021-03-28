@@ -11,8 +11,11 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.WMS.*
 import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Model
+import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder
 import com.xuexiang.xui.widget.picker.widget.configure.TimePickerType
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener
@@ -48,34 +51,45 @@ class Ware_out_Record_Fragment :Fragment(){
 //        start_time=view.findViewById(R.id.start_time)
 //        end_time=view.findViewById(R.id.end_time)
 
-        val mList: List<String> = listOf("初级员工", "高级员工", "管理员", "仓库主任", "CEO")
-        var arrayAdapter= ArrayAdapter<String>(activity as MainActivity,R.layout.member_title_spinner,mList)
-        arrayAdapter.setDropDownViewResource(R.layout.item_dropdown)
-        ware_spinner.adapter=arrayAdapter
-        ware_spinner.prompt="请选择仓库"
-        ware_spinner.onItemSelectedListener=object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                select_title=mList[position]
-                var hashMap=HashMap<String,Int>()
-                hashMap.put("warehouseId",2)
-                Ware_out_Record_Model.getData(hashMap,object :Ware_out_Record_Model.Ware_Record{
-                    override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
-                        var wareOutAdapter=Ware_out_Adapter(record_list,activity as MainActivity)
-                        ware_in_recycle.adapter=wareOutAdapter
+
+
+        Join_Warehouse_Model.getData(object : Join_Warehouse_Model.Show{
+            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+                if (wares.size!=0){
+                    var mList = ArrayList<String>()
+                    for (ware in wares){
+                        mList.add(ware.warehouseName)
                     }
+                    var arrayAdapter= ArrayAdapter<String>(activity as MainActivity,R.layout.member_title_spinner,mList)
+                    arrayAdapter.setDropDownViewResource(R.layout.item_dropdown)
+                    ware_spinner.adapter=arrayAdapter
+                    ware_spinner.prompt="请选择仓库"
+                    ware_spinner.onItemSelectedListener=object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View,
+                            position: Int,
+                            id: Long
+                        ) {
+                            select_title=mList[position]
+                            Ware_out_Record_Model.getData(wares.get(position).warehouseId,object : Ware_out_Record_Model.Ware_Record{
+                                override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+                                    var wareOutAdapter=Ware_out_Adapter(record_list,activity as MainActivity)
 
-                },(activity as MainActivity).fragment_Manager.userinfo)
+                                    ware_in_recycle.adapter=wareOutAdapter
+                                }
+                            },(activity as MainActivity).fragment_Manager.userinfo)
 
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
-       
+
+                        }
+                        override fun onNothingSelected(parent: AdapterView<*>?) {}
+                    }
+                }
+
+            }},(activity as MainActivity).fragment_Manager.userinfo)
+
+
 
 
 //

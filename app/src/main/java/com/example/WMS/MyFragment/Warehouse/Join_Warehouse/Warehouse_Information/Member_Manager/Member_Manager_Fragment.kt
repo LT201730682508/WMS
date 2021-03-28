@@ -58,7 +58,7 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
             (activity  as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
         }
         add_new_member.setOnClickListener {
-            var addMemberFragment=Add_Member_Fragment()
+            var addMemberFragment=Add_Member_Fragment(wareHouseid)
             (activity  as MainActivity).fragment_Manager.hide_all(addMemberFragment)
         }
     }

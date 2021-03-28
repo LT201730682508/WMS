@@ -52,7 +52,7 @@
         android:layout_height="100dp"></TextView>
 
     <RelativeLayout
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/search_results"
         android:layout_below="@+id/search_frame"
         android:layout_width="match_parent"

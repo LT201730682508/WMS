@@ -90,7 +90,13 @@ class Create_Warehouse_Fragment:Fragment() {
 
                      var alartWarningDialog= Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
                          override fun sure() {
-                             var createCompanyDialog= Create_Company_Dialog(requireContext())
+                             var createCompanyDialog= Create_Company_Dialog(requireContext(),(activity as MainActivity).fragment_Manager.userinfo.token,object:Create_Company_Dialog.change_Info{
+                                 override fun change(createResult: Create_Company_Dialog.create_result) {
+                                     (activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId=createResult.companyId
+                                     (activity as MainActivity).fragment_Manager.userinfo.userInfo.companyName=createResult.companyName
+                                 }
+
+                             })
                              createCompanyDialog.show()
                          }
                      },"您还没有加入任何企业，是否自行创建？")

@@ -69,7 +69,13 @@ class Title_Manager_Adapter(
                                     notifyDataSetChanged()
                                 }
                             })
+                        }else{
+                            XToast.warning(activity,string).show()
                         }
+                    }
+
+                    override fun error(string: String) {
+                        XToast.success(activity,"新增失败").show()
                     }
                 })
 
@@ -97,12 +103,19 @@ class Title_Manager_Adapter(
                 if (holder.itemView.delete_check.isChecked){
                     str.add('g') }
 
-                var changeParams=Title_Manager_Model.changeParams(warehouseId,list[position].role,str.toString())
+                var changeParams=Title_Manager_Model.changeParams(list[position].id,holder.itemView.title.text.toString(),str.toString())
                 Title_Manager_Model.modify_member_title(changeParams,(activity as MainActivity).fragment_Manager.userinfo.token,object :Title_Manager_Model.modify_show{
                     override fun show(string: String) {
                         if(string=="OK"){
-                            XToast.success(activity,"修改成功").show()
+                            XToast.success(activity,string).show()
+                        }else
+                        {
+                            XToast.warning(activity,string).show()
                         }
+                    }
+
+                    override fun error(string: String) {
+                        XToast.success(activity,"已存在该名称，请更换").show()
                     }
                 })
             }

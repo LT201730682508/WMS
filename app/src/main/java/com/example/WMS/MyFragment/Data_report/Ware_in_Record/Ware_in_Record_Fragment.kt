@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Model
+import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Title_Manager.Title_Manager_Model
 import com.example.WMS.MyRecyclerView
 import com.example.WMS.R
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder
@@ -54,35 +57,44 @@ class Ware_in_Record_Fragment :Fragment(){
 //        end_time=view.findViewById(R.id.end_time)
 
 
-        val mList: List<String> = listOf("初级员工", "高级员工", "管理员", "仓库主任", "CEO")
-        var arrayAdapter= ArrayAdapter<String>(activity as MainActivity,R.layout.member_title_spinner,mList)
-        arrayAdapter.setDropDownViewResource(R.layout.item_dropdown)
-        ware_spinner.adapter=arrayAdapter
-        ware_spinner.prompt="请选择仓库"
-        ware_spinner.onItemSelectedListener=object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                select_title=mList[position]
-                var hashMap=HashMap<String,Int>()
-                hashMap.put("warehouseId",2)
-                Ware_In_Record_Model.getData(hashMap,object : Ware_In_Record_Model.Ware_Record{
-                    override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
-                        var wareInListAdapter=Adapter(record_list,activity as MainActivity)
-                        ware_in_recycle.layoutManager= LinearLayoutManager(context)
-                        ware_in_recycle.adapter=wareInListAdapter
+             Join_Warehouse_Model.getData(object :Join_Warehouse_Model.Show{
+            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+                if (wares.size!=0){
+                    var mList = ArrayList<String>()
+                    for (ware in wares){
+                        mList.add(ware.warehouseName)
                     }
+                    var arrayAdapter= ArrayAdapter<String>(activity as MainActivity,R.layout.member_title_spinner,mList)
+                    arrayAdapter.setDropDownViewResource(R.layout.item_dropdown)
+                    ware_spinner.adapter=arrayAdapter
+                    ware_spinner.prompt="请选择仓库"
+                    ware_spinner.onItemSelectedListener=object :
+                        AdapterView.OnItemSelectedListener {
+                        override fun onItemSelected(
+                            parent: AdapterView<*>?,
+                            view: View,
+                            position: Int,
+                            id: Long
+                        ) {
+                            select_title=mList[position]
+                            Ware_In_Record_Model.getData(wares.get(position).warehouseId,object : Ware_In_Record_Model.Ware_Record{
+                                override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
+                                    var wareInListAdapter=Adapter(record_list,activity as MainActivity)
+                                    ware_in_recycle.layoutManager= LinearLayoutManager(context)
+                                    ware_in_recycle.adapter=wareInListAdapter
+                                }
 
-                },(activity as MainActivity).fragment_Manager.userinfo)
+                            },(activity as MainActivity).fragment_Manager.userinfo)
 
 
-            }
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
+                        }
+                        override fun onNothingSelected(parent: AdapterView<*>?) {}
+                    }
+                }
+
+            }},(activity as MainActivity).fragment_Manager.userinfo)
+
+
 
 
 //        start_time.setOnClickListener {

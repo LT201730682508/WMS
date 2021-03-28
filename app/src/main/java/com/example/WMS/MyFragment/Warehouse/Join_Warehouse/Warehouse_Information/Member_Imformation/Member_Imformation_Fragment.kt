@@ -14,6 +14,7 @@ import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Member_Manager_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Title_Manager.Title_Manager_Model
 import com.example.WMS.R
+import com.xuexiang.xui.widget.toast.XToast
 import kotlinx.android.synthetic.main.member_information.*
 
 
@@ -35,8 +36,9 @@ class Member_Imformation_Fragment(val warehouseId:Int,val item: Member_Manager_M
         base_Top_Bar= Base_Topbar(view,activity as MainActivity,false)
         base_Top_Bar.setTitle("人员管理")
         title_spinner=view.findViewById(R.id.member_title)
-  //      member_name.text=item.userName
-  //      member_id.text=item.id.toString()
+        if (item.userName!=null)
+         member_name.text=item.userName
+
 
 
         save=view.findViewById(R.id.save)
@@ -70,7 +72,14 @@ class Member_Imformation_Fragment(val warehouseId:Int,val item: Member_Manager_M
 
 
         save.setOnClickListener {
-            (activity as MainActivity).fragment_Manager.pop()
+            Member_Imformation_Model.modify_member_title(Member_Imformation_Model.modify_params((activity as MainActivity).fragment_Manager.userinfo.token,warehouseId,item.userName,select_title),object :Member_Imformation_Model.result{
+                override fun result() {
+                    XToast.success(requireContext(),"修改成功").show()
+                    (activity as MainActivity).fragment_Manager.pop()
+                }
+
+            })
+
         }
     }
 }

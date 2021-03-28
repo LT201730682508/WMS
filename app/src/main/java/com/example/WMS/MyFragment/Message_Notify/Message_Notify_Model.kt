@@ -48,9 +48,10 @@ class Message_Notify_Model {
         }
 
         fun accept_Invite(invitationId:Int,token: String,show: after_Show_accept){
-
+            println("@@@@@2+"+invitationId)
+            val map=HashMap<String,String>()
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-authority/acceptInvitation/"+invitationId+"?userToken="+token,null,object :
+            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-authority/acceptInvitation/"+invitationId+"?userToken="+token,map,object :
                 BaseCallback<String>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)
@@ -78,7 +79,8 @@ class Message_Notify_Model {
         fun refuse_Invite(invitationId:Int,token: String,show: after_Show_accept){
 
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-authority/deleteInvitation/"+invitationId+"?userToken="+token,null,object :
+            val map=HashMap<String,String>()
+            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-authority/deleteInvitation/"+invitationId+"?userToken="+token,map,object :
                 BaseCallback<String>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)
@@ -110,7 +112,7 @@ class Message_Notify_Model {
 
 
 
-    data class invite_item(val InvitationId:Int,val warehouseId:String,val warehouseName:String,val user_name:String,val role:String)
+    data class invite_item(val invitation_id:Int,val warehouseId:String,val warehouseName:String,val user_name:String,val role:String)
 
     interface after_Show{
         fun show(list:Array<invite_item>)

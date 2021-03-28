@@ -37,18 +37,25 @@ class Message_Adapter(
           holder.message_ware_name.text=list[position].warehouseName
           holder.message_ware_title.text=list[position].role
         holder.join_it.setOnClickListener {
-              Message_Notify_Model.accept_Invite(list[position].InvitationId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
+              Message_Notify_Model.accept_Invite(list[position].invitation_id,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
                   override fun show(str: String) {
-                      if(str=="OK")
-                      XToast.success(activity,"成功加入").show()
+                      if(str=="OK") {
+                          notifyItemRemoved(position)
+                          XToast.success(activity,"成功加入").show()
+                      }
                   }
               })
         }
         holder.delete.setOnClickListener {
-            Message_Notify_Model.refuse_Invite(list[position].InvitationId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
+            Message_Notify_Model.refuse_Invite(list[position].invitation_id,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
                 override fun show(str: String) {
-                    if(str=="OK")
+                    if(str=="OK") {
+
+                        notifyItemRemoved(position)
                         XToast.success(activity,"已拒绝").show()
+                    }
+
+
                 }
             })
         }

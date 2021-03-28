@@ -32,31 +32,22 @@
             android:textColor="@color/black"
             android:text="员工一号"
             android:layout_height="wrap_content"></TextView>
+
         <TextView
             android:layout_width="wrap_content"
-            android:id="@+id/member_id"
             android:layout_below="@+id/member_name"
-            android:layout_marginTop="20dp"
-            android:textColor="@color/black"
-            android:text="id:123456"
-            android:textSize="10dp"
-            android:layout_alignLeft="@+id/member_name"
-            android:layout_height="wrap_content"></TextView>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_below="@+id/member_id"
             android:layout_marginTop="20dp"
             android:text="职级："
             android:gravity="center_vertical"
             android:id="@+id/title"
             android:textSize="10dp"
             android:textColor="@color/black"
-            android:layout_alignLeft="@+id/member_id"
+            android:layout_alignLeft="@+id/member_name"
             android:layout_height="22dp"></TextView>
         <Spinner
             android:layout_width="wrap_content"
             android:id="@+id/member_title"
-            android:layout_below="@+id/member_id"
+            android:layout_below="@+id/member_name"
             android:layout_marginTop="20dp"
             android:spinnerMode="dropdown"
             android:layout_toRightOf="@+id/title"

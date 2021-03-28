@@ -15,6 +15,7 @@ import com.example.WMS.MyFragment.Warehouse.Warehouse_Fragment
 import com.example.WMS.R
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment
 import com.example.WMS.WarehouseOut.WarehouseOutList_Fragment
+import com.example.WMS.custom_Dialog.Create_Company_Dialog
 import com.example.WMS.custom_Dialog.Find_Company_Join
 import com.example.WMS.custom_Dialog.Join_or_Create
 import com.xuexiang.xui.XUI
@@ -72,7 +73,14 @@ class Home_Fragment: Fragment() {
         }
         click_join=view.findViewById(R.id.click_join)
         click_join.setOnClickListener {
-            var joinOrCreate=Join_or_Create(requireContext())
+            var joinOrCreate=Join_or_Create(requireContext(),(activity as MainActivity).fragment_Manager.userinfo.token,object :Create_Company_Dialog.change_Info{
+                override fun change(createResult: Create_Company_Dialog.create_result) {
+                    (activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId=createResult.companyId
+                    (activity as MainActivity).fragment_Manager.userinfo.userInfo.companyName=createResult.companyName
+                    join_create_re.visibility=View.GONE
+                }
+
+            })
             joinOrCreate.show()
         }
 

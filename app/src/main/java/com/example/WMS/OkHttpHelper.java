@@ -121,10 +121,11 @@ public class OkHttpHelper<T> {
             }
         }
         MediaType MEDIA_TYPE_JPG = MediaType.parse("application/x-www-form-urlencoded");
-
-        RequestBody body = RequestBody.create(MEDIA_TYPE_JPG, file);
-        String filename = file.getName();
-        builder.addFormDataPart(img,filename+".jpg",body);
+        if(file!=null){
+            RequestBody body = RequestBody.create(MEDIA_TYPE_JPG, file);
+            String filename = file.getName();
+            builder.addFormDataPart(img,filename+".jpg",body);
+        }
         return builder.build();
     }
 

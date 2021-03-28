@@ -128,7 +128,8 @@ class Login_fragment: Fragment() {
     }
 
 
-    data class user_Info(val userId:Int,val userName:String,val companyId:Int,val companyName:String,val hasInvitation:Int)
+    data class user_Info(val userId:Int, val userName:String,
+                         var companyId:Int, var companyName:String, val hasInvitation:Int)
     data class user_Login(var userInfo:user_Info,val token:String)
 
 }

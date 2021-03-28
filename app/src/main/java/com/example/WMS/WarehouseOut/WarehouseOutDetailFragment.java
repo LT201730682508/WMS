@@ -14,6 +14,10 @@ import androidx.fragment.app.Fragment;
 import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
 import com.example.WMS.R;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * 点击item打开的修改详情页
  * */
