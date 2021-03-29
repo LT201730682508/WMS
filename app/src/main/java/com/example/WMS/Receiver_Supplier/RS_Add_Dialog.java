@@ -35,13 +35,13 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     private ClearEditText name;
     private int opType;
     private String token;
+
     public RS_Add_Dialog(@NonNull Context context,int opType,String token) {
         super(context);
         this.context=context;
         this.opType=opType;
         this.token=token;
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +66,7 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
     }
+
     public void sendSupplierData(DataBean.Supplier_add parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
         okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addSupplier/?userToken="+token,parms,new BaseCallback<DataBean.Supplier_add>(){
@@ -96,6 +97,7 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
 
         });
     }
+
     public void sendReceiverData(DataBean.Receiver_add parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
         okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/addReceiver/?userToken="+token,parms,new BaseCallback<DataBean.Receiver_add>(){
@@ -123,9 +125,9 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-
         });
     }
+
     @Override
     public void onClick(View v) {
         if(v==btn_add){
@@ -137,14 +139,11 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
                 DataBean.Receiver_add post_data=new DataBean.Receiver_add(name.getText().toString(),"1",address.getText().toString());
                 sendReceiverData(post_data);
             }
-
-
             cancel();
         }
         else if(v==btn_cancel){
             //不保存数据库，退出
             cancel();
         }
-
     }
 }

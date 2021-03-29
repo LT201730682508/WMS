@@ -45,15 +45,16 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
     private static String token;
+
     public Receiver_Fragment(String token) {
         this.token=token;
     }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
-
     }
 
     @Nullable
@@ -86,18 +87,15 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
                  * 刷新操作在这里实现
                  * */
                 initData();
-                //handler.sendEmptyMessage(0);
-
-//                //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
         return view;
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
         initData();
     }
 
@@ -110,7 +108,6 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
         String companyId="1";
         OkHttpHelper ok= OkHttpHelper.getInstance();
         ok.get_for_list("http://121.199.22.134:8003/api-inventory/getReceiverByCompanyId/"+companyId+"?userToken="+token,new BaseCallback<DataBean.Receiver>(){
-
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -122,9 +119,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
             }
 
             @Override
-
             public void onSuccess_List(String resultStr) {
-
                 Gson gson= new Gson();
                 DataBean.Receiver[] wares=gson.fromJson(resultStr,DataBean.Receiver[].class);
                 System.out.println("a  "+resultStr);
@@ -133,16 +128,12 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
                     receivers_list.add(wares[i]);
                 }
                 handler.sendEmptyMessage(0);
-
-
             }
 
             @Override
             public void onSuccess(Response response, DataBean.Receiver receiver) {
 
             }
-
-
 
             @Override
             public void onError(Response response, int code, Exception e) {
@@ -153,7 +144,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-
+        //todo-something
     }
 
     private static class MyHandler extends Handler {
@@ -169,21 +160,18 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
                 if(receivers_list!=null&&receivers_list.size()>0){
                     im_empty.setVisibility(View.GONE);
                     tv_empty.setVisibility(View.GONE);
-
-                    //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(DataBean.ProductIns));
-
                     adapter=new RS_Adapter<RS_Adapter.VH>(receivers_list, R.layout.item_receiver_supplier, 1,activity,token);
                     rv_pager.setAdapter(adapter);
                     rv_pager.setLayoutManager(new LinearLayoutManager(activity));
                 }
                 else{
-
                     im_empty.setVisibility(View.VISIBLE);
                     tv_empty.setVisibility(View.VISIBLE);
                 }
             }
         }
     }
+
     //返回该framgent时刷新数据
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -193,5 +181,4 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
             onResume();
         }
     }
-
 }

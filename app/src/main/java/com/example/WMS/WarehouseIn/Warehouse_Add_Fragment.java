@@ -55,14 +55,13 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     private String token;
     private String id;
     private ImageView imageView;
+
     public Warehouse_Add_Fragment(Context context,DataBean.ProductIn productIn,String token) {
         super(context);
         this.context=context;
         this.productIn=productIn;
         this.token=token;
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,33 +84,29 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
         et_note=contentView.findViewById(R.id.et_note);
         imageView=contentView.findViewById(R.id.iv_picture);
         Glide.with(context).load(productIn.getProductImg()).into(imageView);
-        //btn_select=contentView.findViewById(R.id.select_supplier);
         setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
     }
+
     @Override
     public void onClick(View v) {
         if(v==btn_add){
             //保存刷新数据库，退出
-            //
             SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
             id=preferences.getString("supplierId", "-1");
             DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getId(),id,
                     Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
             sendData(post_data);
-
             cancel();
-            //((MainActivity)getActivity()).fragment_Manager.pop();
         }
         else if(v==btn_cancel){
             //不保存数据库，退出
             cancel();
-            //((MainActivity)getActivity()).fragment_Manager.pop();
         }
-
     }
+
     public void sendData(DataBean.ProductIn_inWarehouse parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
         okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/inWarehouse/?userToken="+token,parms,new BaseCallback<DataBean.ProductIn_inWarehouse>(){
@@ -135,13 +130,10 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
                 System.out.println("@@@@@3"+response);
             }
 
-
             @Override
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-
         });
     }
-
 }

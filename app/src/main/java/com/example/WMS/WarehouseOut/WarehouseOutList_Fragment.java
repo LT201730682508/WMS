@@ -34,6 +34,8 @@ import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
 
+import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_In_Record_Model;
+import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Model;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.Receiver_Supplier.Receiver_Fragment;
@@ -47,6 +49,7 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class WarehouseOutList_Fragment extends Fragment implements View.OnClickListener{
     protected Context context;
@@ -60,9 +63,10 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private Button btn_scan;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static ArrayList<DataBean.ProductOut> warehouseItems;
-    private static final String[] warehouseName={"深圳","上海"};
+    private static ArrayAdapter<String> spinnerAdapter;
+    private static ArrayList<Ware_out_Record_Model.Out_Record> warehouseName;
     private static int pos=1;
-    private static String selectWarehouseName=warehouseName[pos-1];
+    private static String selectWarehouseName;
     private static String receiverName="";
     private static String receiverId;
     private static String token;
@@ -70,6 +74,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private MyHandler handler;
     private long lastClickTime=0;
     private long now=0;
+    private int userId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,14 +82,15 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
         token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
-
+        userId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getUserId();
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return initView();
     }
-    //子类实现方法
+    
     public View initView(){
         View view=View.inflate(context,R.layout.outlist_fragment,null);
         base_topbar=new Base_Topbar(view,(MainActivity) getActivity(),true);
@@ -108,40 +114,32 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         btn_scan=view.findViewById(R.id.scan);
         btn_select=view.findViewById(R.id.select_receiver);
         //设置适配器
-        ArrayAdapter<String> spinnerAdapter=new ArrayAdapter<String>(context, R.layout.myspinner,warehouseName);
-        spinner.setAdapter(spinnerAdapter);
+        getWarehouseList();
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectWarehouseName=warehouseName[position];
+                selectWarehouseName = warehouseName.get(position).getWarehouseName();
                 pos=position+1;
-
                 warehouseItems = new ArrayList<DataBean.ProductOut>();
                 getData();
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                //todo-something
             }
         });
-
         return view;
     }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         btn_scan.setOnClickListener(this);
         btn_select.setOnClickListener(this);
-
     }
-
-
-
-    private void getData() {
+    private void getWarehouseList() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseId/"+pos+"?userToken="+token,new BaseCallback<DataBean.ProductOut>(){
-
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/"+userId+"?userToken="+token,new BaseCallback<Ware_out_Record_Model.Out_Record>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -149,35 +147,59 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
 
             @Override
             public void onResponse(Response response) {
-                System.out.println("response"+response);
+                System.out.println("@@@@@@@@@@1"+response);
             }
 
             @Override
-
-            public void onSuccess_List(String resultStr) {
-                warehouseItems = new ArrayList<DataBean.ProductOut>();
+            public void onSuccess_List(final String resultStr) {
+                warehouseName = new ArrayList<Ware_out_Record_Model.Out_Record>();
                 Gson gson= new Gson();
-                DataBean.ProductOut[] wares=gson.fromJson(resultStr,DataBean.ProductOut[].class);
-
-                for (int i=0;i<wares.length;i++){
-                    warehouseItems.add(wares[i]);
-                }
-                handler.sendEmptyMessage(0);
-
-
+                Ware_out_Record_Model.Out_Record[] wares=gson.fromJson(resultStr,Ware_out_Record_Model.Out_Record[].class);
+                warehouseName.addAll(Arrays.asList(wares));
+                handler.sendEmptyMessage(1);
             }
 
             @Override
-            public void onSuccess(Response response, DataBean.ProductOut productOut) {
+            public void onSuccess(Response response, Ware_out_Record_Model.Out_Record out_record) {
 
-                System.out.println("Success"+response);
             }
 
             @Override
             public void onError(Response response, int code, Exception e) {
                 System.out.println("error"+response+e);
             }
-        } );
+        });
+    }
+    private void getData() {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseId/"+pos+"?userToken="+token,new BaseCallback<DataBean.ProductOut>(){
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("response"+response);
+            }
+            @Override
+            public void onSuccess_List(String resultStr) {
+                warehouseItems = new ArrayList<DataBean.ProductOut>();
+                Gson gson= new Gson();
+                DataBean.ProductOut[] wares=gson.fromJson(resultStr,DataBean.ProductOut[].class);
+                for (int i=0;i<wares.length;i++){
+                    warehouseItems.add(wares[i]);
+                }
+                handler.sendEmptyMessage(0);
+            }
+            @Override
+            public void onSuccess(Response response, DataBean.ProductOut productOut) {
+                System.out.println("Success"+response);
+            }
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+        });
     }
 
     private static class MyHandler extends Handler{
@@ -190,18 +212,36 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             final MainActivity activity=mActivity.get();
             super.handleMessage(msg);
             if(activity!=null){
-                if(warehouseItems!=null&&warehouseItems.size()>0){
-                    tv_nomedia.setVisibility(View.GONE);
-                    pb_loading.setVisibility(View.GONE);
+                switch (msg.what) {
+                    case 0:
+                        if(warehouseItems!=null&&warehouseItems.size()>0){
+                            tv_nomedia.setVisibility(View.GONE);
+                            pb_loading.setVisibility(View.GONE);
+                            rv_pager.setVisibility(View.VISIBLE);
+                            adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName,receiverName,token,receiverId);
+                            rv_pager.setAdapter(adapter);
+                        }
+                        else{
+                            rv_pager.setVisibility(View.GONE);
+                            tv_nomedia.setVisibility(View.VISIBLE);
+                            pb_loading.setVisibility(View.VISIBLE);
+                        }
+                        break;
+                    case 1:
+                        String[] warehouseList=new String[warehouseName.size()];
+                        for(int i = 0; i < warehouseName.size(); i++){
+                            warehouseList[i] = warehouseName.get(i).getWarehouseName();
+                        }
+                        if(warehouseList != null && warehouseList.length > 0){
+                            spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner, warehouseList);
+                            selectWarehouseName = warehouseList[0];
+                            spinner.setAdapter(spinnerAdapter);
+                        }
+                        break;
+                    default:
+                        break;
+                }
 
-                    //lv_video_pager.setAdapter(new WarehouseInList_Fragment.WarehouseInListAdapter(warehouseItems));
-                    adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName,receiverName,token,receiverId);
-                    rv_pager.setAdapter(adapter);
-                }
-                else{
-                    tv_nomedia.setVisibility(View.VISIBLE);
-                    pb_loading.setVisibility(View.VISIBLE);
-                }
             }
         }
     }
@@ -220,7 +260,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         if(v==btn_scan){
-
+            //todo-something
         }
         else if(v==btn_select){
             now = System.currentTimeMillis();
@@ -231,5 +271,4 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             }
         }
     }
-
 }
