@@ -55,7 +55,19 @@ class Login_fragment: Fragment() {
         }
         signIn_signInButton.setOnClickListener {
             if(check_null()){
-                login(signIn_account.text.toString(),signIn_passWord.text.toString())
+                login(signIn_account.text.toString(),signIn_passWord.text.toString(),object :show{
+                    override fun show(t: user_Login,username: String,password: String) {
+                        (activity as MainActivity).fragment_Manager.userinfo=t!!
+                        var sps:SharedPreferences=requireContext().getSharedPreferences("userinfo",Context.MODE_PRIVATE)
+                        var editor:SharedPreferences.Editor=sps.edit()
+                        editor.putString("userName",username)
+                        editor.putString("passWord",password)
+                        editor.apply()
+                        var homeFragment= Home_Fragment()
+                        (activity as MainActivity).fragment_Manager.replace_all(homeFragment)
+                    }
+
+                })
 
             }else{
                 XToast.warning(requireContext(),"请输入正确的账号密码").show()
@@ -93,7 +105,7 @@ class Login_fragment: Fragment() {
         }
     }
 
-    fun login(username:String,password:String){
+    fun login(username:String,password:String,show: show){
         var map=HashMap<String,String>()
         map.put("userName",username)
         map.put("password",password)
@@ -113,11 +125,7 @@ class Login_fragment: Fragment() {
 
             override fun onSuccess(response: Response?, t: user_Login?) {
                 println("@@@@@3"+t)
-
-                (activity as MainActivity).fragment_Manager.userinfo=t!!
-                var homeFragment= Home_Fragment()
-                (activity as MainActivity).fragment_Manager.replace_all(homeFragment)
-
+                show.show(t!!,username,password)
             }
 
             override fun onError(response: Response?, code: Int, e: Exception?) {
@@ -126,7 +134,9 @@ class Login_fragment: Fragment() {
 
         })
     }
-
+    interface show{
+        fun show(t: user_Login,username: String,password: String)
+    }
 
     data class user_Info(val userId:Int, val userName:String,
                          var companyId:Int, var companyName:String, val hasInvitation:Int)

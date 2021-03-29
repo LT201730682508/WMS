@@ -1,20 +1,45 @@
 package com.example.WMS
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.manager.SupportRequestManagerFragment
+import com.example.WMS.MyFragment.Home_Fragment
 import com.example.WMS.MyFragment.Login_fragment
 
 
 class Fragment_Manager {
     var my_activity:MainActivity
-    var fragment_show:Fragment
-    var loginFragment:Login_fragment
+
+     var loginFragment:Login_fragment
     lateinit var userinfo:Login_fragment.user_Login
+    lateinit var homeFragment: Home_Fragment
+    val sps: SharedPreferences
     constructor(activity:MainActivity){
         my_activity=activity
         loginFragment=Login_fragment()
-        fragment_show=loginFragment
-        my_activity.supportFragmentManager.beginTransaction().add(R.id.Fragment_First,loginFragment).commit()
+        sps= activity.getSharedPreferences("userinfo",Context.MODE_PRIVATE)
+        var username=sps.getString("userName","")
+        var password=sps.getString("passWord","")
+        if(username!=""&&password!=""){
+            loginFragment.login(username!!,password!!,object :Login_fragment.show{
+                override fun show(
+                    t: Login_fragment.user_Login,
+                    username: String,
+                    password: String
+                ) {
+                    userinfo=t!!
+                    homeFragment= Home_Fragment()
+                    my_activity.supportFragmentManager.beginTransaction().add(R.id.Fragment_First,homeFragment).commit()
+                }
+            })
+        }else{
+            my_activity.supportFragmentManager.beginTransaction().add(R.id.Fragment_First,loginFragment).commit()
+        }
+
+
+
+
     }
 
 

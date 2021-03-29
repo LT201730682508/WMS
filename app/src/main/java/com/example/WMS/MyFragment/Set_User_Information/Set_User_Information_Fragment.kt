@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.set_user_information.*
 class Set_User_Information_Fragment:Fragment() {
     lateinit var baseTopbar: Base_Topbar
     lateinit var user_img:ImageView
-    lateinit var user_name:ClearEditText
+    lateinit var company_name:TextView
     lateinit var user_account:TextView
     lateinit var sure:RoundButton
     lateinit var dialog: take_Album_Dialog
@@ -43,10 +43,13 @@ class Set_User_Information_Fragment:Fragment() {
     fun init(view:View) {
         baseTopbar = Base_Topbar(view, activity as MainActivity, false)
         user_img=view.findViewById(R.id.user_img)
-        user_name=view.findViewById(R.id.set_user_name)
+        company_name=view.findViewById(R.id.company_name)
         user_account=view.findViewById(R.id.user_account)
         sure=view.findViewById(R.id.sure)
         exit=view.findViewById(R.id.exit)
+
+        user_account.text="账号："+(activity as MainActivity).fragment_Manager.userinfo.userInfo.userName
+        company_name.setText((activity as MainActivity).fragment_Manager.userinfo.userInfo.companyName)
 
         user_img.setOnClickListener {
             if(this::dialog.isLateinit){

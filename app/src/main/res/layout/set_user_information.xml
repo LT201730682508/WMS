@@ -33,17 +33,17 @@
         android:layout_below="@+id/user_account"
         android:layout_toRightOf="@+id/user_img"
         android:layout_marginTop="50dp"
-        android:text="用户名："
+        android:text="公司名称："
         android:textSize="12dp"
         android:layout_height="wrap_content"></TextView>
-   <com.xuexiang.xui.widget.edittext.ClearEditText
+   <TextView
        android:layout_width="150dp"
        android:textSize="12dp"
        android:layout_below="@+id/user_account"
-       android:id="@+id/set_user_name"
+       android:id="@+id/company_name"
        android:layout_toRightOf="@+id/user_name"
-       android:layout_marginTop="40dp"
-       android:layout_height="wrap_content"></com.xuexiang.xui.widget.edittext.ClearEditText>
+       android:layout_marginTop="50dp"
+       android:layout_height="wrap_content"></TextView>
     <com.xuexiang.xui.widget.button.roundbutton.RoundButton
         style="@style/RoundButton.Auto"
         android:id="@+id/sure"
