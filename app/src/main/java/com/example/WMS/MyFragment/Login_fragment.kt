@@ -57,7 +57,7 @@ class Login_fragment: Fragment() {
             if(check_null()){
                 login(signIn_account.text.toString(),signIn_passWord.text.toString(),object :show{
                     override fun show(t: user_Login,username: String,password: String) {
-                        (activity as MainActivity).fragment_Manager.userinfo=t!!
+                        (activity as MainActivity).fragment_Manager.userinfo=t
                         var sps:SharedPreferences=requireContext().getSharedPreferences("userinfo",Context.MODE_PRIVATE)
                         var editor:SharedPreferences.Editor=sps.edit()
                         editor.putString("userName",username)
@@ -130,6 +130,8 @@ class Login_fragment: Fragment() {
 
             override fun onError(response: Response?, code: Int, e: Exception?) {
                 println("@@@@@4"+code+e)
+
+                XToast.warning(requireContext(),"请输入正确的账号密码").show()
             }
 
         })
@@ -138,7 +140,7 @@ class Login_fragment: Fragment() {
         fun show(t: user_Login,username: String,password: String)
     }
 
-    data class user_Info(val userId:Int, val userName:String,
+    data class user_Info(val userId:Int, val userName:String,val userImg:String,
                          var companyId:Int, var companyName:String, val hasInvitation:Int)
     data class user_Login(var userInfo:user_Info,val token:String)
 

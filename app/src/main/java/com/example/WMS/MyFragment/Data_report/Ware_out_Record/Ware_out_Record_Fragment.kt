@@ -16,6 +16,8 @@ import com.example.WMS.*
 import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Model
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
+import com.example.WMS.MyFragment.Warehouse.Warehouse_Authority_List
+import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder
 import com.xuexiang.xui.widget.picker.widget.configure.TimePickerType
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener
@@ -57,6 +59,7 @@ class Ware_out_Record_Fragment :Fragment(){
             override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
                 if (wares.size!=0){
                     var mList = ArrayList<String>()
+                    mList.add("请选择")
                     for (ware in wares){
                         mList.add(ware.warehouseName)
                     }
@@ -73,13 +76,54 @@ class Ware_out_Record_Fragment :Fragment(){
                             id: Long
                         ) {
                             select_title=mList[position]
-                            Ware_out_Record_Model.getData(wares.get(position).warehouseId,object : Ware_out_Record_Model.Ware_Record{
-                                override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
-                                    var wareOutAdapter=Ware_out_Adapter(record_list,activity as MainActivity)
+                            if (position>0){
+                                var my_authority=Warehouse_Authority_List.authorityList_Map.get(wares.get(position-1).warehouseId)
+                                if(my_authority==null){
+                                    Warehouse_authority_Model.getRole(wares.get(position-1).warehouseId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Warehouse_authority_Model.getRole{
+                                        override fun get(authority: Warehouse_authority_Model.authority) {
+                                            my_authority=authority.authorities
+                                            Warehouse_Authority_List.authorityList_Map.put(wares.get(position-1).warehouseId,authority.authorities)
+                                            Warehouse_Authority_List.roleList_Map.put(wares.get(position-1).warehouseId,authority.role)
+                                            if(my_authority!!.contains("f")) {
+                                                Ware_out_Record_Model.getData(
+                                                    wares.get(position - 1).warehouseId,
+                                                    object : Ware_out_Record_Model.Ware_Record {
+                                                        override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+                                                            var wareOutAdapter = Ware_out_Adapter(
+                                                                record_list,
+                                                                activity as MainActivity
+                                                            )
+                                                            ware_in_recycle.adapter = wareOutAdapter
+                                                        }
+                                                    },
+                                                    (activity as MainActivity).fragment_Manager.userinfo
+                                                )
+                                            }else{
+                                                XToast.warning(requireContext(),"您没有相关权限").show()
+                                            }
+                                        }
 
-                                    ware_in_recycle.adapter=wareOutAdapter
+                                    })
+                                }else{
+                                    if(my_authority!!.contains("f")) {
+                                        Ware_out_Record_Model.getData(
+                                            wares.get(position - 1).warehouseId,
+                                            object : Ware_out_Record_Model.Ware_Record {
+                                                override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+                                                    var wareOutAdapter = Ware_out_Adapter(
+                                                        record_list,
+                                                        activity as MainActivity
+                                                    )
+                                                    ware_in_recycle.adapter = wareOutAdapter
+                                                }
+                                            },
+                                            (activity as MainActivity).fragment_Manager.userinfo
+                                        )
+                                    }else{
+                                        XToast.warning(requireContext(),"您没有相关权限").show()
+                                    }
                                 }
-                            },(activity as MainActivity).fragment_Manager.userinfo)
+                                }
 
 
                         }

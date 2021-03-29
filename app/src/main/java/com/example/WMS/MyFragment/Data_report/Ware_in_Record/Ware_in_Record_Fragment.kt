@@ -19,6 +19,8 @@ import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Mo
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Title_Manager.Title_Manager_Model
+import com.example.WMS.MyFragment.Warehouse.Warehouse_Authority_List
+import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model
 import com.example.WMS.MyRecyclerView
 import com.example.WMS.R
 import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder
@@ -61,6 +63,7 @@ class Ware_in_Record_Fragment :Fragment(){
             override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
                 if (wares.size!=0){
                     var mList = ArrayList<String>()
+                    mList.add("请选择")
                     for (ware in wares){
                         mList.add(ware.warehouseName)
                     }
@@ -68,6 +71,7 @@ class Ware_in_Record_Fragment :Fragment(){
                     arrayAdapter.setDropDownViewResource(R.layout.item_dropdown)
                     ware_spinner.adapter=arrayAdapter
                     ware_spinner.prompt="请选择仓库"
+
                     ware_spinner.onItemSelectedListener=object :
                         AdapterView.OnItemSelectedListener {
                         override fun onItemSelected(
@@ -77,16 +81,47 @@ class Ware_in_Record_Fragment :Fragment(){
                             id: Long
                         ) {
                             select_title=mList[position]
-                            Ware_In_Record_Model.getData(wares.get(position).warehouseId,object : Ware_In_Record_Model.Ware_Record{
-                                override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
-                                    var wareInListAdapter=Adapter(record_list,activity as MainActivity)
-                                    ware_in_recycle.layoutManager= LinearLayoutManager(context)
-                                    ware_in_recycle.adapter=wareInListAdapter
+                            if(position>0){
+                                var my_authority= Warehouse_Authority_List.authorityList_Map.get(wares.get(position-1).warehouseId)
+                                if(my_authority==null){
+                                    Warehouse_authority_Model.getRole(wares.get(position-1).warehouseId,(activity as MainActivity).fragment_Manager.userinfo.token,object :
+                                        Warehouse_authority_Model.getRole{
+                                        override fun get(authority: Warehouse_authority_Model.authority) {
+                                            my_authority=authority.authorities
+                                            Warehouse_Authority_List.authorityList_Map.put(wares.get(position-1).warehouseId,authority.authorities)
+                                            Warehouse_Authority_List.roleList_Map.put(wares.get(position-1).warehouseId,authority.role)
+                                            if(my_authority!!.contains("f")){
+                                                Ware_In_Record_Model.getData(wares.get(position-1).warehouseId,object : Ware_In_Record_Model.Ware_Record{
+                                                    override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
+                                                        var wareInListAdapter=Adapter(record_list,activity as MainActivity)
+                                                        ware_in_recycle.layoutManager= LinearLayoutManager(context)
+                                                        ware_in_recycle.adapter=wareInListAdapter
+                                                    }
+
+                                                },(activity as MainActivity).fragment_Manager.userinfo)
+                                            }else{
+                                                XToast.warning(requireContext(),"您没有相关权限").show()
+                                            }
+                                        }
+
+                                    })
+                                }else{
+                                    if(my_authority!!.contains("f")){
+                                        Ware_In_Record_Model.getData(wares.get(position-1).warehouseId,object : Ware_In_Record_Model.Ware_Record{
+                                            override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
+                                                var wareInListAdapter=Adapter(record_list,activity as MainActivity)
+                                                ware_in_recycle.layoutManager= LinearLayoutManager(context)
+                                                ware_in_recycle.adapter=wareInListAdapter
+                                            }
+
+                                        },(activity as MainActivity).fragment_Manager.userinfo)
+                                    }else{
+                                        XToast.warning(requireContext(),"您没有相关权限").show()
+                                    }
                                 }
 
-                            },(activity as MainActivity).fragment_Manager.userinfo)
 
-
+                            }
                         }
                         override fun onNothingSelected(parent: AdapterView<*>?) {}
                     }

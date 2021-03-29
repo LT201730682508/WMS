@@ -160,6 +160,15 @@ public class OkHttpHelper<T> {
             }
         });
     }
+    private void callback_error(final BaseCallback callback,final Response response,final Exception e){
+
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                callback.onError(response,response.code(),e);
+            }
+        });
+    }
     //实现一个枚举类,用来判断使用Get方法还是使用Post方法
     enum HttpMethodType{
         GET,
@@ -186,11 +195,12 @@ public class OkHttpHelper<T> {
                             Object object = gson.fromJson(resultStr,callback.mType);
                             callbackSuccess(callback,response,object);
                         }catch (JsonParseException e){
-                            callback.onError(response,response.code(),e);
+                            callback_error(callback,response,e);
+
                         }
                     }
                 else{
-                    callback.onError(response,response.code(),null);
+                    callback_error(callback,response,null);
                 }
             }
         });
@@ -213,7 +223,8 @@ public class OkHttpHelper<T> {
                 }
 
                 else{
-                    callback.onError(response,response.code(),null);
+                    callback_error(callback,response,null);
+
                 }
             }
         });

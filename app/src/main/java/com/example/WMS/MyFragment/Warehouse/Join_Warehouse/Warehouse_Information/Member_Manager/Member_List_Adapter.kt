@@ -27,7 +27,7 @@ class Member_List_Adapter(
         return viewHolder
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.member_name.text=list[position].userName
+        holder.member_name.text=list[position].user_name
         holder.member_title.text=list[position].role
         holder.itemView.setOnClickListener {
             var memberImformationFragment=Member_Imformation_Fragment(warhouseId,list[position])

@@ -13,6 +13,8 @@ import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Member_Manager_Fragment
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Warehouse_Detail_Information.Warehouse_Detail_Information
+import com.example.WMS.MyFragment.Warehouse.Warehouse_Authority_List
+import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model
 import com.example.WMS.R
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment
 import com.example.WMS.WarehouseOut.WarehouseOutList_Fragment
@@ -54,11 +56,18 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
         ware_menber=view.findViewById(R.id.ware_menber)
         ware_name_modification=view.findViewById(R.id.ware_name_modification)
         ware_delete=view.findViewById(R.id.ware_delete)
-
         Glide.with(this).load(item.warehouseImg).into(warehouse_img)
         warehouse_name.text=item.warehouseName
         ware_address.text=item.warehouseAddress
         warehouse_des.text=item.warehouseDescription
+
+        Warehouse_authority_Model.getRole(item.warehouseId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Warehouse_authority_Model.getRole{
+            override fun get(authority: Warehouse_authority_Model.authority) {
+                 Warehouse_Authority_List.authorityList_Map.put(item.warehouseId,authority.authorities)
+                Warehouse_Authority_List.roleList_Map.put(item.warehouseId,authority.role)
+            }
+
+        })
         ware_information.setOnClickListener {
             var warehouseDetailInformation=Warehouse_Detail_Information()
             (activity as MainActivity).fragment_Manager.hide_all(warehouseDetailInformation)
@@ -76,23 +85,27 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
             (activity as MainActivity).fragment_Manager.hide_all(memberManagerFragment)
         }
         ware_name_modification.setOnClickListener {
-            var wareNameModifyDialog=Ware_Name_Modify_Dialog(requireContext(),object :Ware_Name_Modify_Dialog.Modify{
-                override fun modify(changName: String) {
-                    var modify_Params= Warehouse_Imformation_Model.Modify_Params(item.warehouseId,changName)
-                    Warehouse_Imformation_Model.getData_Modefy(modify_Params,object :Warehouse_Imformation_Model.Warehouse_imfor_Show{
-                        override fun show(str: String) {
-                            XToast.info(requireContext(),str).show()
-                            if(str=="修改仓库名字成功"){
-                                warehouse_name.text=changName
+            val role=Warehouse_Authority_List.roleList_Map.get(item.warehouseId)
+            if(role=="库主"){
+                var wareNameModifyDialog=Ware_Name_Modify_Dialog(requireContext(),object :Ware_Name_Modify_Dialog.Modify{
+                    override fun modify(changName: String) {
+                        var modify_Params= Warehouse_Imformation_Model.Modify_Params(item.warehouseId,changName)
+                        Warehouse_Imformation_Model.getData_Modefy(modify_Params,object :Warehouse_Imformation_Model.Warehouse_imfor_Show{
+                            override fun show(str: String) {
+                                XToast.info(requireContext(),str).show()
+                                if(str=="修改仓库名字成功"){
+                                    warehouse_name.text=changName
+                                }
                             }
-                        }
 
-                    },(activity as MainActivity).fragment_Manager.userinfo)
-                }
-
-
-            })
-            wareNameModifyDialog.show()
+                        },(activity as MainActivity).fragment_Manager.userinfo)
+                    }
+                })
+                wareNameModifyDialog.show()
+            }
+          else{
+                XToast.warning(requireContext(),"您没有相关权限").show()
+            }
         }
         ware_delete.setOnClickListener {
             var alartWarningDialog= Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{

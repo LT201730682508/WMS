@@ -4,10 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
@@ -23,6 +20,7 @@ class Member_Imformation_Fragment(val warehouseId:Int,val item: Member_Manager_M
     lateinit var title_spinner: Spinner
     lateinit var save:Button
     lateinit var select_title:String
+    lateinit var member_name:TextView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,8 +34,8 @@ class Member_Imformation_Fragment(val warehouseId:Int,val item: Member_Manager_M
         base_Top_Bar= Base_Topbar(view,activity as MainActivity,false)
         base_Top_Bar.setTitle("人员管理")
         title_spinner=view.findViewById(R.id.member_title)
-        if (item.userName!=null)
-         member_name.text=item.userName
+        member_name=view.findViewById(R.id.member_name)
+        member_name.text=item.user_name
 
 
 
@@ -72,7 +70,7 @@ class Member_Imformation_Fragment(val warehouseId:Int,val item: Member_Manager_M
 
 
         save.setOnClickListener {
-            Member_Imformation_Model.modify_member_title(Member_Imformation_Model.modify_params((activity as MainActivity).fragment_Manager.userinfo.token,warehouseId,item.userName,select_title),object :Member_Imformation_Model.result{
+            Member_Imformation_Model.modify_member_title(Member_Imformation_Model.modify_params((activity as MainActivity).fragment_Manager.userinfo.token,warehouseId,item.user_name,select_title),object :Member_Imformation_Model.result{
                 override fun result() {
                     XToast.success(requireContext(),"修改成功").show()
                     (activity as MainActivity).fragment_Manager.pop()

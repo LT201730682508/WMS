@@ -12,8 +12,10 @@ import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Add_Member.Add_Member_Fragment
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Title_Manager.Title_Manager_Fragment
+import com.example.WMS.MyFragment.Warehouse.Warehouse_Authority_List
 import com.example.WMS.R
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.xuexiang.xui.widget.toast.XToast
 
 class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
     lateinit var base_Top_Bar: Base_Topbar
@@ -54,12 +56,23 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
         },(activity as MainActivity).fragment_Manager.userinfo,wareHouseid)
 
         title_manager.setOnClickListener {
-            var titleManagerFragment=Title_Manager_Fragment(wareHouseid)
-            (activity  as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
+            val authority=Warehouse_Authority_List.authorityList_Map.get(wareHouseid)
+            if(authority!!.contains("e")){
+                var titleManagerFragment=Title_Manager_Fragment(wareHouseid)
+                (activity  as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
+            }else{
+                XToast.warning(requireContext(),"您没有相关权限").show()
+            }
         }
         add_new_member.setOnClickListener {
-            var addMemberFragment=Add_Member_Fragment(wareHouseid)
-            (activity  as MainActivity).fragment_Manager.hide_all(addMemberFragment)
+            val authority=Warehouse_Authority_List.authorityList_Map.get(wareHouseid)
+            if(authority!!.contains("d")){
+                var addMemberFragment=Add_Member_Fragment(wareHouseid)
+                (activity  as MainActivity).fragment_Manager.hide_all(addMemberFragment)
+            }else{
+                XToast.warning(requireContext(),"您没有相关权限").show()
+            }
+
         }
     }
 }

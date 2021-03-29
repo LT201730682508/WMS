@@ -2,15 +2,18 @@ package com.example.WMS.MyFragment.Set_User_Information
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.WMS.Base_Topbar
@@ -18,10 +21,11 @@ import com.example.WMS.MainActivity
 import com.example.WMS.Open_Album
 import com.example.WMS.R
 import com.example.WMS.custom_Dialog.take_Album_Dialog
-import com.xuexiang.xui.XUI
 import com.xuexiang.xui.widget.button.roundbutton.RoundButton
-import com.xuexiang.xui.widget.edittext.ClearEditText
-import kotlinx.android.synthetic.main.set_user_information.*
+import com.xuexiang.xui.widget.toast.XToast
+import java.io.BufferedOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 class Set_User_Information_Fragment:Fragment() {
     lateinit var baseTopbar: Base_Topbar
@@ -47,7 +51,7 @@ class Set_User_Information_Fragment:Fragment() {
         user_account=view.findViewById(R.id.user_account)
         sure=view.findViewById(R.id.sure)
         exit=view.findViewById(R.id.exit)
-
+        Glide.with(requireContext()).load((activity as MainActivity).fragment_Manager.userinfo.userInfo.userImg).into(user_img)
         user_account.text="账号："+(activity as MainActivity).fragment_Manager.userinfo.userInfo.userName
         company_name.setText((activity as MainActivity).fragment_Manager.userinfo.userInfo.companyName)
 
@@ -58,14 +62,42 @@ class Set_User_Information_Fragment:Fragment() {
             dialog.show()
         }
         sure.setOnClickListener {
-            (activity as MainActivity).fragment_Manager.pop()
+
+            Set_User_Imformation_Model.modify_user_Img((activity as MainActivity).fragment_Manager.userinfo.token,saveBitmapFile((user_img.getDrawable()),"userImg"),object :Set_User_Imformation_Model.show{
+                override fun show(str: String) {
+                    XToast.success(requireContext(),str).show()
+                    (activity as MainActivity).fragment_Manager.pop()
+                }
+
+            })
+
         }
 
         exit.setOnClickListener {
             (activity as MainActivity).fragment_Manager.return_login()
         }
     }
-
+    fun saveBitmapFile(drawable: Drawable, img: String): File? {
+        val file = File(
+            requireContext().filesDir.path.toString() + img + ".jpg"
+        ) //将要保存图片的路径
+        if (!file.exists()) {
+            try {
+                file.createNewFile()
+            } catch (e: Exception) {
+            }
+        }
+        try {
+            val bos =
+                BufferedOutputStream(FileOutputStream(file))
+            var bitmap= drawable.toBitmap()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, bos)
+            bos.flush()
+            bos.close()
+        } catch (e: Exception) {
+        }
+        return file
+    }
     override fun onActivityResult(
         requestCode: Int,
         resultCode: Int,
