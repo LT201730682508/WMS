@@ -22,6 +22,7 @@ import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder
 import com.xuexiang.xui.widget.picker.widget.configure.TimePickerType
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener
 import com.xuexiang.xui.widget.toast.XToast
+import kotlinx.android.synthetic.main.set_user_information.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -77,14 +78,15 @@ class Ware_out_Record_Fragment :Fragment(){
                         ) {
                             select_title=mList[position]
                             if (position>0){
-                                var my_authority=Warehouse_Authority_List.authorityList_Map.get(wares.get(position-1).warehouseId)
+                                var my_authority=Warehouse_Authority_List.authorityList_Map.get(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
+                                println("@@@@@222"+my_authority)
                                 if(my_authority==null){
                                     Warehouse_authority_Model.getRole(wares.get(position-1).warehouseId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Warehouse_authority_Model.getRole{
                                         override fun get(authority: Warehouse_authority_Model.authority) {
                                             my_authority=authority.authorities
-                                            Warehouse_Authority_List.authorityList_Map.put(wares.get(position-1).warehouseId,authority.authorities)
-                                            Warehouse_Authority_List.roleList_Map.put(wares.get(position-1).warehouseId,authority.role)
-                                            if(my_authority!!.contains("f")) {
+                                            Warehouse_Authority_List.authorityList_Map.put(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.authorities)
+                                            Warehouse_Authority_List.roleList_Map.put(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.role)
+                                            if(authority.authorities.contains('f')) {
                                                 Ware_out_Record_Model.getData(
                                                     wares.get(position - 1).warehouseId,
                                                     object : Ware_out_Record_Model.Ware_Record {

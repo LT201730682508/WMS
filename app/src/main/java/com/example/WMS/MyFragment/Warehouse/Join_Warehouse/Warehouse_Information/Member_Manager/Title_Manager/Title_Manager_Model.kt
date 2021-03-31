@@ -51,7 +51,38 @@ class Title_Manager_Model {
                     }
                 })
         }
+        fun add_title(addparams: addParams,token: String,modifyShow: modify_show){
+            val ok = OkHttpHelper.getInstance()
+            ok.post_for_object(
+                "http://121.199.22.134:8003/api-authority/createRole?userToken="+token,addparams,
+                object : BaseCallback<String>() {
+                    override fun onFailure(
+                        request: Request,
+                        e: IOException
+                    ) {
+                        println("failure$e")
+                    }
 
+                    override fun onResponse(response: Response) {
+                        println("response$response")
+                    }
+
+                    override fun onSuccess_List(resultStr: String) {
+                    }
+                    override fun onError(
+                        response: Response,
+                        code: Int,
+                        e: Exception
+                    ) {
+                        println("error$response$e")
+                        modifyShow.error(response.message().toString())
+                    }
+
+                    override fun onSuccess(response: Response?, t: String?) {
+                        modifyShow.show(t!!)
+                    }
+                })
+        }
         fun modify_member_title(changeParams: changeParams,token: String,modifyShow: modify_show) {
             val ok = OkHttpHelper.getInstance()
             ok.post_for_object(
@@ -95,7 +126,8 @@ class Title_Manager_Model {
         fun show(string: String)
         fun error(string: String)
     }
-    data class addtitleItem(val role:String,val authorities:String)
+
     data class titleItem(val id:Int,val role:String,val authorities:String)
     data class changeParams(val id:Int,val role:String,val authorities:String)
+    data class addParams(val warehouse_id: Int,val role:String,val authorities:String)
 }

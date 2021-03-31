@@ -14,7 +14,7 @@ class All_Warehouse_Model {
            fun getData(show:Show,userLogin: Login_fragment.user_Login) {
             val ok = OkHttpHelper.getInstance()
             ok.get_for_list(
-                "http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/"+userLogin.userInfo.userId+"?userToken="+userLogin.token,
+                "http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/"+userLogin.userInfo.companyId+"?userToken="+userLogin.token,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,
@@ -33,7 +33,10 @@ class All_Warehouse_Model {
                             resultStr,
                             Array<Warehouse>::class.java
                         )
-                        show.show(wares)
+                        if(wares!=null){
+                            show.show(wares)
+                        }
+
                         for (ware in wares){
                             println("@@@@@2"+ware)
                         }

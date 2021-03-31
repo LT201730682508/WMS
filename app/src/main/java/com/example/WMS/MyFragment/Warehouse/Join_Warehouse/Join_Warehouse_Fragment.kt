@@ -48,7 +48,6 @@ class Join_Warehouse_Fragment:Fragment() {
                     join_recycleview.adapter = joinWarehouseAdapter
                 }
             }
-
         },(activity as MainActivity).fragment_Manager.userinfo)
 
     }

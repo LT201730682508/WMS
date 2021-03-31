@@ -8,11 +8,14 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Add_Member.Add_Member_Fragment
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Member_Manager_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Title_Manager.Title_Manager_Model
+import com.example.WMS.MyFragment.Warehouse.Warehouse_Authority_List
 import com.example.WMS.R
 import com.xuexiang.xui.widget.toast.XToast
 import kotlinx.android.synthetic.main.member_information.*
+import kotlinx.android.synthetic.main.set_user_information.*
 
 
 class Member_Imformation_Fragment(val warehouseId:Int,val item: Member_Manager_Model.member_item):Fragment() {
@@ -46,6 +49,7 @@ class Member_Imformation_Fragment(val warehouseId:Int,val item: Member_Manager_M
                 for (l in list){
                     mList.add(l.role)
                 }
+                mList.removeAt(0)
                 var arrayAdapter=ArrayAdapter<String>(activity as MainActivity,R.layout.member_title_spinner,mList)
                 arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                 title_spinner.adapter=arrayAdapter
@@ -70,14 +74,29 @@ class Member_Imformation_Fragment(val warehouseId:Int,val item: Member_Manager_M
 
 
         save.setOnClickListener {
-            Member_Imformation_Model.modify_member_title(Member_Imformation_Model.modify_params((activity as MainActivity).fragment_Manager.userinfo.token,warehouseId,item.user_name,select_title),object :Member_Imformation_Model.result{
-                override fun result() {
-                    XToast.success(requireContext(),"修改成功").show()
-                    (activity as MainActivity).fragment_Manager.pop()
+            val authority= Warehouse_Authority_List.authorityList_Map.get(warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
+            if(authority!!.contains("e")) {
+                if(item.user_name==(activity as MainActivity).fragment_Manager.userinfo.userInfo.userName){
+                    XToast.warning(requireContext(),"无法修改自身职级").show()
+                }else{
+                    Member_Imformation_Model.modify_member_title((activity as MainActivity).fragment_Manager.userinfo.token,Member_Imformation_Model.modify_params( warehouseId,item.user_name,select_title),object :Member_Imformation_Model.result{
+                        override fun result(string: String) {
+                            if(string=="OK"){
+                                XToast.success(requireContext(),"修改成功").show()
+                                (activity as MainActivity).fragment_Manager.pop()
+                            }else{
+                                XToast.warning(requireContext(),string ).show()
+                            }
+
+                        }
+
+                    })
                 }
 
-            })
-
+            }
+             else{
+                XToast.warning(requireContext(),"您没有相关权限").show()
+            }
         }
     }
 }

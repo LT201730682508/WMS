@@ -36,9 +36,9 @@ class Ware_out_Adapter(var list:Array<Ware_out_Record_Model.Out_Record>, var act
         }
         vH.date.text=list[position].createTime
         vH.ware_out_item_name.text=list[position].productName
-        vH.ware_out_item_price.text=list[position].outPrice.toString()
-        vH.ware_out_item_number.text=list[position].amount.toString()
-        vH.ware_out_item_all_price.text=(list[position].amount*list[position].outPrice).toString()
+        vH.ware_out_item_price.text="单价"+list[position].outPrice.toString()
+        vH.ware_out_item_number.text="数量"+list[position].amount.toString()
+        vH.ware_out_item_all_price.text="总价 "+(list[position].amount*list[position].outPrice).toString()
         Glide.with(activity).load(R.drawable.touxiang).into(vH.img)
         return view!!
     }

@@ -34,7 +34,9 @@ class Join_Warehouse_Model {
                             resultStr,
                             Array<All_Warehouse_Model.Warehouse>::class.java
                         )
-                        show.show(wares)
+                        if(wares!=null){
+                            show.show(wares)
+                        }
                         for (ware in wares){
                             println("@@@@@2"+ware)
                         }

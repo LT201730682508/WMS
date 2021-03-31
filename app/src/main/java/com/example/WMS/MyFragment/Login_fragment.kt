@@ -140,7 +140,7 @@ class Login_fragment: Fragment() {
         fun show(t: user_Login,username: String,password: String)
     }
 
-    data class user_Info(val userId:Int, val userName:String,val userImg:String,
+    data class user_Info(val userId:Int, val userName:String, var userImg:String,
                          var companyId:Int, var companyName:String, val hasInvitation:Int)
     data class user_Login(var userInfo:user_Info,val token:String)
 
