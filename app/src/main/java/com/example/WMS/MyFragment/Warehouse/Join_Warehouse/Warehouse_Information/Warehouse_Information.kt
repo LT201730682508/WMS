@@ -118,6 +118,7 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
                                 item.warehouseId,
                                 object : Warehouse_Imformation_Model.Warehouse_imfor_Show {
                                     override fun show(str: String) {
+                                        (activity as MainActivity).fragment_Manager.pop()
                                         XToast.info(requireContext(), str).show()
                                     }
 
