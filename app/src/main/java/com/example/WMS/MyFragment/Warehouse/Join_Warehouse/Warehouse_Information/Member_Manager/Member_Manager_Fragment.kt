@@ -25,6 +25,7 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
     lateinit var add_new_member: ExtendedFloatingActionButton
     lateinit var title_manager: ExtendedFloatingActionButton
     lateinit var empty_rl:RelativeLayout
+     lateinit var memberList:ArrayList<String>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,28 +50,38 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
         add_new_member=view.findViewById(R.id.add_new_member)
         member_Recycle=view.findViewById(R.id.member_list)
         empty_rl=view.findViewById(R.id.empty_rl)
-
+        memberList= arrayListOf()
         indata()
         title_manager.setOnClickListener {
-            val authority=Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
-            println("@@@@@@@@$authority")
-            val authorities=authority!!.toCharArray()
-            if(authorities.contains('e')){
-                var titleManagerFragment=Title_Manager_Fragment(wareHouseid)
-                (activity  as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
+            if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)){
+                val authority=Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
+                println("@@@@@@@@$authority")
+                val authorities=authority!!.toCharArray()
+                if(authorities.contains('e')){
+                    var titleManagerFragment=Title_Manager_Fragment(wareHouseid)
+                    (activity  as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
+                }else{
+                    XToast.warning(requireContext(),"您没有相关权限").show()
+                }
             }else{
-                XToast.warning(requireContext(),"您没有相关权限").show()
-            }
-        }
-        add_new_member.setOnClickListener {
-            val authority=Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
-            if(authority!!.contains("d")){
-                var addMemberFragment=Add_Member_Fragment(wareHouseid)
-                (activity  as MainActivity).fragment_Manager.hide_all(addMemberFragment)
-            }else{
-                XToast.warning(requireContext(),"您没有相关权限").show()
+                XToast.warning(requireContext(),"您不是该仓库人员").show()
             }
 
+        }
+        add_new_member.setOnClickListener {
+
+            if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)) {
+                val authority =
+                    Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
+                if (authority!!.contains("d")) {
+                    var addMemberFragment = Add_Member_Fragment(wareHouseid)
+                    (activity as MainActivity).fragment_Manager.hide_all(addMemberFragment)
+                } else {
+                    XToast.warning(requireContext(), "您没有相关权限").show()
+                }
+            }else{
+                XToast.warning(requireContext(),"您不是该仓库人员").show()
+            }
         }
     }
     fun indata(){
@@ -83,6 +94,9 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
                 }else{
                     memberListAdapter= Member_List_Adapter(wareHouseid,wares,activity as MainActivity)
                     member_Recycle.adapter=memberListAdapter
+                    for (ware  in wares){
+                        memberList.add(ware.user_name)
+                    }
                 }
 
             }

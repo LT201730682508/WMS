@@ -34,17 +34,22 @@ class Message_Adapter(
 
     override fun onBindViewHolder(holder:ViewHolder, position: Int) {
         Glide.with(activity).load(R.drawable.touxiang).into(holder.message_img)
-          holder.message_ware_name.text=list[position].warehouseName
-          holder.message_ware_title.text=list[position].role
+        holder.message_ware_name.text=list[position].warehouseName
+        holder.message_ware_title.text=list[position].role
         holder.join_it.setOnClickListener {
-              Message_Notify_Model.accept_Invite(list[position].invitation_id,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
-                  override fun show(str: String) {
-                      if(str=="OK") {
-                          notifyItemRemoved(position)
-                          XToast.success(activity,"成功加入").show()
-                      }
-                  }
-              })
+            if(list[position].invitation_id==(activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId||(activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId==0){
+                Message_Notify_Model.accept_Invite(list[position].invitation_id,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
+                    override fun show(str: String) {
+                        if(str=="OK") {
+                            notifyItemRemoved(position)
+                            XToast.success(activity,"成功加入").show()
+                        }
+                    }
+                })
+            }else{
+                XToast.warning(activity,"所属公司不同，无法加入").show()
+            }
+
         }
         holder.delete.setOnClickListener {
             Message_Notify_Model.refuse_Invite(list[position].invitation_id,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{

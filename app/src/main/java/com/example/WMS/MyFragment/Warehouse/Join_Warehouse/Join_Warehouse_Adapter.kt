@@ -13,13 +13,16 @@ import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Warehouse_Information
 import com.example.WMS.R
 
-class Join_Warehouse_Adapter(var list: Array<All_Warehouse_Model.Warehouse>, var activity: MainActivity): RecyclerView.Adapter<Join_Warehouse_Adapter.ViewHolder>() {
+class Join_Warehouse_Adapter(var list: Array<All_Warehouse_Model.Warehouse>, var activity: MainActivity,var fragment: Join_Warehouse_Fragment): RecyclerView.Adapter<Join_Warehouse_Adapter.ViewHolder>() {
 
    inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
          var imageView:ImageView=itemView.findViewById(R.id.ware_img)
          var ware_name:TextView=itemView.findViewById(R.id.warehouse_name)
     }
-
+    fun setMyList(changelist: Array<All_Warehouse_Model.Warehouse>){
+        list= changelist
+        notifyDataSetChanged()
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view =LayoutInflater.from(parent.context).inflate(R.layout.join_ware_item,parent,false)
         var viewHolder=ViewHolder(view)
@@ -32,7 +35,7 @@ class Join_Warehouse_Adapter(var list: Array<All_Warehouse_Model.Warehouse>, var
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.ware_name.text=list[position].warehouseName
-        Glide.with(activity).load(list[position].warehouseImg).into(holder.imageView)
+        Glide.with(fragment).load(list[position].warehouseImg).into(holder.imageView)
         holder.itemView.setOnClickListener {
             var warehouseInformation= Warehouse_Information(list[position])
             activity.fragment_Manager.hide_all(warehouseInformation)
