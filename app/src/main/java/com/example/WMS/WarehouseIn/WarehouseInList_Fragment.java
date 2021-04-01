@@ -39,6 +39,7 @@ import com.example.WMS.MyAdapter;
 
 import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_In_Record_Model;
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model;
+import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model;
 import com.example.WMS.My_Thread;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
@@ -72,7 +73,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static ProgressBar pb_loading;
     private static Spinner spinner;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private Button btn_add;
+    private static Button btn_add;
     private Button btn_scan;
     private static Button btn_select;
     private Base_Topbar base_topbar;
@@ -80,17 +81,16 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static MyAdapter<MyAdapter.VH> adapter;
     private static ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<Ware_In_Record_Model.In_Record> warehouseName;
-    //private static final String[] warehouseName={"深圳","上海"};
     private static int pos=1;//替代warehouseId
     private static String selectWarehouseName;
-    private static String supplierName="111";
+    private static String supplierName="";
     private static String supplierId="";
     private MyHandler handler;
     private long lastClickTime=0;
     private long now=0;
     private static String token;
     private int userId;
-
+    private static Warehouse_authority_Model.authority roleList;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +98,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         context = getActivity();
         token = ((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
         userId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getUserId();
+        getRole(token, pos);
     }
 
     @Nullable
@@ -123,6 +124,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                  * 刷新操作在这里实现
                  * */
                 getData();
+                getRole(token, pos);
                 //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -139,6 +141,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 pos=position+1;
                 System.out.println("-----"+pos);
                 getData();
+                getRole(token, pos);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -163,7 +166,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
     private void getWarehouseList() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/"+userId+"?userToken="+token,new BaseCallback<Ware_In_Record_Model.In_Record>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getJoinedWarehouse?userToken="+token,
+                new BaseCallback<Ware_In_Record_Model.In_Record>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -197,7 +201,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+pos+"?userToken="+token,new BaseCallback<DataBean.ProductIn>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+pos+"?userToken="+token,
+                new BaseCallback<DataBean.ProductIn>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -228,7 +233,39 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
         });
     }
+    public void getRole(String token, int warehouseId){
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-authority/getAuthoritiesOfUser?userToken="+token+"&warehouseId="+warehouseId,
+                new BaseCallback<Warehouse_authority_Model.authority>(){
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
 
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("@@@@@@@@@@1"+response);
+            }
+
+            @Override
+            public void onSuccess_List(final String resultStr) {
+                Gson gson= new Gson();
+                Warehouse_authority_Model.authority wares=gson.fromJson(resultStr,Warehouse_authority_Model.authority.class);
+                roleList = wares;
+                handler.sendEmptyMessage(2);
+            }
+
+            @Override
+            public void onSuccess(Response response, Warehouse_authority_Model.authority productIn) {
+                System.out.println("Success"+response);
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+        });
+    }
     private static class MyHandler extends Handler{
         private final WeakReference<MainActivity> mActivity;
         public MyHandler(MainActivity activity){
@@ -245,7 +282,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                             tv_nomedia.setVisibility(View.GONE);
                             pb_loading.setVisibility(View.GONE);
                             rv_pager.setVisibility(View.VISIBLE);
-                            adapter = new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist, 0, activity, selectWarehouseName, supplierName, token, supplierId);
+                            adapter = new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist, 0, activity,
+                                    selectWarehouseName, supplierName, token, supplierId, roleList.getAuthorities());
                             rv_pager.setAdapter(adapter);
                         } else {
                             System.out.println("@@@@@@@@@@222");
@@ -265,6 +303,14 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                             spinner.setAdapter(spinnerAdapter);
                         }
                         break;
+                    case 2:
+                        String role = roleList.getAuthorities();
+                        if(role.contains("d")){
+                            btn_add.setEnabled(true);
+                        }
+                        else if(!role.contains("d")){
+                            btn_add.setEnabled(false);
+                        }
                     default:
                         break;
                 }
@@ -280,6 +326,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         if(isHidden()){
         }else {
             getData();
+            getRole(token,pos);
             onResume();
         }
     }

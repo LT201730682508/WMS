@@ -16,16 +16,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model;
 import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
 import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
 import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
 import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
 import com.example.WMS.domain.DataBean;
+import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<MyAdapter.VH> {
     public static class VH extends RecyclerView.ViewHolder{
@@ -89,8 +92,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     private String warehouseName;
     private String supplierName;
     private String receiverName;
-
-    public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity,String warehouseName,String supplierName,String token,String id) {
+    private String role;
+    public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity,String warehouseName,String supplierName,String token,String id,String role) {
         this.mDatas = data;
         this.mResId = mResId;
         this.opType = opType;
@@ -99,9 +102,10 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         this.supplierName=supplierName;
         this.token=token;
         this.id=id;
+        this.role = role;
     }
 
-    public MyAdapter(int mResId,ArrayList<DataBean.ProductOut> data, int opType,MainActivity activity,String warehouseName,String receiverName,String token,String id) {
+    public MyAdapter(int mResId,ArrayList<DataBean.ProductOut> data, int opType,MainActivity activity,String warehouseName,String receiverName,String token,String id, String role) {
         this.mDatasOut = data;
         this.mResId = mResId;
         this.opType = opType;
@@ -110,6 +114,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         this.receiverName=receiverName;
         this.token=token;
         this.id=id;
+        this.role = role;
     }
 
     @NonNull
@@ -185,6 +190,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
 
     }
 
+
     public void DeleteData(int id){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
         okHttpHelper.delete_for_list("http://121.199.22.134:8003/api-inventory/deleteInventoryProductById/"+id+"?userToken="+token,new BaseCallback<Integer>(){
@@ -218,7 +224,15 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     }
 
     public void bindView(VH holder,int position){
+        holder.btn_add.setVisibility(View.VISIBLE);
+        holder.fl.setVisibility(View.VISIBLE);
+        if(!role.contains("g")){
+            holder.fl.setVisibility(View.GONE);
+        }
         if(opType==WAREHOUSE_IN){
+            if(!role.contains("b")){
+                holder.btn_add.setVisibility(View.GONE);
+            }
             holder.setText(R.id.tv_name, mDatas.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_inPrice,mDatas.get(position).getInPrice());
@@ -226,6 +240,9 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             Glide.with(activity).load(mDatas.get(position).getProductImg()).into(holder.imageView);
         }
         else if(opType==WAREHOUSE_OUT){
+            if(!role.contains("c")){
+                holder.btn_add.setVisibility(View.GONE);
+            }
             holder.setText(R.id.tv_name, mDatasOut.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatasOut.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_outPrice,mDatasOut.get(position).getOutPrice());

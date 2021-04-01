@@ -118,7 +118,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 map.put("productName",name.getText().toString());
                 map.put("productDescription",detail.getText().toString());
                 map.put("productCategory",category.getText().toString());
-                map.put("warehouseId","1");
+                map.put("warehouseId",warehouseId+"");
                 map.put("productCode","productCode_bigmelon");
                 sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
             }

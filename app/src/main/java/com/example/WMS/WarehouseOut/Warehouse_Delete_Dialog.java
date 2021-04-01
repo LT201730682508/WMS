@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -86,12 +87,19 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
         if(v==btn_add){
             //保存刷新数据库，退出
             //
-            SharedPreferences preferences=context.getSharedPreferences("receiver", Context.MODE_PRIVATE);
-            id=preferences.getString("receiverId", "-1");
-            DataBean.ProductOut_outWarehouse post_data=new DataBean.ProductOut_outWarehouse(productOut.getId(),id,
-                    Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
-            sendData(post_data);
-            cancel();
+            if(receiverName == "defaultname"){
+                Toast.makeText(context,"请先选择客户",Toast.LENGTH_SHORT).show();
+                cancel();
+            }
+            else {
+                SharedPreferences preferences=context.getSharedPreferences("receiver", Context.MODE_PRIVATE);
+                id=preferences.getString("receiverId", "-1");
+                DataBean.ProductOut_outWarehouse post_data=new DataBean.ProductOut_outWarehouse(productOut.getId(),id,
+                        Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
+                sendData(post_data);
+                cancel();
+            }
+
         }
         else if(v==btn_cancel){
             //不保存数据库，退出

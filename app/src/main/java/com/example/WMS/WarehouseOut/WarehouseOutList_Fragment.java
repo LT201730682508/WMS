@@ -36,6 +36,7 @@ import com.example.WMS.MyAdapter;
 
 import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_In_Record_Model;
 import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Model;
+import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.Receiver_Supplier.Receiver_Fragment;
@@ -75,7 +76,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private long lastClickTime=0;
     private long now=0;
     private int userId;
-
+    private static Warehouse_authority_Model.authority roleList;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -105,6 +106,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                  * */
                 //这里获取数据的逻辑
                 getData();
+                getRole(token, pos);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -122,6 +124,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                 pos=position+1;
                 warehouseItems = new ArrayList<DataBean.ProductOut>();
                 getData();
+                getRole(token, pos);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -139,7 +142,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     }
     private void getWarehouseList() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/"+userId+"?userToken="+token,new BaseCallback<Ware_out_Record_Model.Out_Record>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getJoinedWarehouse?userToken="+token,new BaseCallback<Ware_out_Record_Model.Out_Record>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -169,6 +172,38 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                 System.out.println("error"+response+e);
             }
         });
+    }
+    public void getRole(String token, int warehouseId){
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-authority/getAuthoritiesOfUser?userToken="+token+"&warehouseId="+warehouseId,
+                new BaseCallback<Warehouse_authority_Model.authority>(){
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        System.out.println("failure"+e);
+                    }
+
+                    @Override
+                    public void onResponse(Response response) {
+                        System.out.println("@@@@@@@@@@1"+response);
+                    }
+
+                    @Override
+                    public void onSuccess_List(final String resultStr) {
+                        Gson gson= new Gson();
+                        Warehouse_authority_Model.authority wares=gson.fromJson(resultStr,Warehouse_authority_Model.authority.class);
+                        roleList = wares;
+                    }
+
+                    @Override
+                    public void onSuccess(Response response, Warehouse_authority_Model.authority productIn) {
+                        System.out.println("Success"+response);
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        System.out.println("error"+response+e);
+                    }
+                });
     }
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
@@ -218,7 +253,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                             tv_nomedia.setVisibility(View.GONE);
                             pb_loading.setVisibility(View.GONE);
                             rv_pager.setVisibility(View.VISIBLE);
-                            adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName,receiverName,token,receiverId);
+                            adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName,receiverName,token,receiverId, roleList.getAuthorities());
                             rv_pager.setAdapter(adapter);
                         }
                         else{
@@ -254,6 +289,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         super.onHiddenChanged(hidden);
         if(isHidden()){
         }else {
+            getData();
             onResume();
         }
     }

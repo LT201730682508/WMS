@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -94,12 +95,18 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     public void onClick(View v) {
         if(v==btn_add){
             //保存刷新数据库，退出
-            SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
-            id=preferences.getString("supplierId", "-1");
-            DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getId(),id,
-                    Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
-            sendData(post_data);
-            cancel();
+            if(supplierName=="defaultname"){
+                cancel();
+                Toast.makeText(context,"请先选择供应商",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
+                id=preferences.getString("supplierId", "-1");
+                DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getId(),id,
+                        Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
+                sendData(post_data);
+                cancel();
+            }
         }
         else if(v==btn_cancel){
             //不保存数据库，退出
