@@ -1,7 +1,6 @@
 package com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Imformation
 
 import com.example.WMS.BaseCallback
-import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Member_Manager_Model
 import com.example.WMS.OkHttpHelper
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
@@ -12,10 +11,10 @@ import java.io.IOException
 class Member_Imformation_Model {
 
     companion object{
-        fun modify_member_title(modify_params:modify_params,result:result) {
+        fun modify_member_title(token:String,modify_params:modify_params,result:result) {
             val ok = OkHttpHelper.getInstance()
             ok.post_for_object(
-                "http://121.199.22.134:8003/api-authority/changeStaffInfo",modify_params,
+                "http://121.199.22.134:8003/api-authority/changeStaffInfo?userToken="+token,modify_params,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,
@@ -39,15 +38,20 @@ class Member_Imformation_Model {
                     }
 
                     override fun onSuccess(response: Response?, t: String?) {
-                        result.result()
+                        result.result(t!!)
                     }
                 })
         }
 
     }
 
-    data class modify_params(val token:String,val warehouseId:Int,val user_name:String,val role:String)
+    data class modify_params(
+
+        val warehouse_id: Int,
+        val user_name:String,
+        val role:String
+    )
     interface result{
-        fun result()
+        fun result(string: String)
     }
 }

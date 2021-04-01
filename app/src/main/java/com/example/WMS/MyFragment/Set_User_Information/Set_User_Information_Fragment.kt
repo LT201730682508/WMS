@@ -44,6 +44,9 @@ class Set_User_Information_Fragment:Fragment() {
         init(view)
         return view
     }
+    fun setImg(Str:String){
+        Glide.with(this ).load(Str).into(user_img)
+    }
     fun init(view:View) {
         baseTopbar = Base_Topbar(view, activity as MainActivity, false)
         user_img=view.findViewById(R.id.user_img)
@@ -51,7 +54,10 @@ class Set_User_Information_Fragment:Fragment() {
         user_account=view.findViewById(R.id.user_account)
         sure=view.findViewById(R.id.sure)
         exit=view.findViewById(R.id.exit)
-        Glide.with(requireContext()).load((activity as MainActivity).fragment_Manager.userinfo.userInfo.userImg).into(user_img)
+        if((activity as MainActivity).fragment_Manager.userinfo.userInfo.userImg!=null){
+            setImg((activity as MainActivity).fragment_Manager.userinfo.userInfo.userImg)
+        }
+
         user_account.text="账号："+(activity as MainActivity).fragment_Manager.userinfo.userInfo.userName
         company_name.setText((activity as MainActivity).fragment_Manager.userinfo.userInfo.companyName)
 
@@ -65,7 +71,8 @@ class Set_User_Information_Fragment:Fragment() {
 
             Set_User_Imformation_Model.modify_user_Img((activity as MainActivity).fragment_Manager.userinfo.token,saveBitmapFile((user_img.getDrawable()),"userImg"),object :Set_User_Imformation_Model.show{
                 override fun show(str: String) {
-                    XToast.success(requireContext(),str).show()
+                    (activity as MainActivity).fragment_Manager.userinfo.userInfo.userImg=str
+                    XToast.success(requireContext(),"更改成功").show()
                     (activity as MainActivity).fragment_Manager.pop()
                 }
 
@@ -109,7 +116,7 @@ class Set_User_Information_Fragment:Fragment() {
                 val bitmap =
                     BitmapFactory.decodeStream(requireActivity().contentResolver.openInputStream(
                         Open_Album.uri))
-                Glide.with(this).load(bitmap).into(user_img)
+                setImg(Open_Album.uri.toString())
             }
             Open_Album.CHOOSE_PHOTO -> if (resultCode == Activity.RESULT_OK) {
                 if (Build.VERSION.SDK_INT >= 19) Open_Album.handleImageOnKitKat(activity,data,user_img) else Open_Album.handleImageBeforeKitKat(activity,data,user_img)

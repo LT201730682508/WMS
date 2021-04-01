@@ -13,9 +13,9 @@ import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class Warehouse_Imformation_Model {
     companion object{
-        fun getData_Delete(parms: Any, show: Warehouse_imfor_Show,userLogin: Login_fragment.user_Login){
+        fun getData_Delete(warehouseId: Int, show: Warehouse_imfor_Show,userLogin: Login_fragment.user_Login){
             var okHttpHelper= OkHttpHelper.getInstance()
-            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/deleteWarehouseByWarehouseId/1?userToken="+userLogin.token,parms,object :
+            okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/deleteWarehouseByWarehouseId/"+warehouseId+"?userToken="+userLogin.token,warehouseId,object :
                 BaseCallback<String>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)

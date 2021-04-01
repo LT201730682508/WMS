@@ -30,18 +30,28 @@ class Message_Notify_Fragment:Fragment() {
         baseTopbar= Base_Topbar(view,activity as MainActivity,true)
         message_recycler=view.findViewById(R.id.message_list)
         empty_rl=view.findViewById(R.id.empty_rl)
-        message_recycler.layoutManager=LinearLayoutManager(requireContext())
-        Message_Notify_Model.get_Invite(object :Message_Notify_Model.after_Show{
-            override fun show(list: Array<Message_Notify_Model.invite_item>) {
-                if(list.size==0){
-                    empty_rl.visibility=View.VISIBLE
-                    message_recycler.visibility=View.GONE
-                }
-                messageAdapter= Message_Adapter(list,activity as MainActivity)
-                message_recycler.adapter=messageAdapter
-            }
+       initdata()
+    }
+   fun initdata(){
+       message_recycler.layoutManager=LinearLayoutManager(requireContext())
+       Message_Notify_Model.get_Invite(object :Message_Notify_Model.after_Show{
+           override fun show(list: Array<Message_Notify_Model.invite_item>) {
+               if(list.size==0){
+                   empty_rl.visibility=View.VISIBLE
+                   message_recycler.visibility=View.GONE
+               }
+               messageAdapter= Message_Adapter(list,activity as MainActivity)
+               message_recycler.adapter=messageAdapter
+           }
 
-        },(activity as MainActivity).fragment_Manager.userinfo)
+       },(activity as MainActivity).fragment_Manager.userinfo)
 
+   }
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (isHidden) {
+        } else {
+             initdata()
+        }
     }
 }

@@ -7,6 +7,7 @@ import com.squareup.okhttp.Response
 import java.io.File
 import java.io.IOException
 import java.lang.Exception
+import java.net.URL
 
 class Set_User_Imformation_Model {
     companion object{
@@ -14,7 +15,7 @@ class Set_User_Imformation_Model {
 
             var okHttpHelper= OkHttpHelper.getInstance()
             okHttpHelper.post_for_form("http://121.199.22.134:8003/api-authentication/setUserImg?userToken="+token,null,file,"userImg",object :
-                BaseCallback<String>(){
+                BaseCallback<getImg>(){
                 override fun onFailure(request: Request?, e: IOException?) {
                     println("@@@@@1"+e)
                 }
@@ -27,17 +28,19 @@ class Set_User_Imformation_Model {
 
                 }
 
-
                 override fun onError(response: Response?, code: Int, e: Exception?) {
-                    println("@@@@@4"+code+e)
+                    println("@@@@@4"+code+e+response.toString())
                 }
 
-                override fun onSuccess(response: Response?, t: String?) {
-                    show.show(t!!)
+                override fun onSuccess(response: Response?, t: getImg?) {
+                    println("@@@@@5"+t)
+                    show.show(t!!.userImg.toString()!!)
                 }
             })
         }
     }
+
+    data class getImg(val userImg:String)
     interface show{
         fun show(str:String)
     }

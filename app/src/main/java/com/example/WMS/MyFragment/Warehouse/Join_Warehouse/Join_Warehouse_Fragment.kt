@@ -14,6 +14,10 @@ import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
 import com.example.WMS.R
 import kotlinx.android.synthetic.main.all_warehouse.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class Join_Warehouse_Fragment:Fragment() {
     lateinit var join_recycleview:RecyclerView
@@ -38,18 +42,20 @@ class Join_Warehouse_Fragment:Fragment() {
     }
     fun initdata(){
         join_recycleview.layoutManager= LinearLayoutManager(context)
-        Join_Warehouse_Model.getData(object :Join_Warehouse_Model.Show{
-            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
-                if (wares.size==0){
-                    empty_rl.visibility=View.VISIBLE
-                    join_recycleview.visibility=View.GONE
-                }else {
-                    joinWarehouseAdapter = Join_Warehouse_Adapter(wares, activity as MainActivity)
-                    join_recycleview.adapter = joinWarehouseAdapter
-                }
-            }
 
-        },(activity as MainActivity).fragment_Manager.userinfo)
+            Join_Warehouse_Model.getData(object :Join_Warehouse_Model.Show{
+                override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+                    if (wares.size==0){
+                        empty_rl.visibility=View.VISIBLE
+                        join_recycleview.visibility=View.GONE
+                    }else {
+                        joinWarehouseAdapter = Join_Warehouse_Adapter(wares, activity as MainActivity,this@Join_Warehouse_Fragment)
+                        join_recycleview.adapter = joinWarehouseAdapter
+                    }
+                }
+            },(activity as MainActivity).fragment_Manager.userinfo)
+
+
 
     }
 
@@ -57,10 +63,24 @@ class Join_Warehouse_Fragment:Fragment() {
         super.onHiddenChanged(hidden)
         if (isHidden) {
         } else {
-            initdata()
+            getDataAgain()
         }
     }
     override fun onResume() {
         super.onResume()
+    }
+    fun getDataAgain(){
+        All_Warehouse_Model.getData(object :All_Warehouse_Model.Show{
+            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+                if (wares.size==0){
+                    empty_rl.visibility=View.VISIBLE
+                    all_recycleview.visibility=View.GONE
+                }else{
+                    joinWarehouseAdapter .setMyList(wares)
+                }
+
+            }
+
+        },(activity as MainActivity).fragment_Manager.userinfo)
     }
 }

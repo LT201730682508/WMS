@@ -42,7 +42,7 @@ class All_Warehouse_Fragment: Fragment() {
                     empty_rl.visibility=View.VISIBLE
                     all_recycleview.visibility=View.GONE
                 }else{
-                    allWarehouseAdapter= All_Warehouse_Adapter(wares,activity as MainActivity)
+                    allWarehouseAdapter= All_Warehouse_Adapter(wares,activity as MainActivity,this@All_Warehouse_Fragment)
                     all_recycleview.adapter=allWarehouseAdapter
                 }
 
@@ -56,10 +56,24 @@ class All_Warehouse_Fragment: Fragment() {
         super.onHiddenChanged(hidden)
         if (isHidden) {
         } else {
-           initdata()
+           getDataAgain()
         }
     }
     override fun onResume() {
         super.onResume()
+    }
+    fun getDataAgain(){
+        All_Warehouse_Model.getData(object :All_Warehouse_Model.Show{
+            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+                if (wares.size==0){
+                    empty_rl.visibility=View.VISIBLE
+                    all_recycleview.visibility=View.GONE
+                }else{
+                    allWarehouseAdapter.setMyList(wares)
+                }
+
+            }
+
+        },(activity as MainActivity).fragment_Manager.userinfo)
     }
 }

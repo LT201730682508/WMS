@@ -33,8 +33,8 @@ class Adapter(var list:Array<Ware_In_Record_Model.In_Record>,var activity: MainA
         Glide.with(activity).load(R.drawable.touxiang).into(holder.img)
         holder.date.text=list[position].createTime
         holder.ware_in_item_name.text=list[position].productName
-        holder.ware_in_item_price.text=list[position].inPrice.toString()
-        holder.ware_in_item_number.text=list[position].amount.toString()
-        holder.ware_in_item_all_price.text=(list[position].amount*list[position].inPrice).toString()
+        holder.ware_in_item_price.text="单价："+list[position].inPrice.toString()
+        holder.ware_in_item_number.text="数量："+list[position].amount.toString()
+        holder.ware_in_item_all_price.text="总价："+(list[position].amount*list[position].inPrice).toString()
     }
 }

@@ -58,8 +58,8 @@ class Title_Manager_Adapter(
             holder.itemView.setOnClickListener {
 //                var item=Title_Manager_Model.titleItem(1,"员工"+(list.size+1),"a")
 //                list.plus(item)
-                var changeParams=Title_Manager_Model.changeParams(warehouseId,"员工"+(list.size+1),"a")
-                Title_Manager_Model.modify_member_title(changeParams,(activity as MainActivity).fragment_Manager.userinfo.token,object :Title_Manager_Model.modify_show{
+                var addParams=Title_Manager_Model.addParams(warehouseId,"员工"+(list.size+1),"a")
+                Title_Manager_Model.add_title(addParams,(activity as MainActivity).fragment_Manager.userinfo.token,object :Title_Manager_Model.modify_show{
                     override fun show(string: String) {
                         if(string=="OK"){
                             XToast.success(activity,"新增成功").show()
@@ -75,7 +75,7 @@ class Title_Manager_Adapter(
                     }
 
                     override fun error(string: String) {
-                        XToast.success(activity,"新增失败").show()
+                        XToast.warning(activity,"新增失败").show()
                     }
                 })
 

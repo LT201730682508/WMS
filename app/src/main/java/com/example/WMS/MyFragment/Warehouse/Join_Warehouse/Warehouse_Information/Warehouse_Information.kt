@@ -63,8 +63,8 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
 
         Warehouse_authority_Model.getRole(item.warehouseId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Warehouse_authority_Model.getRole{
             override fun get(authority: Warehouse_authority_Model.authority) {
-                 Warehouse_Authority_List.authorityList_Map.put(item.warehouseId,authority.authorities)
-                Warehouse_Authority_List.roleList_Map.put(item.warehouseId,authority.role)
+                 Warehouse_Authority_List.authorityList_Map.put(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.authorities)
+                Warehouse_Authority_List.roleList_Map.put(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.role)
             }
 
         })
@@ -85,7 +85,7 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
             (activity as MainActivity).fragment_Manager.hide_all(memberManagerFragment)
         }
         ware_name_modification.setOnClickListener {
-            val role=Warehouse_Authority_List.roleList_Map.get(item.warehouseId)
+            val role=Warehouse_Authority_List.roleList_Map.get(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
             if(role=="库主"){
                 var wareNameModifyDialog=Ware_Name_Modify_Dialog(requireContext(),object :Ware_Name_Modify_Dialog.Modify{
                     override fun modify(changName: String) {
@@ -108,19 +108,30 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
             }
         }
         ware_delete.setOnClickListener {
-            var alartWarningDialog= Alart_Warning_Dialog(requireContext(),object :Alart_Warning_Dialog.Show_Sure{
-                override fun sure() {
-                      var a="Aa"
-                      Warehouse_Imformation_Model.getData_Delete(a,object :Warehouse_Imformation_Model.Warehouse_imfor_Show{
-                          override fun show(str: String) {
-                               XToast.info(requireContext(),str).show()
-                          }
+            val role=Warehouse_Authority_List.roleList_Map.get(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
+            if(role=="库主") {
+                var alartWarningDialog =
+                    Alart_Warning_Dialog(requireContext(), object : Alart_Warning_Dialog.Show_Sure {
+                        override fun sure() {
 
-                      },(activity as MainActivity).fragment_Manager.userinfo)
-                }
-            },"您是否确定删除该仓库？")
+                            Warehouse_Imformation_Model.getData_Delete(
+                                item.warehouseId,
+                                object : Warehouse_Imformation_Model.Warehouse_imfor_Show {
+                                    override fun show(str: String) {
+                                        (activity as MainActivity).fragment_Manager.pop()
+                                        XToast.info(requireContext(), str).show()
+                                    }
 
-            alartWarningDialog.show()
+                                },
+                                (activity as MainActivity).fragment_Manager.userinfo
+                            )
+                        }
+                    }, "您是否确定删除该仓库？")
+
+                alartWarningDialog.show()
+            }else{
+                XToast.warning(requireContext(),"您没有相关权限").show()
+            }
         }
     }
 }

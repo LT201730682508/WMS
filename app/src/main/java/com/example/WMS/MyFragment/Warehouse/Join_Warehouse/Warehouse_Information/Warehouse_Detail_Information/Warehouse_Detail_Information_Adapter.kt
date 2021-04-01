@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.WMS.MainActivity
-import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Join_Warehouse_Adapter
 import com.example.WMS.R
 import kotlinx.android.synthetic.main.warehouse_list.view.*
 
