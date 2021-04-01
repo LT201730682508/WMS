@@ -49,4 +49,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.1.1"
     implementation 'com.google.android.material:material:1.1.0-beta01'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    implementation 'com.google.zxing:android-core:3.4.1'
+    implementation 'com.google.zxing:core:3.4.1'
 }
