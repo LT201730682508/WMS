@@ -311,6 +311,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                         else if(!role.contains("d")){
                             btn_add.setEnabled(false);
                         }
+                        break;
                     default:
                         break;
                 }
