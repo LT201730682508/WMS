@@ -1,6 +1,7 @@
 package com.example.WMS.MyFragment
 
 import android.os.Bundle
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ class Home_Fragment: Fragment() {
     lateinit var click_join:TextView
     lateinit var join_create_re:LinearLayout
     lateinit var set_user:ImageView
+    lateinit var hongdian:ImageView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,6 +44,7 @@ class Home_Fragment: Fragment() {
         return view
     }
     fun jump(view:View){
+
         item1=view.findViewById(R.id.item1)
         item1.setOnClickListener {
             var warehouseFragment=Warehouse_Fragment()
@@ -83,7 +86,10 @@ class Home_Fragment: Fragment() {
             })
             joinOrCreate.show()
         }
-
+        hongdian=view.findViewById(R.id.hongdian)
+        if((activity as MainActivity).fragment_Manager.userinfo.userInfo.hasInvitation==0){
+            hongdian.visibility=View.GONE
+        }
         set_user=view.findViewById(R.id.set_user_information)
         set_user.setOnClickListener {
             var setUserInformationFragment= Set_User_Information_Fragment()
@@ -97,6 +103,9 @@ class Home_Fragment: Fragment() {
         } else {
             if((activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId!=0){
                 join_create_re.visibility=View.GONE
+            }
+            if((activity as MainActivity).fragment_Manager.userinfo.userInfo.hasInvitation==0){
+                hongdian.visibility=View.GONE
             }
         }
     }

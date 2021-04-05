@@ -41,7 +41,21 @@ class Fragment_Manager {
 
 
     }
-
+   fun getNewData() {
+       var username = sps.getString("userName", "")
+       var password = sps.getString("passWord", "")
+       if (username != "" && password != "") {
+           loginFragment.login(username!!, password!!, object : Login_fragment.show {
+               override fun show(
+                   t: Login_fragment.user_Login,
+                   username: String,
+                   password: String
+               ) {
+                   userinfo = t!!
+               }
+           })
+       }
+   }
 
     fun replace_all(fragment: Fragment) {
         var transaction= my_activity.supportFragmentManager.beginTransaction()

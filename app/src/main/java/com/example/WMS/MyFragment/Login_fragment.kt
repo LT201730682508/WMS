@@ -104,8 +104,7 @@ class Login_fragment: Fragment() {
             }
         }
     }
-
-    fun login(username:String,password:String,show: show){
+     fun login(username:String,password:String,show: show){
         var map=HashMap<String,String>()
         map.put("userName",username)
         map.put("password",password)

@@ -43,7 +43,6 @@ class Message_Notify_Fragment:Fragment() {
                messageAdapter= Message_Adapter(list,activity as MainActivity)
                message_recycler.adapter=messageAdapter
            }
-
        },(activity as MainActivity).fragment_Manager.userinfo)
 
    }
