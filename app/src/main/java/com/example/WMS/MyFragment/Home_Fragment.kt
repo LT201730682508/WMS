@@ -90,4 +90,14 @@ class Home_Fragment: Fragment() {
             (activity as MainActivity).fragment_Manager.hide_all(setUserInformationFragment)
         }
     }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (isHidden) {
+        } else {
+            if((activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId!=0){
+                join_create_re.visibility=View.GONE
+            }
+        }
+    }
 }
