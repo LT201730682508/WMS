@@ -120,7 +120,8 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             //更新数据
             //需要更新数据库信息代码
             // /api-inventory/addProduct
-            if(detail.getText().toString().equals("")||name.getText().toString().equals("")||category.getText().toString().equals("")||!hasImg){
+            if(detail.getText().toString().equals("")||name.getText().toString().equals("")
+                    ||category.getText().toString().equals("")||scan_code.getText().toString().equals("")||!hasImg){
                 XToast.warning(requireContext(), "请输入完整信息").show();
             }
             else{
@@ -133,9 +134,10 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 map.put("productDescription",detail.getText().toString());
                 map.put("productCategory",category.getText().toString());
                 map.put("warehouseId",warehouseId+"");
-                map.put("productCode","productCode_bigmelon");
+                map.put("productCode",scan_code.getText().toString());
                 sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
             }
+
         }
         else if (v==picture){
             dialog.show();
@@ -235,6 +237,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 if (obj instanceof HmsScan) {
                     if (!TextUtils.isEmpty(((HmsScan) obj).getOriginalValue())) {
                         Toast.makeText(context, ((HmsScan) obj).getOriginalValue(), Toast.LENGTH_SHORT).show();
+                        scan_code.setText(((HmsScan) obj).getOriginalValue());
                     }
                     return;
                 }
@@ -264,7 +267,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             return;
         }
         if (requestCode == CAMERA_REQ_CODE) {
-            ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.QRCODE_SCAN_TYPE).create());
+            int result = ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.QRCODE_SCAN_TYPE).create());
         }
     }
 

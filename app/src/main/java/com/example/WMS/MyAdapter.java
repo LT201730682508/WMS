@@ -138,8 +138,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
                     activity.fragment_Manager.hide_all(warehouseInDetailFragment);
                 }
                 else if(opType==1){//出库Adater
-//                    WarehouseOutDetailFragment warehouseOutDetailFragment = new WarehouseOutDetailFragment();
-//                    activity.fragment_Manager.hide_all(warehouseOutDetailFragment);
+
                 }
 
             }

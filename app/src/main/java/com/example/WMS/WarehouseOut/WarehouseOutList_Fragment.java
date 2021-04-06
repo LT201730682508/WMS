@@ -3,10 +3,13 @@ package com.example.WMS.WarehouseOut;
  * 出库商品列表
  * */
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +47,9 @@ import com.example.WMS.Receiver_Supplier.Receiver_Fragment;
 import com.example.WMS.domain.DataBean;
 
 import com.google.gson.Gson;
+import com.huawei.hms.hmsscankit.ScanUtil;
+import com.huawei.hms.ml.scan.HmsScan;
+import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
@@ -296,6 +302,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         if(v==btn_scan){
             //todo-something
+            int result = ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.ALL_SCAN_TYPE).create());
+            System.out.println(result+"_____________");
         }
         else if(v==btn_select){
             now = System.currentTimeMillis();
@@ -305,5 +313,38 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                 ((MainActivity) getActivity()).fragment_Manager.hide_all(receiver_fragment);
             }
         }
+    }
+    private static final int CAMERA_REQ_CODE = 3;
+    private static final int RESULT_OK = 4;
+    private static final int REQUEST_CODE_SCAN = 5;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (permissions == null || grantResults == null || grantResults.length < 2 || grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        if (requestCode == CAMERA_REQ_CODE) {
+            int result = ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.ALL_SCAN_TYPE).create());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //当扫码页面结束后，处理扫码结果
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK || data == null) {
+            return;
+        }
+        //从onActivityResult返回data中，用 ScanUtil.RESULT作为key值取到HmsScan返回值
+        if (requestCode == REQUEST_CODE_SCAN) {
+            Object obj = data.getParcelableExtra(ScanUtil.RESULT);
+            if (obj instanceof HmsScan) {
+                if (!TextUtils.isEmpty(((HmsScan) obj).getOriginalValue())) {
+                    Toast.makeText(context, ((HmsScan) obj).getOriginalValue(),      Toast.LENGTH_SHORT).show();
+
+                }
+                return;
+            }
+        }
+
     }
 }

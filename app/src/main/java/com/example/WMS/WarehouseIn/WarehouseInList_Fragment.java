@@ -398,6 +398,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             if (obj instanceof HmsScan) {
                 if (!TextUtils.isEmpty(((HmsScan) obj).getOriginalValue())) {
                     Toast.makeText(context, ((HmsScan) obj).getOriginalValue(),      Toast.LENGTH_SHORT).show();
+
                 }
                 return;
             }
