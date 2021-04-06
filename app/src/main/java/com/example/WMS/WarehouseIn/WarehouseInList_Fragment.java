@@ -81,8 +81,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static MyAdapter<MyAdapter.VH> adapter;
     private static ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<Ware_In_Record_Model.In_Record> warehouseName;
-    private static int pos=1;//替代warehouseId
     private static String selectWarehouseName;
+    private static int wareHouseId;
     private static String supplierName="";
     private static String supplierId="";
     private MyHandler handler;
@@ -98,7 +98,6 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         context = getActivity();
         token = ((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
         userId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getUserId();
-        getRole(token, pos);
     }
 
     @Nullable
@@ -123,8 +122,6 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 /**
                  * 刷新操作在这里实现
                  * */
-                getData();
-                getRole(token, pos);
                 //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -138,10 +135,10 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectWarehouseName=warehouseName.get(position).getWarehouseName();
-                pos=position+1;
-                System.out.println("-----"+pos);
-                getData();
-                getRole(token, pos);
+                getRole(token, warehouseName.get(position).getWarehouseId());
+
+
+                wareHouseId=warehouseName.get(position).getWarehouseId();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -199,9 +196,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         });
     }
 
-    private void getData() {
+    private void getData(int wareid) {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+pos+"?userToken="+token,
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+wareid+"?userToken="+token,
                 new BaseCallback<DataBean.ProductIn>(){
             @Override
             public void onFailure(Request request, IOException e) {
@@ -233,7 +230,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
         });
     }
-    public void getRole(String token, int warehouseId){
+    public void getRole(String token, final int warehouseId){
         OkHttpHelper ok= OkHttpHelper.getInstance();
         ok.get_for_list("http://121.199.22.134:8003/api-authority/getAuthoritiesOfUser?userToken="+token+"&warehouseId="+warehouseId,
                 new BaseCallback<Warehouse_authority_Model.authority>(){
@@ -252,6 +249,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 Gson gson= new Gson();
                 Warehouse_authority_Model.authority wares=gson.fromJson(resultStr,Warehouse_authority_Model.authority.class);
                 roleList = wares;
+                getData(warehouseId);
                 handler.sendEmptyMessage(2);
             }
 
@@ -326,8 +324,6 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         super.onHiddenChanged(hidden);
         if(isHidden()){
         }else {
-            getData();
-            getRole(token,pos);
             onResume();
         }
     }
@@ -338,7 +334,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             now = System.currentTimeMillis();
             if(now - lastClickTime >1000) {
                 lastClickTime = now;
-                Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName,pos,token);
+                Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName,wareHouseId,token);
                 ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
             }
         }
