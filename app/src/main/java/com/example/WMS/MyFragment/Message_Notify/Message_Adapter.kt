@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.WMS.MainActivity
+import com.example.WMS.MyFragment.Login_fragment
 import com.example.WMS.R
 import com.xuexiang.xui.widget.toast.XToast
 
@@ -42,7 +43,9 @@ class Message_Adapter(
                     override fun show(str: String) {
                         if(str=="OK") {
                             notifyItemRemoved(position)
+                            (activity as MainActivity).fragment_Manager.getNewData()
                             XToast.success(activity,"成功加入").show()
+
                         }
                     }
                 })

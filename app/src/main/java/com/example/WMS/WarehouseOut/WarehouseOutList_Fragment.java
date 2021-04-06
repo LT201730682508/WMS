@@ -66,8 +66,9 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static ArrayList<DataBean.ProductOut> warehouseItems;
     private static ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<Ware_out_Record_Model.Out_Record> warehouseName;
-    private static int pos=1;
+
     private static String selectWarehouseName;
+    private static int wareHouseId;
     private static String receiverName="";
     private static String receiverId;
     private static String token;
@@ -105,8 +106,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                  * 刷新操作在这里实现
                  * */
                 //这里获取数据的逻辑
-                getData();
-                getRole(token, pos);
+                getRole(token,wareHouseId);
+
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -121,10 +122,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectWarehouseName = warehouseName.get(position).getWarehouseName();
-                pos=position+1;
-                warehouseItems = new ArrayList<DataBean.ProductOut>();
-                getData();
-                getRole(token, pos);
+                getRole(token, warehouseName.get(position).getWarehouseId());
+                wareHouseId= warehouseName.get(position).getWarehouseId();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -173,7 +172,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             }
         });
     }
-    public void getRole(String token, int warehouseId){
+    public void getRole(String token, final int warehouseId){
         OkHttpHelper ok= OkHttpHelper.getInstance();
         ok.get_for_list("http://121.199.22.134:8003/api-authority/getAuthoritiesOfUser?userToken="+token+"&warehouseId="+warehouseId,
                 new BaseCallback<Warehouse_authority_Model.authority>(){
@@ -191,6 +190,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     public void onSuccess_List(final String resultStr) {
                         Gson gson= new Gson();
                         Warehouse_authority_Model.authority wares=gson.fromJson(resultStr,Warehouse_authority_Model.authority.class);
+                        getData(warehouseId);
                         roleList = wares;
                     }
 
@@ -205,9 +205,9 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     }
                 });
     }
-    private void getData() {
+    private void getData(int wareHouseId) {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseId/"+pos+"?userToken="+token,new BaseCallback<DataBean.ProductOut>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseId/"+wareHouseId+"?userToken="+token,new BaseCallback<DataBean.ProductOut>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -289,7 +289,6 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         super.onHiddenChanged(hidden);
         if(isHidden()){
         }else {
-            getData();
             onResume();
         }
     }

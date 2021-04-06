@@ -70,7 +70,7 @@ class Join_Warehouse_Fragment:Fragment() {
         super.onResume()
     }
     fun getDataAgain(){
-        All_Warehouse_Model.getData(object :All_Warehouse_Model.Show{
+        Join_Warehouse_Model.getData(object :Join_Warehouse_Model.Show{
             override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
                 if (wares.size==0){
                     empty_rl.visibility=View.VISIBLE
