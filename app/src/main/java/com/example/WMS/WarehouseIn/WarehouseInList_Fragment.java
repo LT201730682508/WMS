@@ -123,6 +123,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                  * 刷新操作在这里实现
                  * */
                 //这里获取数据的逻辑
+                getData(wareHouseId);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -136,8 +137,6 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectWarehouseName=warehouseName.get(position).getWarehouseName();
                 getRole(token, warehouseName.get(position).getWarehouseId());
-
-
                 wareHouseId=warehouseName.get(position).getWarehouseId();
             }
             @Override
