@@ -66,6 +66,25 @@
                 android:maxLength="15"
                 android:maxLines="1"
                 android:text="仓库名"/>
+            <Button
+                android:id="@+id/btn_scan"
+                android:layout_marginTop="8dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:background="#23D2F5"
+                android:maxLength="15"
+                android:maxLines="1"
+                android:text="扫码"/>
+            <com.xuexiang.xui.widget.edittext.ClearEditText
+                android:id="@+id/et_code"
+                android:layout_marginTop="8dp"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:maxLength="15"
+                android:maxLines="1"
+                android:hint="请扫码"/>
         </LinearLayout>
     </RelativeLayout>
     <Button

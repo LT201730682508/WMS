@@ -4,17 +4,21 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +34,9 @@ import com.example.WMS.R;
 
 import com.example.WMS.custom_Dialog.take_Album_Dialog;
 import com.example.WMS.domain.DataBean;
+import com.huawei.hms.hmsscankit.ScanUtil;
+import com.huawei.hms.ml.scan.HmsScan;
+import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -59,6 +66,9 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private Base_Topbar base_topbar;
     private ImageView picture;
     private ClearEditText warehouse_name;
+    private ClearEditText scan_code;
+    private Button btn_scan;
+
     private String warehouseName;
     private int warehouseId;
     private Dialog dialog;
@@ -97,6 +107,10 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
         category=view.findViewById(R.id.et_category);
+        btn_scan=view.findViewById(R.id.btn_scan);
+        btn_scan.setOnClickListener(this);
+        scan_code=view.findViewById(R.id.et_code);
+        scan_code.setFocusable(false);
         return view;
     }
 
@@ -125,6 +139,9 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         }
         else if (v==picture){
             dialog.show();
+        }
+        else if (v==btn_scan){
+            int result = ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.ALL_SCAN_TYPE).create());
         }
     }
 
@@ -185,7 +202,9 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     public   void setImage(Activity activity,String str,ImageView imageView){
         Glide.with(activity).load(str).into(imageView);
     }
-
+    private static final int CAMERA_REQ_CODE = 3;
+    private static final int RESULT_OK = 4;
+    private static final int REQUEST_CODE_SCAN = 5;
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -209,6 +228,18 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 }else {}
                 break;
             }
+            case RESULT_OK:
+                break;
+            case REQUEST_CODE_SCAN:{
+                Object obj = data.getParcelableExtra(ScanUtil.RESULT);
+                if (obj instanceof HmsScan) {
+                    if (!TextUtils.isEmpty(((HmsScan) obj).getOriginalValue())) {
+                        Toast.makeText(context, ((HmsScan) obj).getOriginalValue(), Toast.LENGTH_SHORT).show();
+                    }
+                    return;
+                }
+                break;
+            }
             default:{
                 break;
             }
@@ -223,4 +254,18 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             onResume();
         }
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (permissions == null || grantResults == null) {
+            return;
+        }
+        if (grantResults.length < 2 || grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        if (requestCode == CAMERA_REQ_CODE) {
+            ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.QRCODE_SCAN_TYPE).create());
+        }
+    }
+
 }

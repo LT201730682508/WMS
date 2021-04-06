@@ -5,13 +5,17 @@ package com.example.WMS.WarehouseIn;
  */
 
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +27,12 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,6 +40,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
+import com.example.WMS.Fragment_Manager;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
 
@@ -50,6 +57,9 @@ import com.example.WMS.execute_IO;
 import com.example.WMS.perform_UI;
 import com.google.gson.Gson;
 
+import com.huawei.hms.hmsscankit.ScanUtil;
+import com.huawei.hms.ml.scan.HmsScan;
+import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
@@ -74,14 +84,14 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static Spinner spinner;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static Button btn_add;
-    private Button btn_scan;
+    private static Button btn_scan;
     private static Button btn_select;
     private Base_Topbar base_topbar;
     private static ArrayList<DataBean.ProductIn> warehouseItems;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<Ware_In_Record_Model.In_Record> warehouseName;
-    private static int pos=1;//替代warehouseId
+    private static int pos=0;//替代warehouseId
     private static String selectWarehouseName;
     private static String supplierName="";
     private static String supplierId="";
@@ -98,7 +108,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         context = getActivity();
         token = ((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
         userId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getUserId();
-        getRole(token, pos);
+        getWarehouseList();
     }
 
     @Nullable
@@ -117,14 +127,16 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 /**
                  * 刷新操作在这里实现
                  * */
+                getRole(token, warehouseName.get(pos).getWarehouseId());
                 getData();
-                getRole(token, pos);
+
                 //这里获取数据的逻辑
                 swipeRefreshLayout.setRefreshing(false);
             }
@@ -133,15 +145,15 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         btn_scan=view.findViewById(R.id.scan);
         btn_select=view.findViewById(R.id.select_supplier);
         //设置适配器
-        getWarehouseList();
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectWarehouseName=warehouseName.get(position).getWarehouseName();
-                pos=position+1;
-                System.out.println("-----"+pos);
+                pos=position;
+                getRole(token, warehouseName.get(pos).getWarehouseId());
                 getData();
-                getRole(token, pos);
+
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -201,7 +213,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+pos+"?userToken="+token,
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+warehouseName.get(pos).getWarehouseId()+"?userToken="+token,
                 new BaseCallback<DataBean.ProductIn>(){
             @Override
             public void onFailure(Request request, IOException e) {
@@ -326,8 +338,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         super.onHiddenChanged(hidden);
         if(isHidden()){
         }else {
+            getRole(token,warehouseName.get(pos).getWarehouseId());
             getData();
-            getRole(token,pos);
             onResume();
         }
     }
@@ -338,12 +350,15 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             now = System.currentTimeMillis();
             if(now - lastClickTime >1000) {
                 lastClickTime = now;
-                Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName,pos,token);
+                Warehouse_New_Fragment warehouse_new_fragment = new Warehouse_New_Fragment(selectWarehouseName,warehouseName.get(pos).getWarehouseId(),token);
                 ((MainActivity)getActivity()).fragment_Manager.hide_all(warehouse_new_fragment);
             }
         }
         else if(v==btn_scan){
             //todo-something
+            int result = ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.ALL_SCAN_TYPE).create());
+            System.out.println(result+"_____________");
+            //Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
         }
         else if(v==btn_select){
             now = System.currentTimeMillis();
@@ -360,5 +375,38 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         protected Object doInBackground(Object[] objects) {
             return null;
         }
+    }
+
+    private static final int CAMERA_REQ_CODE = 0;
+    private static final int RESULT_OK = 1;
+    private static final int REQUEST_CODE_SCAN = 2;
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (permissions == null || grantResults == null || grantResults.length < 2 || grantResults[0] != PackageManager.PERMISSION_GRANTED || grantResults[1] != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        if (requestCode == CAMERA_REQ_CODE) {
+            int result = ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.ALL_SCAN_TYPE).create());
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //当扫码页面结束后，处理扫码结果
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != RESULT_OK || data == null) {
+            return;
+        }
+        //从onActivityResult返回data中，用 ScanUtil.RESULT作为key值取到HmsScan返回值
+        if (requestCode == REQUEST_CODE_SCAN) {
+            Object obj = data.getParcelableExtra(ScanUtil.RESULT);
+            if (obj instanceof HmsScan) {
+                if (!TextUtils.isEmpty(((HmsScan) obj).getOriginalValue())) {
+                    Toast.makeText(context, ((HmsScan) obj).getOriginalValue(),      Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+
     }
 }
