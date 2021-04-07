@@ -63,7 +63,6 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     private String warehouseName;
     private DataBean.ProductIn productIn;
     private String product_name;
-    private ImageView imageView;
     private Dialog dialog;
     private DataBean.Product wares;
     private String token;
@@ -103,7 +102,6 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
         category=view.findViewById(R.id.et_category);
-        imageView=view.findViewById(R.id.iv_picture);
         getData();
         size.setFocusable(false);
         size.setOnClickListener(this);
@@ -132,7 +130,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
                 category.setText(wares.getProductCategory());
                 detail.setText(wares.getProductDescription());
                 name.setText(wares.getProductName());
-                setImage(getActivity(),wares.getProductImg(),imageView);
+                setImage(getActivity(),wares.getProductImg(),picture);
             }
 
             @Override

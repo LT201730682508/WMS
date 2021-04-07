@@ -75,6 +75,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
 
     private static String selectWarehouseName;
     private static int wareHouseId;
+    private String productCode;
     private static String receiverName="";
     private static String receiverId;
     private static String token;
@@ -340,7 +341,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             if (obj instanceof HmsScan) {
                 if (!TextUtils.isEmpty(((HmsScan) obj).getOriginalValue())) {
                     Toast.makeText(context, ((HmsScan) obj).getOriginalValue(),      Toast.LENGTH_SHORT).show();
-
+                    productCode = ((HmsScan) obj).getOriginalValue();
                 }
                 return;
             }

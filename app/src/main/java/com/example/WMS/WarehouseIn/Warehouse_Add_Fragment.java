@@ -95,7 +95,10 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
     public void onClick(View v) {
         if(v==btn_add){
             //保存刷新数据库，退出
-            if(supplierName=="defaultname"){
+            if(et_size.getText().toString()==""||et_price.getText().toString()==""){
+                cancel();
+            }
+            else if(supplierName=="defaultname"){
                 cancel();
                 Toast.makeText(context,"请先选择供应商",Toast.LENGTH_SHORT).show();
             }

@@ -5,10 +5,8 @@ package com.example.WMS.WarehouseIn;
  */
 
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,7 +14,6 @@ import android.os.Handler;
 import android.os.Message;
 
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +29,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,21 +36,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
-import com.example.WMS.Fragment_Manager;
 import com.example.WMS.MainActivity;
 import com.example.WMS.MyAdapter;
 
 import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_In_Record_Model;
-import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model;
 import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model;
-import com.example.WMS.My_Thread;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.Receiver_Supplier.Supplier_Fragment;
 import com.example.WMS.domain.DataBean;
 
-import com.example.WMS.execute_IO;
-import com.example.WMS.perform_UI;
 import com.google.gson.Gson;
 
 import com.huawei.hms.hmsscankit.ScanUtil;
@@ -68,13 +59,9 @@ import com.squareup.okhttp.Response;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
-
 
 public class WarehouseInList_Fragment extends Fragment implements View.OnClickListener{
     protected Context context;
@@ -93,6 +80,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static ArrayList<Ware_In_Record_Model.In_Record> warehouseName;
     private static String selectWarehouseName;
     private static int wareHouseId;
+    private String productCode;
     private static String supplierName="";
     private static String supplierId="";
     private MyHandler handler;
@@ -398,11 +386,42 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             if (obj instanceof HmsScan) {
                 if (!TextUtils.isEmpty(((HmsScan) obj).getOriginalValue())) {
                     Toast.makeText(context, ((HmsScan) obj).getOriginalValue(),      Toast.LENGTH_SHORT).show();
-
+                    productCode = ((HmsScan) obj).getOriginalValue();
+                    WarehouseIn_scan_detail_Fragment warehouseIn_scan_detail_fragment = new WarehouseIn_scan_detail_Fragment(productCode, token, selectWarehouseName, wareHouseId);
+                    ((MainActivity) getActivity()).fragment_Manager.hide_all(warehouseIn_scan_detail_fragment);
                 }
                 return;
             }
         }
+    }
+    public void getByCode() {
+        OkHttpHelper okHttpHelper = OkHttpHelper.getInstance();
+        okHttpHelper.get_for_object("http://121.199.22.134:8003/api-inventory/getInInventoryProductByProductCode/" + productCode + "/" + wareHouseId + "?userToken=" + token, new BaseCallback<DataBean.ProductIn>() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure" + e);
+            }
 
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("@@@@@@@@@@1" + response);
+            }
+
+            @Override
+            public void onSuccess_List(String resultStr) {
+
+            }
+
+            @Override
+            public void onSuccess(Response response, DataBean.ProductIn product) {
+//                System.out.println(product.getProductName());
+//                productIn = product;
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error" + response + e);
+            }
+        });
     }
 }

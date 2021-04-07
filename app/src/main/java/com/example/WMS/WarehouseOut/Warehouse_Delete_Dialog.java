@@ -87,7 +87,10 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
         if(v==btn_add){
             //保存刷新数据库，退出
             //
-            if(receiverName == "defaultname"){
+            if(et_size.getText().toString()==""||et_price.getText().toString()==""){
+                cancel();
+            }
+            else if(receiverName == "defaultname"){
                 Toast.makeText(context,"请先选择客户",Toast.LENGTH_SHORT).show();
                 cancel();
             }
