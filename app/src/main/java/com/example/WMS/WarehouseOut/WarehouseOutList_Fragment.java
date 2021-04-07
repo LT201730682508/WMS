@@ -44,6 +44,7 @@ import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.Receiver_Supplier.Receiver_Fragment;
 
+import com.example.WMS.WarehouseIn.WarehouseIn_scan_detail_Fragment;
 import com.example.WMS.domain.DataBean;
 
 import com.google.gson.Gson;
@@ -304,7 +305,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         if(v==btn_scan){
             //todo-something
             int result = ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.ALL_SCAN_TYPE).create());
-            System.out.println(result+"_____________");
+
         }
         else if(v==btn_select){
             now = System.currentTimeMillis();
@@ -342,10 +343,11 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                 if (!TextUtils.isEmpty(((HmsScan) obj).getOriginalValue())) {
                     Toast.makeText(context, ((HmsScan) obj).getOriginalValue(),      Toast.LENGTH_SHORT).show();
                     productCode = ((HmsScan) obj).getOriginalValue();
+                    WarehouseOut_scan_detail_Fragment warehouseOut_scan_detail_fragment = new WarehouseOut_scan_detail_Fragment(productCode, token, selectWarehouseName, wareHouseId);
+                    ((MainActivity) getActivity()).fragment_Manager.hide_all(warehouseOut_scan_detail_fragment);
                 }
                 return;
             }
         }
-
     }
 }

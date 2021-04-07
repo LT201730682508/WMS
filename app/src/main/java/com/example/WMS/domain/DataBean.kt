@@ -13,7 +13,7 @@ class DataBean {
 
     data class ProductIn_inWarehouse(var id:Int,var supplierId: String,var inPrice: Double,var amount: Int,var note: String)
 
-    data class ProductOut_outWarehouse(var id:Int,var receiverId: String,var OutPrice: Double,var amount: Int,var note: String)
+    data class ProductOut_outWarehouse(var id:Int,var receiverId: String,var outPrice: Double,var amount: Int,var note: String)
 
     data class Product(var productId: Int,var productName:String,var productDescription:String,
                               var productCategory:String,var productCode:String,var productImg:String)
