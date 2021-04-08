@@ -86,6 +86,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private MyHandler handler;
     private long lastClickTime=0;
     private long now=0;
+    private static  Fragment fragment;
     private static String token;
     private int userId;
     private static Warehouse_authority_Model.authority roleList;
@@ -114,6 +115,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);
+        fragment=this;
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -279,7 +281,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                             tv_nomedia.setVisibility(View.GONE);
                             pb_loading.setVisibility(View.GONE);
                             rv_pager.setVisibility(View.VISIBLE);
-                            adapter = new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist, 0, activity,
+                            adapter = new MyAdapter<MyAdapter.VH>(warehouseItems, R.layout.item_inlist, 0, activity,fragment,
                                     selectWarehouseName, supplierName, token, supplierId, roleList.getAuthorities());
                             rv_pager.setAdapter(adapter);
                         } else {

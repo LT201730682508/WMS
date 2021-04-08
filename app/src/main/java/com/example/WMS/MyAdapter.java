@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -87,13 +88,14 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     private ArrayList<DataBean.ProductIn> mDatas;
     private ArrayList<DataBean.ProductOut> mDatasOut;
     private MainActivity activity;
+    private Fragment fragment;
     private String token;
     private String id;
     private String warehouseName;
     private String supplierName;
     private String receiverName;
     private String role;
-    public MyAdapter(ArrayList<DataBean.ProductIn> data,int mResId, int opType,MainActivity activity,String warehouseName,String supplierName,String token,String id,String role) {
+    public MyAdapter(ArrayList<DataBean.ProductIn> data, int mResId, int opType, MainActivity activity,Fragment fragment, String warehouseName, String supplierName, String token, String id, String role) {
         this.mDatas = data;
         this.mResId = mResId;
         this.opType = opType;
@@ -103,6 +105,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         this.token=token;
         this.id=id;
         this.role = role;
+        this.fragment=fragment;
     }
 
     public MyAdapter(int mResId,ArrayList<DataBean.ProductOut> data, int opType,MainActivity activity,String warehouseName,String receiverName,String token,String id, String role) {
@@ -236,7 +239,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_inPrice,mDatas.get(position).getInPrice());
             holder.setDetail(R.id.tv_detail,mDatas.get(position).getProductDescription());
-            Glide.with(activity).load(mDatas.get(position).getProductImg()).into(holder.imageView);
+            Glide.with(fragment).load(mDatas.get(position).getProductImg()).into(holder.imageView);
         }
         else if(opType==WAREHOUSE_OUT){
             if(!role.contains("c")){
@@ -246,7 +249,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             holder.setSize(R.id.tv_quantity,mDatasOut.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_outPrice,mDatasOut.get(position).getOutPrice());
             holder.setDetail(R.id.tv_detail,mDatasOut.get(position).getProductDescription());
-            Glide.with(activity).load(mDatasOut.get(position).getProductImg()).into(holder.imageView);
+            Glide.with(fragment).load(mDatasOut.get(position).getProductImg()).into(holder.imageView);
         }
     }
     @Override
