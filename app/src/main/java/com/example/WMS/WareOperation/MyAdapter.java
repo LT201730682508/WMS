@@ -1,11 +1,10 @@
-package com.example.WMS;
+package com.example.WMS.WareOperation;
 
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -17,19 +16,20 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model;
-import com.example.WMS.WarehouseIn.WarehouseInDetailFragment;
-import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
-import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
-import com.example.WMS.WarehouseOut.Warehouse_Delete_Dialog;
+
+import com.example.WMS.BaseCallback;
+import com.example.WMS.MainActivity;
+import com.example.WMS.OkHttpHelper;
+import com.example.WMS.R;
+import com.example.WMS.WareOperation.WarehouseIn.WarehouseInDetailFragment;
+import com.example.WMS.WareOperation.WarehouseIn.Warehouse_Add_Fragment;
+import com.example.WMS.WareOperation.WarehouseOut.Warehouse_Delete_Dialog;
 import com.example.WMS.domain.DataBean;
-import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<MyAdapter.VH> {
     public static class VH extends RecyclerView.ViewHolder{
@@ -76,7 +76,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         }
         public VH setInPrice(int id,int inPrice){
             TextView textView = getView(id);
-            textView.setText(""+inPrice);
+            textView.setText(inPrice+"元(RMB)");
             return this;
         }
     }
@@ -146,34 +146,34 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
 
             }
         });
-        holder.fl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(opType==WAREHOUSE_IN){//入库Adater
-                    if(mDatas.get(position).getTotalAmount()==0){
-                        //执行删除list刷新ui操作
-                        DeleteData(mDatas.get(position).getId());
-                        notifyItemRemoved(position);
-                        Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(activity,"不为0不可删除",Toast.LENGTH_SHORT).show();
-                    }
-                }
-                else if(opType==WAREHOUSE_OUT){//出库Adater
-                    if(mDatasOut.get(position).getTotalAmount()==0){
-                        //执行删除list刷新ui操作
-                        DeleteData(mDatasOut.get(position).getId());
-                        notifyItemRemoved(position);
-                        Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        Toast.makeText(activity,"不为0不可删除",Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-            }
-        });
+//        holder.fl.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(opType==WAREHOUSE_IN){//入库Adater
+//                    if(mDatas.get(position).getTotalAmount()==0){
+//                        //执行删除list刷新ui操作
+//                        DeleteData(mDatas.get(position).getId());
+//                        notifyItemRemoved(position);
+//                        Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
+//                    }
+//                    else{
+//                        Toast.makeText(activity,"不为0不可删除",Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//                else if(opType==WAREHOUSE_OUT){//出库Adater
+//                    if(mDatasOut.get(position).getTotalAmount()==0){
+//                        //执行删除list刷新ui操作
+//                        DeleteData(mDatasOut.get(position).getId());
+//                        notifyItemRemoved(position);
+//                        Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
+//                    }
+//                    else{
+//                        Toast.makeText(activity,"不为0不可删除",Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//
+//            }
+//        });
         holder.btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

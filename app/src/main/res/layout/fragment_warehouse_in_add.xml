@@ -61,7 +61,9 @@
             android:hint="入库商品数量"/>
         <com.xuexiang.xui.widget.edittext.ClearEditText
             android:id="@+id/et_price"
-            android:layout_margin="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
@@ -69,6 +71,14 @@
             android:maxLines="1"
             android:layout_weight="1"
             android:hint="入库商品价格"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:text="元（RMB）"/>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

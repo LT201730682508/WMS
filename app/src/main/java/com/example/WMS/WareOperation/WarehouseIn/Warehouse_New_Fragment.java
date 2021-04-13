@@ -1,23 +1,25 @@
-package com.example.WMS.WarehouseIn;
+package com.example.WMS.WareOperation.WarehouseIn;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,30 +30,31 @@ import com.bumptech.glide.Glide;
 import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
+import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_In_Record_Model;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.Open_Album;
 import com.example.WMS.R;
 
 import com.example.WMS.custom_Dialog.take_Album_Dialog;
 import com.example.WMS.domain.DataBean;
+import com.google.gson.Gson;
 import com.huawei.hms.hmsscankit.ScanUtil;
 import com.huawei.hms.ml.scan.HmsScan;
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
-import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.xuexiang.xui.widget.edittext.ClearEditText;
 import com.xuexiang.xui.widget.toast.XToast;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -62,19 +65,21 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private Button btn_commit;
     private ClearEditText name;
     private ClearEditText detail;
-    private ClearEditText category;
+    private static Spinner category;
     private Base_Topbar base_topbar;
     private ImageView picture;
     private ClearEditText warehouse_name;
     private ClearEditText scan_code;
     private Button btn_scan;
-
+    private static String selectCategory = "";
+    private static ArrayList<String> categoryList;
+    private static ArrayAdapter<String> spinnerAdapter;
     private String warehouseName;
     private int warehouseId;
     private Dialog dialog;
     private String token;
     private Boolean hasImg=false;
-
+    private MyHandler handler;
     public Warehouse_New_Fragment(String warehouseName,int warehouseId,String token){
         this.warehouseName=warehouseName;
         this.warehouseId=warehouseId;
@@ -84,8 +89,10 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        handler = new MyHandler((MainActivity) getActivity());
         context=getActivity();
         dialog= new take_Album_Dialog(context);
+        getCategoryList();
     }
 
     @Nullable
@@ -106,7 +113,17 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         picture.setOnClickListener(this);
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
-        category=view.findViewById(R.id.et_category);
+        category=view.findViewById(R.id.spinner_category);
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectCategory=categoryList.get(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //todo-something
+            }
+        });
         btn_scan=view.findViewById(R.id.btn_scan);
         btn_scan.setOnClickListener(this);
         scan_code=view.findViewById(R.id.et_code);
@@ -121,7 +138,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             //需要更新数据库信息代码
             // /api-inventory/addProduct
             if(detail.getText().toString().equals("")||name.getText().toString().equals("")
-                    ||category.getText().toString().equals("")||scan_code.getText().toString().equals("")||!hasImg){
+                    ||selectCategory.equals("")||scan_code.getText().toString().equals("")||!hasImg){
                 XToast.warning(requireContext(), "请输入完整信息").show();
             }
             else{
@@ -132,7 +149,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 Map<String,String> map=new  HashMap<>();
                 map.put("productName",name.getText().toString());
                 map.put("productDescription",detail.getText().toString());
-                map.put("productCategory",category.getText().toString());
+                map.put("productCategory", selectCategory);
                 map.put("warehouseId",warehouseId+"");
                 map.put("productCode",scan_code.getText().toString());
                 sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
@@ -165,7 +182,42 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         }
         return file;
     }
+    private void getCategoryList() {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getCategoryListByWarehouseId/"+warehouseId+"?userToken="+token,new BaseCallback<DataBean.Category>(){
 
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("response"+response);
+            }
+
+            @Override
+            public void onSuccess_List(String resultStr) {
+                categoryList = new ArrayList<String>();
+                Gson gson= new Gson();
+                DataBean.Category[] wares=gson.fromJson(resultStr,DataBean.Category[].class);
+                for (int i=0;i<wares.length;i++){
+                    categoryList.add(wares[i].getCategoryName());
+                }
+                handler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onSuccess(Response response, DataBean.Category category) {
+
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+        });
+    }
     public void sendData(Map<String,String> parms, File file,String img){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
         okHttpHelper.post_for_form("http://121.199.22.134:8003/api-inventory/addProduct"+"?userToken="+token,parms,file,img,new BaseCallback<String>(){
@@ -270,5 +322,26 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
             int result = ScanUtil.startScan(getActivity(), REQUEST_CODE_SCAN, new HmsScanAnalyzerOptions.Creator().setHmsScanTypes(HmsScan.QRCODE_SCAN_TYPE).create());
         }
     }
-
+    private static class MyHandler extends Handler {
+        private final WeakReference<MainActivity> mActivity;
+        public MyHandler(MainActivity activity){
+            mActivity =new WeakReference<MainActivity>(activity);
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            final MainActivity activity=mActivity.get();
+            super.handleMessage(msg);
+            if(activity!=null) {
+                String[] warehouseList=new String[categoryList.size()];
+                for(int i = 0; i < categoryList.size(); i++){
+                    warehouseList[i] = categoryList.get(i);
+                }
+                if(warehouseList != null && warehouseList.length > 0){
+                    spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner, warehouseList);
+                    selectCategory = warehouseList[0];
+                    category.setAdapter(spinnerAdapter);
+                }
+            }
+        }
+    }
 }

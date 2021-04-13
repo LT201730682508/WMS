@@ -1,4 +1,4 @@
-package com.example.WMS.WarehouseIn;
+package com.example.WMS.WareOperation.WarehouseIn;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -13,26 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
 import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
-import com.example.WMS.My_Thread;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.Open_Album;
 import com.example.WMS.R;
 import com.example.WMS.custom_Dialog.take_Album_Dialog;
 import com.example.WMS.domain.DataBean;
-import com.example.WMS.execute_IO;
-import com.example.WMS.perform_UI;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -42,8 +37,6 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -103,9 +96,13 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         detail=view.findViewById(R.id.et_detail);
         category=view.findViewById(R.id.et_category);
         getData();
+        warehouse_name.setFocusable(false);
+        warehouse_name.setOnClickListener(this);
+        category.setFocusable(false);
+        category.setOnClickListener(this);
         size.setFocusable(false);
         size.setOnClickListener(this);
-        size.setText(""+productIn.getTotalAmount());
+        size.setText("数量："+productIn.getTotalAmount());
         return view;
     }
 
@@ -211,8 +208,8 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         else if (v==picture){
             dialog.show();
         }
-        else if(v==size){
-            Toast.makeText(context,"请使用入库改动商品数量",Toast.LENGTH_SHORT).show();
+        else if(v==size||v==category||v==warehouse_name){
+            Toast.makeText(context,"该页面无法修改此信息~",Toast.LENGTH_SHORT).show();
         }
     }
 

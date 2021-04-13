@@ -1,6 +1,5 @@
-package com.example.WMS.WarehouseIn;
+package com.example.WMS.WareOperation.WarehouseIn;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -10,32 +9,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-
 
 import com.bumptech.glide.Glide;
 import com.example.WMS.BaseCallback;
-import com.example.WMS.MainActivity;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.domain.DataBean;
-import com.example.WMS.domain.DataBean.ProductIn;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.xuexiang.xui.widget.edittext.ClearEditText;
 import com.xuexiang.xui.widget.edittext.MultiLineEditText;
 import com.xuexiang.xui.widget.textview.label.LabelTextView;
-import com.xuexiang.xui.widget.toast.XToast;
 
 import java.io.IOException;
 

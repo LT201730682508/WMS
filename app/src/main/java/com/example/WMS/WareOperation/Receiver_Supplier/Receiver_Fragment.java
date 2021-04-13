@@ -1,4 +1,4 @@
-package com.example.WMS.Receiver_Supplier;
+package com.example.WMS.WareOperation.Receiver_Supplier;
 
 import android.content.Context;
 import android.os.Bundle;
