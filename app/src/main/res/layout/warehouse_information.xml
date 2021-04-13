@@ -63,15 +63,7 @@
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:layout_height="100dp">
-        <TextView
-            android:id="@+id/information"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:text="仓库详情"
-            android:textColor="@color/skyblue"
-            android:layout_marginLeft="15dp"
-            android:gravity="center"
-            android:layout_height="wrap_content"></TextView>
+
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"

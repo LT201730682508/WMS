@@ -15,13 +15,12 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:id="@+id/select_rl"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/white"
                 android:layout_height="50dp">
                 <TextView
                     android:layout_width="wrap_content"
-                    android:text="仓库*"
+                    android:text="仓库* "
                     android:id="@+id/text"
                     android:textColor="@color/red"
                     android:layout_centerVertical="true"
@@ -38,39 +37,120 @@
                     android:layout_centerVertical="true"
                     android:layout_height="50dp"></Spinner>
             </RelativeLayout>
-            <!---     <RelativeLayout
-                     android:layout_width="match_parent"
-
-                     android:layout_height="55dp">
-                     <TextView
-                         android:background="@drawable/frame_line"
-                         android:layout_width="match_parent"
-                         android:layout_toLeftOf="@+id/text1"
-                         android:id="@+id/start_time"
-                         android:text="起始时间"
-                         android:gravity="center"
-                         android:textColor="@color/skyblue"
-                         android:layout_height="50dp"></TextView>
-                     <TextView
-                         android:layout_width="50dp"
-                         android:id="@+id/text1"
-                         android:layout_centerInParent="true"
-                         android:textColor="@color/black"
-                         android:gravity="center"
-                         android:textSize="20dp"
-                         android:text="->"
-                         android:layout_height="match_parent"></TextView>
-                     <TextView
-                         android:background="@drawable/frame_line"
-                         android:layout_width="match_parent"
-                         android:layout_toRightOf="@+id/text1"
-                         android:layout_alignParentRight="true"
-                         android:id="@+id/end_time"
-                         android:text="终止时间"
-                         android:gravity="center"
-                         android:textColor="@color/red"
-                         android:layout_height="50dp"></TextView>
-                 </RelativeLayout>-->
+            <RadioGroup
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:layout_marginHorizontal="50dp"
+                android:id="@+id/select_what_out"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RadioButton
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/product"
+                    android:text="商品"
+                    android:layout_width="0dp" />
+                <RadioButton
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/executer"
+                    android:text="执行者"
+                    android:layout_width="0dp" />
+                <RadioButton
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/time"
+                    android:text="时间"
+                    android:layout_width="0dp" />
+            </RadioGroup>
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:id="@+id/select_product"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:layout_height="50dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="商品  "
+                    android:id="@+id/product_text"
+                    android:textColor="@color/red"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:layout_height="match_parent"></TextView>
+                <Spinner
+                    android:id="@+id/product_spinner"
+                    android:layout_width="match_parent"
+                    android:spinnerMode="dialog"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="100dp"
+                    android:layout_toRightOf="@+id/product_text"
+                    android:layout_centerVertical="true"
+                    android:layout_height="50dp"></Spinner>
+            </RelativeLayout>
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:id="@+id/select_execute"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:layout_height="50dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:text="执行者"
+                    android:id="@+id/executer_text"
+                    android:textColor="@color/red"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center"
+                    android:layout_height="match_parent"></TextView>
+                <Spinner
+                    android:id="@+id/execute_spinner"
+                    android:layout_width="match_parent"
+                    android:spinnerMode="dialog"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginLeft="95dp"
+                    android:layout_toRightOf="@+id/executer_text"
+                    android:layout_centerVertical="true"
+                    android:layout_height="50dp"></Spinner>
+            </RelativeLayout>
+            <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/select_time"
+                android:layout_width="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_height="55dp">
+                <TextView
+                    android:background="@drawable/frame_line"
+                    android:layout_width="match_parent"
+                    android:layout_toLeftOf="@+id/text1"
+                    android:id="@+id/start_time"
+                    android:text="起始时间"
+                    android:gravity="center"
+                    android:textColor="@color/skyblue"
+                    android:layout_height="50dp"></TextView>
+                <TextView
+                    android:layout_width="50dp"
+                    android:id="@+id/text1"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:textSize="20dp"
+                    android:text="->"
+                    android:layout_height="match_parent"></TextView>
+                <TextView
+                    android:background="@drawable/frame_line"
+                    android:layout_width="match_parent"
+                    android:layout_toRightOf="@+id/text1"
+                    android:layout_alignParentRight="true"
+                    android:id="@+id/end_time"
+                    android:text="终止时间"
+                    android:gravity="center"
+                    android:textColor="@color/red"
+                    android:layout_height="50dp"></TextView>
+            </RelativeLayout>
                  <com.example.WMS.MyListView
                      android:layout_width="match_parent"
                      android:layout_marginTop="10dp"

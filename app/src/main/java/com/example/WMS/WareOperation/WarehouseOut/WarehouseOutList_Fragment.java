@@ -73,6 +73,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private String productCode;
     private static String receiverName="";
     private static String receiverId;
+    private static Fragment fragment;
     private static String token;
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
     private MyHandler handler;
@@ -83,6 +84,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fragment=this;
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
         token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
@@ -255,7 +257,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                             tv_nomedia.setVisibility(View.GONE);
                             pb_loading.setVisibility(View.GONE);
                             rv_pager.setVisibility(View.VISIBLE);
-                            adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,selectWarehouseName,receiverName,token,receiverId, roleList.getAuthorities());
+                            adapter=new MyAdapter<MyAdapter.VH>(R.layout.item_outlist, warehouseItems, 1,activity,fragment,selectWarehouseName,receiverName,token,receiverId, roleList.getAuthorities());
                             rv_pager.setAdapter(adapter);
                         }
                         else{

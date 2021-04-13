@@ -18,6 +18,9 @@ class Adapter(var list:Array<Ware_In_Record_Model.In_Record>,var activity: MainA
         var ware_in_item_price=itemview.findViewById<TextView>(R.id.ware_in_item_price)
         var ware_in_item_number=itemview.findViewById<TextView>(R.id.wae_in_item_number)
         var ware_in_item_all_price=itemview.findViewById<TextView>(R.id.wae_in_item_all_price)
+        var ware_in_supplier=itemview.findViewById<TextView>(R.id.supplier_or_other)
+        var ware_in_note=itemview.findViewById<TextView>(R.id.note)
+        var ware_in_execute=itemview.findViewById<TextView>(R.id.executer)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         var view = LayoutInflater.from(parent.context).inflate(R.layout.ware_in_record_item,parent,false)
@@ -36,5 +39,8 @@ class Adapter(var list:Array<Ware_In_Record_Model.In_Record>,var activity: MainA
         holder.ware_in_item_price.text="单价："+list[position].inPrice.toString()
         holder.ware_in_item_number.text="数量："+list[position].amount.toString()
         holder.ware_in_item_all_price.text="总价："+(list[position].amount*list[position].inPrice).toString()
+        holder.ware_in_supplier.text="供应商："+list[position].supplierName.toString()
+        holder.ware_in_note.text="备注："+list[position].note.toString()
+        holder.ware_in_execute.text="执行者："+list[position].userName.toString()
     }
 }

@@ -108,7 +108,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         this.fragment=fragment;
     }
 
-    public MyAdapter(int mResId,ArrayList<DataBean.ProductOut> data, int opType,MainActivity activity,String warehouseName,String receiverName,String token,String id, String role) {
+    public MyAdapter(int mResId,ArrayList<DataBean.ProductOut> data, int opType,MainActivity activity,Fragment fragment,String warehouseName,String receiverName,String token,String id, String role) {
         this.mDatasOut = data;
         this.mResId = mResId;
         this.opType = opType;
@@ -116,6 +116,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         this.warehouseName=warehouseName;
         this.receiverName=receiverName;
         this.token=token;
+        this.fragment=fragment;
         this.id=id;
         this.role = role;
     }

@@ -5,11 +5,20 @@
     android:background="@drawable/frame_line"
     android:layout_height="wrap_content">
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:id="@+id/date"
         android:text="2020.2.30--14：28：19"
         android:textColor="@color/skyblue"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_height="20dp"></TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/supplier_or_other"
+        android:text="供应商"
+        android:textColor="@color/skyblue"
+        android:layout_marginRight="15dp"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="5dp"
         android:layout_height="20dp"></TextView>
     <com.makeramen.roundedimageview.RoundedImageView
@@ -67,5 +76,27 @@
         android:text="总价：625$"
         android:layout_marginRight="25dp"
 
+        android:layout_height="30dp"></TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/note"
+        android:textColor="@color/black"
+        android:layout_marginLeft="25dp"
+        android:layout_below="@+id/wae_in_item_all_price"
+        android:text="备注：++++++"
+        android:layout_marginRight="25dp"
+        android:layout_height="20dp"></TextView>
+    <TextView
+        android:layout_width="match_parent"
+        android:textSize="15dp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/executer"
+        android:textColor="@color/black"
+        android:layout_marginLeft="25dp"
+        android:layout_below="@+id/note"
+        android:text="执行人：++++++"
+        android:layout_marginRight="25dp"
         android:layout_height="30dp"></TextView>
 </RelativeLayout>

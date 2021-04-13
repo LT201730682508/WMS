@@ -23,7 +23,6 @@ import com.example.WMS.custom_Dialog.Ware_Name_Modify_Dialog
 import com.xuexiang.xui.widget.toast.XToast
 
 class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
-    lateinit var ware_information: TextView
     lateinit var ware_in: TextView
     lateinit var ware_out: TextView
     lateinit var ware_menber: TextView
@@ -49,7 +48,7 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
         warehouse_name=view.findViewById(R.id.warehouse_name)
         ware_address=view.findViewById(R.id.warehouse_address)
         warehouse_des=view.findViewById(R.id.warehouse_des)
-        ware_information=view.findViewById(R.id.information)
+
         warehouse_img=view.findViewById(R.id.warehouse_img)
         ware_in=view.findViewById(R.id.ware_in)
         ware_out=view.findViewById(R.id.ware_out)
@@ -68,10 +67,7 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
             }
 
         })
-        ware_information.setOnClickListener {
-            var warehouseDetailInformation=Warehouse_Detail_Information()
-            (activity as MainActivity).fragment_Manager.hide_all(warehouseDetailInformation)
-        }
+      
         ware_in.setOnClickListener {
             var warehouseinlistFragment=WarehouseInList_Fragment()
             (activity as MainActivity).fragment_Manager.hide_all(warehouseinlistFragment)
