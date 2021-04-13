@@ -25,7 +25,10 @@ class Ware_out_Adapter(var list:Array<Ware_out_Record_Model.Out_Record>, var act
         var ware_out_note=itemview.findViewById<TextView>(R.id.note)
         var ware_out_execute=itemview.findViewById<TextView>(R.id.executer)
     }
-
+   fun makeList(mlist:Array<Ware_out_Record_Model.Out_Record>){
+       list=mlist
+       notifyDataSetChanged()
+   }
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         var vH:ViewHolder?=null
         var view:View?=null
