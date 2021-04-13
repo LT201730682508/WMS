@@ -1,4 +1,4 @@
-package com.example.WMS.WarehouseOut;
+package com.example.WMS.WareOperation.WarehouseOut;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -20,7 +20,6 @@ import com.example.WMS.BaseCallback;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.domain.DataBean;
-import com.example.WMS.domain.DataBean.ProductOut;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.xuexiang.xui.widget.edittext.ClearEditText;
@@ -92,6 +91,10 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
             }
             else if(receiverName == "defaultname"){
                 Toast.makeText(context,"请先选择客户",Toast.LENGTH_SHORT).show();
+                cancel();
+            }
+            else if(productOut.getTotalAmount()<Integer.parseInt(et_size.getText().toString())){
+                Toast.makeText(context,"库存不足！",Toast.LENGTH_SHORT).show();
                 cancel();
             }
             else {

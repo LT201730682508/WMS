@@ -1,4 +1,4 @@
-package com.example.WMS.Receiver_Supplier;
+package com.example.WMS.WareOperation.Receiver_Supplier;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -17,12 +17,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.WMS.BaseCallback;
 import com.example.WMS.MainActivity;
 
-import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
-import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
-import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
-import com.example.WMS.WarehouseOut.WarehouseOutList_Fragment;
+import com.example.WMS.WareOperation.WarehouseIn.WarehouseInList_Fragment;
+import com.example.WMS.WareOperation.WarehouseOut.WarehouseOutList_Fragment;
 import com.example.WMS.domain.DataBean;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -89,7 +87,7 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
 
     @NonNull
     @Override
-    public RS_Adapter.VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return VH.getHolder(mResId,parent,viewType);
     }
 

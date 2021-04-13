@@ -1,4 +1,4 @@
-package com.example.WMS.Receiver_Supplier;
+package com.example.WMS.WareOperation.Receiver_Supplier;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -11,18 +11,14 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.DialogFragment;
 
 import com.example.WMS.BaseCallback;
-import com.example.WMS.MainActivity;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
 import com.example.WMS.domain.DataBean;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.xuexiang.xui.widget.edittext.ClearEditText;
-import com.xuexiang.xui.widget.layout.XUIButton;
-import com.xuexiang.xui.widget.toast.XToast;
 
 import java.io.IOException;
 

@@ -27,5 +27,7 @@ class DataBean {
 
     data class Receiver(var receiverId:Int,var receiverName:String,var receiverAddress:String)
 
+    data class Category(var categoryId:Int, var categoryName: String)
+
 
 }

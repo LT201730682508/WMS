@@ -49,14 +49,12 @@
                 android:maxLines="3"
                 android:maxLength="60"
                 android:hint="请输入商品详情"/>
-            <com.xuexiang.xui.widget.edittext.ClearEditText
-                android:id="@+id/et_category"
-                android:layout_marginTop="8dp"
-                android:layout_width="200dp"
+            <Spinner
+                android:id="@+id/spinner_category"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:maxLines="1"
-                android:hint="请输入商品种类"/>
+                android:spinnerMode="dropdown"
+                android:popupBackground="#E7E7E7" />
             <com.xuexiang.xui.widget.edittext.ClearEditText
                 android:id="@+id/et_warehousename"
                 android:layout_marginTop="8dp"

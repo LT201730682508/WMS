@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="30dp"
+
+    android:orientation="horizontal">
+    <RelativeLayout
+        android:id="@+id/item_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.xuexiang.xui.widget.textview.label.LabelTextView
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tv_category"
+            android:textColor="@color/black"
+            android:text="种类"/>
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/item_fl_2"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:background="#fd4965">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="删除"
+            android:textColor="#ffffff"
+            android:textSize="15sp" />
+    </FrameLayout>
+</LinearLayout>

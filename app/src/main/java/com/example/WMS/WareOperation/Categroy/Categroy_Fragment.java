@@ -1,4 +1,4 @@
-package com.example.WMS.Receiver_Supplier;
+package com.example.WMS.WareOperation.Categroy;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -22,16 +22,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.WMS.BaseCallback;
 import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
-import com.example.WMS.MyAdapter;
-import com.example.WMS.My_Thread;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
-
-import com.example.WMS.WarehouseIn.WarehouseInList_Fragment;
-import com.example.WMS.WarehouseIn.Warehouse_Add_Fragment;
+import com.example.WMS.WareOperation.Receiver_Supplier.RS_Add_Dialog;
 import com.example.WMS.domain.DataBean;
-import com.example.WMS.execute_IO;
-import com.example.WMS.perform_UI;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
@@ -40,9 +34,9 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
-public class Supplier_Fragment extends Fragment implements View.OnClickListener{
+public class Categroy_Fragment extends Fragment implements View.OnClickListener{
     protected Context context;
-    private static ArrayList<DataBean.Supplier> suppliers_list;
+    private static ArrayList<DataBean.Category> categories;
     private static RecyclerView rv_pager;
     private static ImageView im_empty;
     private static TextView tv_empty;
@@ -50,11 +44,12 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     private MyHandler handler;
     private Base_Topbar base_topbar;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private static RS_Adapter<RS_Adapter.VH> adapter;
+    private static Category_Adapter<Category_Adapter.VH> adapter;
     private static String token;
-
-    public Supplier_Fragment(String token) {
+    private int warehouseId;
+    public Categroy_Fragment(String token, int warehouseId) {
         this.token=token;
+        this.warehouseId = warehouseId;
     }
 
     @Override
@@ -71,7 +66,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     }
 
     private View initView() {
-        View view=View.inflate(context,R.layout.fragment_receiver_supplier,null);
+        View view=View.inflate(context,R.layout.fragment_category,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         rv_pager=view.findViewById(R.id.rv_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -101,13 +96,13 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     }
 
     private void initData() {
-        suppliers_list=new ArrayList<DataBean.Supplier>();
+        categories=new ArrayList<DataBean.Category>();
         getData();
     }
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getSupplierByCompanyId/1?userToken="+token,new BaseCallback<DataBean.Supplier>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getCategoryListByWarehouseId/"+warehouseId+"?userToken="+token,new BaseCallback<DataBean.Category>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -122,17 +117,15 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
             @Override
             public void onSuccess_List(String resultStr) {
                 Gson gson= new Gson();
-                DataBean.Supplier[] wares=gson.fromJson(resultStr,DataBean.Supplier[].class);
-                System.out.println("a  "+resultStr);
-                System.out.println(""+wares[0]);
+                DataBean.Category[] wares=gson.fromJson(resultStr,DataBean.Category[].class);
                 for (int i=0;i<wares.length;i++){
-                    suppliers_list.add(wares[i]);
+                    categories.add(wares[i]);
                 }
                 handler.sendEmptyMessage(0);
             }
 
             @Override
-            public void onSuccess(Response response, DataBean.Supplier supplier) {
+            public void onSuccess(Response response, DataBean.Category category) {
 
             }
 
@@ -146,8 +139,8 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(v==btn_add){
-            RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0,token);
-            rs_add_dialog.show();
+            Category_Add_Dialog category_add_dialog=new Category_Add_Dialog(context, token, warehouseId);
+            category_add_dialog.show();
         }
     }
 
@@ -161,10 +154,10 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
             final MainActivity activity=mActivity.get();
             super.handleMessage(msg);
             if(activity!=null){
-                if(suppliers_list!=null&&suppliers_list.size()>0){
+                if(categories!=null&&categories.size()>0){
                     im_empty.setVisibility(View.GONE);
                     tv_empty.setVisibility(View.GONE);
-                    adapter=new RS_Adapter<RS_Adapter.VH>(R.layout.item_receiver_supplier, suppliers_list,0,activity,token);
+                    adapter=new Category_Adapter<Category_Adapter.VH>(R.layout.item_category, categories, activity, token);
                     rv_pager.setAdapter(adapter);
                 }
                 else{
