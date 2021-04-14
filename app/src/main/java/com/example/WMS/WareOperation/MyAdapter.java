@@ -1,5 +1,6 @@
 package com.example.WMS.WareOperation;
 
+import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         public VH(View v) {
             super(v);
             rl=v.findViewById(R.id.item_rl);
-            fl=v.findViewById(R.id.item_fl);
+//            fl=v.findViewById(R.id.item_fl);
             btn_add=v.findViewById(R.id.btn_add);
             imageView=v.findViewById(R.id.iv_icon);
         }
@@ -228,7 +229,8 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
 
     public void bindView(VH holder,int position){
         holder.btn_add.setVisibility(View.VISIBLE);
-        holder.fl.setVisibility(View.VISIBLE);
+//        holder.fl.setVisibility(View.VISIBLE);
+        int temp=0;
         if(!role.contains("g")){
             holder.fl.setVisibility(View.GONE);
         }
@@ -236,6 +238,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             if(!role.contains("b")){
                 holder.btn_add.setVisibility(View.GONE);
             }
+            temp = mDatas.get(position).getTotalAmount();
             holder.setText(R.id.tv_name, mDatas.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_inPrice,mDatas.get(position).getInPrice());
@@ -246,11 +249,15 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             if(!role.contains("c")){
                 holder.btn_add.setVisibility(View.GONE);
             }
+            temp = mDatasOut.get(position).getTotalAmount();
             holder.setText(R.id.tv_name, mDatasOut.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatasOut.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_outPrice,mDatasOut.get(position).getOutPrice());
             holder.setDetail(R.id.tv_detail,mDatasOut.get(position).getProductDescription());
             Glide.with(fragment).load(mDatasOut.get(position).getProductImg()).into(holder.imageView);
+        }
+        if(temp==0){
+            holder.itemView.setBackgroundColor(Color.LTGRAY);
         }
     }
     @Override
