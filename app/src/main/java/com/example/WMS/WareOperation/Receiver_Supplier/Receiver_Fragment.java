@@ -1,6 +1,7 @@
 package com.example.WMS.WareOperation.Receiver_Supplier;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,9 +46,10 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
     private static String token;
-
-    public Receiver_Fragment(String token) {
-        this.token=token;
+    private String roleList;
+    public Receiver_Fragment(String token, String roleList) {
+        this.token = token;
+        this.roleList = roleList;
     }
 
     @Override
@@ -72,6 +74,14 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
         im_empty=view.findViewById(R.id.im_empty);
         tv_empty=view.findViewById(R.id.tv_nomedia);
         btn_add=view.findViewById(R.id.btn_add);
+        if(!roleList.contains("g")){
+            btn_add.setEnabled(false);
+            btn_add.setTextColor(Color.LTGRAY);
+            btn_add.setBackgroundColor(Color.LTGRAY);
+        }
+        else{
+            btn_add.setEnabled(true);
+        }
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

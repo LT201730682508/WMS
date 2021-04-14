@@ -8,6 +8,7 @@ package com.example.WMS.WareOperation.WarehouseIn;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -315,6 +316,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                         }
                         else if(!role.contains("d")){
                             btn_add.setEnabled(false);
+                            btn_add.setTextColor(Color.LTGRAY);
+                            btn_add.setBackgroundColor(Color.LTGRAY);
                         }
                         break;
                     default:
@@ -355,7 +358,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             now = System.currentTimeMillis();
             if(now - lastClickTime >1000) {
                 lastClickTime = now;
-                Supplier_Fragment supplier_fragment = new Supplier_Fragment(token);
+                Supplier_Fragment supplier_fragment = new Supplier_Fragment(token,roleList.getAuthorities());
                 ((MainActivity) getActivity()).fragment_Manager.hide_all(supplier_fragment);
             }
         }
@@ -363,7 +366,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             now = System.currentTimeMillis();
             if(now - lastClickTime >1000) {
                 lastClickTime = now;
-                Categroy_Fragment category_fragment = new Categroy_Fragment(token, wareHouseId);
+                Categroy_Fragment category_fragment = new Categroy_Fragment(token, wareHouseId, roleList.getAuthorities());
                 ((MainActivity) getActivity()).fragment_Manager.hide_all(category_fragment);
             }
         }

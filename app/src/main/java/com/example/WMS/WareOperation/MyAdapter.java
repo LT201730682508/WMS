@@ -231,9 +231,9 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         holder.btn_add.setVisibility(View.VISIBLE);
 //        holder.fl.setVisibility(View.VISIBLE);
         int temp=0;
-        if(!role.contains("g")){
-            holder.fl.setVisibility(View.GONE);
-        }
+//        if(!role.contains("g")){
+//            holder.fl.setVisibility(View.GONE);
+//        }
         if(opType==WAREHOUSE_IN){
             if(!role.contains("b")){
                 holder.btn_add.setVisibility(View.GONE);
