@@ -67,7 +67,7 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
             }
 
         })
-      
+
         ware_in.setOnClickListener {
             var warehouseinlistFragment=WarehouseInList_Fragment()
             (activity as MainActivity).fragment_Manager.hide_all(warehouseinlistFragment)

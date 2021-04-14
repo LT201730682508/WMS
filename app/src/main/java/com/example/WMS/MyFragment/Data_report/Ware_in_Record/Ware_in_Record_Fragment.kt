@@ -228,7 +228,7 @@ class Ware_in_Record_Fragment :Fragment(){
     }
     fun setProductSpinner(list: Array<ProductIn>){
         var mlist= arrayListOf<String>()
-        mlist.add("请选择")
+        mlist.add("所有")
         for(l in list){
             mlist.add(l.productName)
         }
@@ -248,6 +248,23 @@ class Ware_in_Record_Fragment :Fragment(){
                 position: Int,
                 id: Long
             ) {
+                if(position>0){
+                    Ware_In_Record_Model.getDataWithProduct(warehouse_id,mlist[position],(activity as MainActivity).fragment_Manager.userinfo.token,object :Ware_In_Record_Model.Ware_Record{
+                        override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
+                            var wareInListAdapter=Adapter(record_list,activity as MainActivity)
+                            ware_in_recycle.adapter=wareInListAdapter
+                        }
+
+                    })
+                }else{
+                    Ware_In_Record_Model.getData(warehouse_id,object : Ware_In_Record_Model.Ware_Record{
+                        override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
+                            var wareInListAdapter=Adapter(record_list,activity as MainActivity)
+                            ware_in_recycle.adapter=wareInListAdapter
+                        }
+
+                    },(activity as MainActivity).fragment_Manager.userinfo)
+                }
 
             }
         }
@@ -294,7 +311,7 @@ class Ware_in_Record_Fragment :Fragment(){
 
     fun setExecuterSpinner(list: Array<Member_Manager_Model.member_item>){
         var mlist= arrayListOf<String>()
-        mlist.add("请选择")
+        mlist.add("所有")
         for(l in list){
             mlist.add(l.user_name)
         }
@@ -314,7 +331,23 @@ class Ware_in_Record_Fragment :Fragment(){
                 position: Int,
                 id: Long
             ) {
+                  if (position>0){
+                      Ware_In_Record_Model.getDataWithExecuter(warehouse_id,mlist[position],(activity as MainActivity).fragment_Manager.userinfo.token,object :Ware_In_Record_Model.Ware_Record{
+                          override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
+                              var wareInListAdapter=Adapter(record_list,activity as MainActivity)
+                              ware_in_recycle.adapter=wareInListAdapter
+                          }
 
+                      })
+                  }else{
+                      Ware_In_Record_Model.getData(warehouse_id,object : Ware_In_Record_Model.Ware_Record{
+                          override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
+                              var wareInListAdapter=Adapter(record_list,activity as MainActivity)
+                              ware_in_recycle.adapter=wareInListAdapter
+                          }
+
+                      },(activity as MainActivity).fragment_Manager.userinfo)
+                  }
             }
         }
     }
@@ -324,13 +357,13 @@ class Ware_in_Record_Fragment :Fragment(){
             OnTimeSelectListener { date, v ->
                 if(start_time.text=="起始时间"){
                     if(view==end_time){
-                        view.text= SimpleDateFormat("YYYY-MM-dd-HH-mm-ss").format(date)
+                        view.text= SimpleDateFormat("YYYY-MM-dd").format(date)
                         end=date
                     }
                     else {
                         if(end_time.text=="终止时间"||end>=date){
                             println("时间"+"走了这")
-                            view.text =SimpleDateFormat("YYYY-MM-dd-HH-mm-ss").format(date)
+                            view.text =SimpleDateFormat("YYYY-MM-dd").format(date)
                             start = date
                         }else{
                             XToast.warning(requireContext(), "请选择正确的时间").show()
@@ -338,10 +371,10 @@ class Ware_in_Record_Fragment :Fragment(){
                     }
                 }else{
                     if(view==start_time&&(end_time.text=="终止时间"||end>=date)){
-                        view.text= SimpleDateFormat("YYYY-MM-dd-HH-mm-ss").format(date)
+                        view.text= SimpleDateFormat("YYYY-MM-dd").format(date)
                     }else{
                         if(view==start_time&&date<=end){
-                            view.text= SimpleDateFormat("YYYY-MM-dd-HH-mm-ss").format(date)
+                            view.text= SimpleDateFormat("YYYY-MM-dd").format(date)
                             start=date
                         }else{
                             if(view==start_time&&date>end){
@@ -349,18 +382,28 @@ class Ware_in_Record_Fragment :Fragment(){
                             }else if(date<start){
                                 XToast.warning(requireContext(), "请选择正确的时间").show()
                             }else{
-                                view.text= SimpleDateFormat("YYYY-MM-dd-HH-mm-ss").format(date)
+                                view.text= SimpleDateFormat("YYYY-MM-dd").format(date)
                                 end=date
                             }
 
                         }
                     }
                 }
+                if(::start.isInitialized&&::end.isInitialized){
+                    println("@@@@@123")
+                    Ware_In_Record_Model.getDataWithTime(warehouse_id,(activity as MainActivity).fragment_Manager.userinfo.token,start_time.text.toString(),end_time.text.toString(),object :Ware_In_Record_Model.Ware_Record{
+                        override fun result(record_list: Array<Ware_In_Record_Model.In_Record>) {
+                            var wareInListAdapter=Adapter(record_list,activity as MainActivity)
+                            ware_in_recycle.adapter=wareInListAdapter
+                        }
 
+
+                    })
+                }
 
             })
             .setTimeSelectChangeListener { Log.i("pvTime", "onTimeSelectChanged") }
-            .setType(TimePickerType.ALL)
+            .setType(TimePickerType.DEFAULT)
             .setTitleText("时间选择")
             .isDialog(true)
             .setOutSideCancelable(false)

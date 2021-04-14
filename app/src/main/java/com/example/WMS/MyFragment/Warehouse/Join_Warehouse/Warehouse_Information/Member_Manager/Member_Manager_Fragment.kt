@@ -52,38 +52,42 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
         empty_rl=view.findViewById(R.id.empty_rl)
         memberList= arrayListOf()
         indata()
-        title_manager.setOnClickListener {
-            if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)){
+
+        if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)){
                 val authority=Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
                 println("@@@@@@@@$authority")
                 val authorities=authority!!.toCharArray()
                 if(authorities.contains('e')){
-                    var titleManagerFragment=Title_Manager_Fragment(wareHouseid)
-                    (activity  as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
+                    title_manager.setOnClickListener {
+                        var titleManagerFragment = Title_Manager_Fragment(wareHouseid)
+                        (activity as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
+                    }
                 }else{
-                    XToast.warning(requireContext(),"您没有相关权限").show()
+
                 }
             }else{
-                XToast.warning(requireContext(),"您不是该仓库人员").show()
-            }
-
+            title_manager.visibility=View.GONE
         }
-        add_new_member.setOnClickListener {
+
+
+
 
             if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)) {
                 val authority =
                     Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
                 if (authority!!.contains("d")) {
-                    var addMemberFragment = Add_Member_Fragment(wareHouseid)
-                    (activity as MainActivity).fragment_Manager.hide_all(addMemberFragment)
+                    add_new_member.setOnClickListener {
+                        var addMemberFragment = Add_Member_Fragment(wareHouseid)
+                        (activity as MainActivity).fragment_Manager.hide_all(addMemberFragment)
+                    }
                 } else {
-                    XToast.warning(requireContext(), "您没有相关权限").show()
+                    add_new_member.visibility=View.GONE
                 }
             }else{
-                XToast.warning(requireContext(),"您不是该仓库人员").show()
+                add_new_member.visibility=View.GONE
             }
         }
-    }
+
     fun indata(){
         member_Recycle.layoutManager=LinearLayoutManager(context)
         Member_Manager_Model.getData(object :Member_Manager_Model.Show{
