@@ -102,7 +102,8 @@ class Title_Manager_Adapter(
                     str.add('f') }
                 if (holder.itemView.delete_check.isChecked){
                     str.add('g') }
-
+                if (holder.itemView.some_manager_check.isChecked){
+                    str.add('h') }
                 var changeParams=Title_Manager_Model.changeParams(list[position].id,holder.itemView.title.text.toString(),str.toString())
                 Title_Manager_Model.modify_member_title(changeParams,(activity as MainActivity).fragment_Manager.userinfo.token,object :Title_Manager_Model.modify_show{
                     override fun show(string: String) {
@@ -148,6 +149,11 @@ class Title_Manager_Adapter(
                 holder.itemView.delete_check.isChecked=true
             }else{
                 holder.itemView.delete_check.isChecked=false
+            }
+            if(list[position].authorities.contains("h")){
+                holder.itemView.some_manager_check.isChecked=true
+            }else{
+                holder.itemView.some_manager_check.isChecked=false
             }
 
         }

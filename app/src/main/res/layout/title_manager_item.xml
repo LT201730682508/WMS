@@ -164,6 +164,25 @@
         </LinearLayout>
 
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/fourth_ll"
+        android:layout_below="@+id/third_ll"
+        android:layout_width="wrap_content"
+        android:layout_weight="1"
+        android:layout_height="30dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="种类管理及客户供应商管理："
+            android:layout_marginLeft="25dp"
+            android:textColor="@color/black"
+            android:id="@+id/manager"
+            android:gravity="center"
+            android:layout_height="30dp"></TextView>
+        <com.xuexiang.xui.widget.button.SmoothCheckBox
+            android:layout_width="20dp"
+            android:id="@+id/some_manager_check"
+            android:layout_height="30dp"></com.xuexiang.xui.widget.button.SmoothCheckBox>
+    </LinearLayout>
 
     <com.xuexiang.xui.widget.button.roundbutton.RoundButton
         style="@style/RoundButton.Auto"
@@ -172,7 +191,7 @@
         android:layout_height="30dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
-        android:layout_below="@+id/third_ll"
+        android:layout_below="@+id/fourth_ll"
         android:layout_marginRight="20dp"
         android:layout_gravity="right"
         android:text="确定"></com.xuexiang.xui.widget.button.roundbutton.RoundButton>

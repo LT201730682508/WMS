@@ -43,48 +43,47 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
             indata()
         }
     }
-    fun init(view:View){
-        base_Top_Bar= Base_Topbar(view,activity as MainActivity,true)
+    fun init(view:View) {
+        base_Top_Bar = Base_Topbar(view, activity as MainActivity, true)
         base_Top_Bar.setTitle("仓库信息")
-        title_manager=view.findViewById(R.id.title_manager)
-        add_new_member=view.findViewById(R.id.add_new_member)
-        member_Recycle=view.findViewById(R.id.member_list)
-        empty_rl=view.findViewById(R.id.empty_rl)
-        memberList= arrayListOf()
+        title_manager = view.findViewById(R.id.title_manager)
+        add_new_member = view.findViewById(R.id.add_new_member)
+        member_Recycle = view.findViewById(R.id.member_list)
+        empty_rl = view.findViewById(R.id.empty_rl)
+        memberList = arrayListOf()
         indata()
 
-        if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)){
-                val authority=Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
-                println("@@@@@@@@$authority")
-                val authorities=authority!!.toCharArray()
-                if(authorities.contains('e')){
-                    title_manager.setOnClickListener {
+        title_manager.setOnClickListener {
+
+                if (memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)) {
+                    val authority =
+                        Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
+                    println("@@@@@@@@$authority")
+                    val authorities = authority!!.toCharArray()
+                    if (authorities.contains('e')) {
                         var titleManagerFragment = Title_Manager_Fragment(wareHouseid)
                         (activity as MainActivity).fragment_Manager.hide_all(titleManagerFragment)
-                    }
-                }else{
-
-                }
-            }else{
-            title_manager.visibility=View.GONE
-        }
-
-
-
-
-            if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)) {
-                val authority =
-                    Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
-                if (authority!!.contains("d")) {
-                    add_new_member.setOnClickListener {
-                        var addMemberFragment = Add_Member_Fragment(wareHouseid)
-                        (activity as MainActivity).fragment_Manager.hide_all(addMemberFragment)
+                    } else {
+                        XToast.warning(requireContext(), "您没有相关权限").show()
                     }
                 } else {
-                    add_new_member.visibility=View.GONE
+                    XToast.warning(requireContext(), "您不是该仓库人员").show()
                 }
-            }else{
-                add_new_member.visibility=View.GONE
+        }
+            add_new_member.setOnClickListener {
+
+                if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)) {
+                    val authority =
+                        Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
+                    if (authority!!.contains("d")) {
+                        var addMemberFragment = Add_Member_Fragment(wareHouseid)
+                        (activity as MainActivity).fragment_Manager.hide_all(addMemberFragment)
+                    } else {
+                        XToast.warning(requireContext(), "您没有相关权限").show()
+                    }
+                }else{
+                    XToast.warning(requireContext(),"您不是该仓库人员").show()
+                }
             }
         }
 
@@ -101,6 +100,8 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
                     for (ware  in wares){
                         memberList.add(ware.user_name)
                     }
+
+
                 }
 
             }
