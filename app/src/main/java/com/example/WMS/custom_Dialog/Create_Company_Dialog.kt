@@ -61,7 +61,7 @@ class Create_Company_Dialog( context: Context ,val token:String,val changeInfo: 
 
             override fun onError(response: Response?, code: Int, e: Exception?) {
                 println("@@@@@4"+code+e)
-                XToast.success(context,"创建失败").show()
+                XToast.warning(context,"创建失败").show()
             }
 
         })

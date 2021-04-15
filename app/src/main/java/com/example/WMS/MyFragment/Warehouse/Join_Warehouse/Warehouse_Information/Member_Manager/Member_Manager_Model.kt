@@ -51,11 +51,52 @@ class Member_Manager_Model {
                     }
                 })
         }
+        fun getGroupMemberData(show:Show,token:String,groupid:Int) {
+            val ok = OkHttpHelper.getInstance()
+            ok.get_for_list(
+                "http://121.199.22.134:8003/api-authority/getStaffListByGroupId?userToken="+token+"&groupId="+groupid,
+                object : BaseCallback<String>() {
+                    override fun onFailure(
+                        request: Request,
+                        e: IOException
+                    ) {
+                        println("failure$e")
+                    }
+
+                    override fun onResponse(response: Response) {
+                        println("response$response")
+                    }
+
+                    override fun onSuccess_List(resultStr: String) {
+                        val gson = Gson()
+                        val wares = gson.fromJson(
+                            resultStr,
+                            Array<member_item>::class.java
+                        )
+                        show.show(wares)
+                        for (ware in wares){
+                            println("@@@@@2"+ware)
+                        }
+                    }
+                    override fun onError(
+                        response: Response,
+                        code: Int,
+                        e: Exception
+                    ) {
+                        println("error$response$e")
+                    }
+
+                    override fun onSuccess(response: Response?, t: String?) {
+                        TODO("Not yet implemented")
+                    }
+                })
+        }
+
 
     }
     interface Show{
         fun show(wares: Array<member_item>)
     }
 
-    data class member_item(val id:Int,val user_name:String,val role:String)
+    data class member_item(val user_name:String,val role:String)
 }

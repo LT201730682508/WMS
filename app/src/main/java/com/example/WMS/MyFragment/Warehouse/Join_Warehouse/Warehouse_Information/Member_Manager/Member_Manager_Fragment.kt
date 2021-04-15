@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Add_Member.Add_Member_Fragment
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Group_Manager.Group_Manager_Fragment
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Group_Manager.Group_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Title_Manager.Title_Manager_Fragment
 import com.example.WMS.MyFragment.Warehouse.Warehouse_Authority_List
 import com.example.WMS.R
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.xuexiang.xui.widget.toast.XToast
-import kotlinx.android.synthetic.main.set_user_information.*
 
 class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
     lateinit var base_Top_Bar: Base_Topbar
@@ -24,6 +25,7 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
     lateinit var member_Recycle:RecyclerView
     lateinit var add_new_member: ExtendedFloatingActionButton
     lateinit var title_manager: ExtendedFloatingActionButton
+    lateinit var group_manager:ExtendedFloatingActionButton
     lateinit var empty_rl:RelativeLayout
      lateinit var memberList:ArrayList<String>
     override fun onCreateView(
@@ -40,7 +42,7 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
         super.onHiddenChanged(hidden)
         if (isHidden) {
         } else {
-            indata()
+            getGroup(wareHouseid)
         }
     }
     fun init(view:View) {
@@ -49,13 +51,28 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
         title_manager = view.findViewById(R.id.title_manager)
         add_new_member = view.findViewById(R.id.add_new_member)
         member_Recycle = view.findViewById(R.id.member_list)
+        group_manager=view.findViewById(R.id.manager_group)
         empty_rl = view.findViewById(R.id.empty_rl)
         memberList = arrayListOf()
-        indata()
-
+        if(Warehouse_Authority_List.roleList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)=="库主"){
+            group_manager.visibility=View.VISIBLE
+        }else{
+            group_manager.visibility=View.GONE
+        }
+        getGroup(wareHouseid)
+        group_manager.setOnClickListener {
+            var groupManagerFragment=Group_Manager_Fragment(wareHouseid)
+            (activity as MainActivity).fragment_Manager.hide_all(groupManagerFragment)
+        }
+        val authority =
+            Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
+        if(authority!!.contains('e')){
+            title_manager.visibility=View.VISIBLE
+        }else  title_manager.visibility=View.GONE
+        if(authority!!.contains('d')){
+            add_new_member.visibility=View.VISIBLE
+        }else  add_new_member.visibility=View.GONE
         title_manager.setOnClickListener {
-
-                if (memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)) {
                     val authority =
                         Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
                     println("@@@@@@@@$authority")
@@ -66,13 +83,9 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
                     } else {
                         XToast.warning(requireContext(), "您没有相关权限").show()
                     }
-                } else {
-                    XToast.warning(requireContext(), "您不是该仓库人员").show()
-                }
         }
             add_new_member.setOnClickListener {
 
-                if(memberList.contains((activity as MainActivity).fragment_Manager.userinfo.userInfo.userName)) {
                     val authority =
                         Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
                     if (authority!!.contains("d")) {
@@ -81,31 +94,22 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
                     } else {
                         XToast.warning(requireContext(), "您没有相关权限").show()
                     }
-                }else{
-                    XToast.warning(requireContext(),"您不是该仓库人员").show()
                 }
-            }
         }
-
-    fun indata(){
+    fun getGroup(wareHouseid: Int){
         member_Recycle.layoutManager=LinearLayoutManager(context)
-        Member_Manager_Model.getData(object :Member_Manager_Model.Show{
-            override fun show(wares: Array<Member_Manager_Model.member_item>) {
-                if(wares.size==0){
-                    empty_rl.visibility==View.VISIBLE
-                    member_Recycle.visibility=View.GONE
-                }else{
-                    memberListAdapter= Member_List_Adapter(wareHouseid,wares,activity as MainActivity)
-                    member_Recycle.adapter=memberListAdapter
-                    for (ware  in wares){
-                        memberList.add(ware.user_name)
-                    }
+        Group_Model.get_group_list((activity as MainActivity).fragment_Manager.userinfo.token,wareHouseid,object :
+                Group_Model.GroupShow{
+                override fun show(g: Array<Group_Model.Gropu_data>) {
 
+                    var arrayList= arrayListOf<Group_Model.Gropu_data>()
+                    var all=Group_Model.Gropu_data(0,"所有成员",0)
+                    arrayList.add(all)
+                    arrayList.addAll(g)
 
+                    var gropu_adapter= Member_group_Adapter(activity as MainActivity,arrayList,wareHouseid)
+                    member_Recycle.adapter=gropu_adapter
                 }
-
-            }
-
-        },(activity as MainActivity).fragment_Manager.userinfo,wareHouseid)
+            })
     }
 }

@@ -69,7 +69,6 @@ class Fragment_Manager {
     fun hide_all(fragment: Fragment){
         var transaction=my_activity.supportFragmentManager.beginTransaction()
         transaction.setCustomAnimations(R.anim.push_in,R.anim.pull_out_enter,R.anim.push_in_pop,R.anim.pull_out)
-
         transaction.hide(ger_Top_Fragment())
         transaction.add(R.id.Fragment_First,fragment).addToBackStack(null).commit()
     }
