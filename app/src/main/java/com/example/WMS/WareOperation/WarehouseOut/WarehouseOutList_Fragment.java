@@ -307,7 +307,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             now = System.currentTimeMillis();
             if(now - lastClickTime >1000) {
                 lastClickTime = now;
-                Receiver_Fragment receiver_fragment = new Receiver_Fragment(token);
+                Receiver_Fragment receiver_fragment = new Receiver_Fragment(token, roleList.getAuthorities());
                 ((MainActivity) getActivity()).fragment_Manager.hide_all(receiver_fragment);
             }
         }
