@@ -21,7 +21,6 @@ import com.xuexiang.xui.widget.toast.XToast
 
 class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
     lateinit var base_Top_Bar: Base_Topbar
-    lateinit var memberListAdapter:Member_List_Adapter
     lateinit var member_Recycle:RecyclerView
     lateinit var add_new_member: ExtendedFloatingActionButton
     lateinit var title_manager: ExtendedFloatingActionButton

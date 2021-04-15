@@ -14,7 +14,6 @@ import kotlinx.android.synthetic.main.group_item.view.*
 class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_Model.Gropu_data>,val wareHouseid: Int): RecyclerView.Adapter<Member_group_Adapter.ViewHolder>() {
     var hashMap= HashMap<Int,Array<Member_Manager_Model.member_item>>()
     class ViewHolder(itemview: View): RecyclerView.ViewHolder(itemview) {
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -56,7 +55,11 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
 
     fun Alldata(holder: ViewHolder,wareHouseid:Int){
         if(hashMap.containsKey(0)){
-            var memberListAdapter= Member_List_Adapter(wareHouseid,hashMap.get(0)!!,activity as MainActivity)
+            var memberListAdapter= Member_List_Adapter(wareHouseid,0,hashMap.get(0)!!,object :Member_Manager_Model.notifychange{
+                override fun change() {
+                    TODO("Not yet implemented")
+                }
+            },activity as MainActivity)
             holder.itemView.member_sr.adapter=memberListAdapter
         }else{
             Member_Manager_Model.getData(object :Member_Manager_Model.Show{
@@ -65,7 +68,11 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
 
                     }else{
                         hashMap.put(0,wares)
-                        var memberListAdapter= Member_List_Adapter(wareHouseid,wares,activity as MainActivity)
+                        var memberListAdapter= Member_List_Adapter(wareHouseid,0,wares,object :Member_Manager_Model.notifychange{
+                            override fun change() {
+                                TODO("Not yet implemented")
+                            }
+                        },activity as MainActivity)
                         holder.itemView.member_sr.adapter=memberListAdapter
                     }
                 }
@@ -75,7 +82,11 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
     }
     fun getGroupMember(position: Int,holder: ViewHolder,groupId:Int){
         if(hashMap.containsKey(position)){
-            var memberListAdapter= Member_List_Adapter(wareHouseid,hashMap.get(position)!!,activity as MainActivity)
+            var memberListAdapter= Member_List_Adapter(wareHouseid,list[position].group_id,hashMap.get(position)!!,object :Member_Manager_Model.notifychange{
+                override fun change() {
+                  hashMap.clear()
+                }
+            },activity as MainActivity)
             holder.itemView.member_sr.adapter=memberListAdapter
         }else{
             Member_Manager_Model.getGroupMemberData(object :Member_Manager_Model.Show{
@@ -83,9 +94,13 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
                     if(wares.size==0){
                     }else{
                         hashMap.put(position,wares)
-                        var memberListAdapter= Member_List_Adapter(wareHouseid,wares,activity as MainActivity)
-                        holder.itemView.member_sr.adapter=memberListAdapter
                     }
+                    var memberListAdapter= Member_List_Adapter(wareHouseid,list[position].group_id,wares,object :Member_Manager_Model.notifychange{
+                        override fun change() {
+                             hashMap.clear()
+                        }
+                    },activity as MainActivity)
+                    holder.itemView.member_sr.adapter=memberListAdapter
                 }
 
             },(activity as MainActivity).fragment_Manager.userinfo.token,groupId)

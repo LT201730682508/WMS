@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginHorizontal="1dp"
+    android:layout_marginBottom="2dp"
+    android:background="#FFFFFF"
+    android:layout_height="wrap_content">
+    <com.makeramen.roundedimageview.RoundedImageView
+        android:layout_width="35dp"
+        android:id="@+id/member_img"
+        app:riv_oval="true"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/touxiang"
+        android:layout_height="35dp"></com.makeramen.roundedimageview.RoundedImageView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:text="人员一"
+        android:layout_toRightOf="@+id/member_img"
+        android:id="@+id/member_name"
+        android:gravity="center_vertical"
+        android:textSize="15dp"
+        android:textColor="@color/skyblue"
+        android:layout_marginLeft="25dp"
+        android:layout_height="50dp"></TextView>
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/make_sure"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
+        android:layout_alignParentRight="true"
+        android:text="添加"/>
+
+</RelativeLayout>
