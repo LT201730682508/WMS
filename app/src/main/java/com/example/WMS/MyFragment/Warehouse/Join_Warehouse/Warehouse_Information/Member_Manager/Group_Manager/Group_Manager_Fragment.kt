@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Member_group_Adapter
+import com.example.WMS.MyFragment.Warehouse.Warehouse_Authority_List
 import com.example.WMS.R
 import com.example.WMS.custom_Dialog.Create_Group_Dialog
 
@@ -50,7 +51,9 @@ class Group_Manager_Fragment(var wareHouseId:Int) :Fragment(){
                 group_ry.layoutManager= LinearLayoutManager(requireContext())
                 var arrayList= arrayListOf<Group_Model.Gropu_data>()
                 arrayList.addAll(g)
-                gropu_adapter= Member_group_Adapter(activity as MainActivity,arrayList,wareHouseId)
+                gropu_adapter= Member_group_Adapter(activity as MainActivity,arrayList,wareHouseId,1,
+                    Warehouse_Authority_List.roleList_Map.get(wareHouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token).toString()
+                )
                 group_ry.adapter=gropu_adapter
             }
 

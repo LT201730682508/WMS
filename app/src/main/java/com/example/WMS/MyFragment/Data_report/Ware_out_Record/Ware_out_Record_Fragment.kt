@@ -1,6 +1,5 @@
 package com.example.WMS.MyFragment.Data_report.Ware_in_Record
 
-import android.app.Dialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.WMS.*
 import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Model
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
@@ -24,13 +22,10 @@ import com.xuexiang.xui.widget.picker.widget.builder.TimePickerBuilder
 import com.xuexiang.xui.widget.picker.widget.configure.TimePickerType
 import com.xuexiang.xui.widget.picker.widget.listener.OnTimeSelectListener
 import com.xuexiang.xui.widget.toast.XToast
-import kotlinx.android.synthetic.main.set_user_information.*
-import kotlinx.android.synthetic.main.ware_in_record.view.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class Ware_out_Record_Fragment :Fragment(){

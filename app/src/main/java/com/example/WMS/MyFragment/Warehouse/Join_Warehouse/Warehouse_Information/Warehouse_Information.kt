@@ -21,6 +21,7 @@ import com.example.WMS.WareOperation.WarehouseOut.WarehouseOutList_Fragment
 import com.example.WMS.custom_Dialog.Alart_Warning_Dialog
 import com.example.WMS.custom_Dialog.Ware_Name_Modify_Dialog
 import com.xuexiang.xui.widget.toast.XToast
+import kotlinx.android.synthetic.main.warehouse_information.*
 
 class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
     lateinit var ware_in: TextView
@@ -64,6 +65,10 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
             override fun get(authority: Warehouse_authority_Model.authority) {
                  Warehouse_Authority_List.authorityList_Map.put(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.authorities)
                 Warehouse_Authority_List.roleList_Map.put(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.role)
+
+                if (authority.role!="库主"||authority==null){
+                    delete_modify_ll.visibility=View.GONE
+                }
             }
 
         })

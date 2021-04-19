@@ -34,7 +34,9 @@ class All_Warehouse_Model {
                             Array<Warehouse>::class.java
                         )
                         if(wares!=null){
-                            show.show(wares.toList() as ArrayList<Warehouse>)
+                            var arrayList= arrayListOf<Warehouse>()
+                            arrayList.addAll(wares)
+                            show.show(arrayList)
                         }
 
                         for (ware in wares){

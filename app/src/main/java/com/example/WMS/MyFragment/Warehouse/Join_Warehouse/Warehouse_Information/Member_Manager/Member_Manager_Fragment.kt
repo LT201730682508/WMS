@@ -63,8 +63,11 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
             var groupManagerFragment=Group_Manager_Fragment(wareHouseid)
             (activity as MainActivity).fragment_Manager.hide_all(groupManagerFragment)
         }
-        val authority =
+        var authority =
             Warehouse_Authority_List.authorityList_Map.get(wareHouseid.toString() + (activity as MainActivity).fragment_Manager.userinfo.token)
+        if (authority==null){
+            authority=""
+        }
         if(authority!!.contains('e')){
             title_manager.visibility=View.VISIBLE
         }else  title_manager.visibility=View.GONE
@@ -106,7 +109,7 @@ class Member_Manager_Fragment(val wareHouseid:Int):Fragment() {
                     arrayList.add(all)
                     arrayList.addAll(g)
 
-                    var gropu_adapter= Member_group_Adapter(activity as MainActivity,arrayList,wareHouseid)
+                    var gropu_adapter= Member_group_Adapter(activity as MainActivity,arrayList,wareHouseid,0,  Warehouse_Authority_List.roleList_Map.get(wareHouseid.toString()+(activity as MainActivity).fragment_Manager.userinfo.token).toString())
                     member_Recycle.adapter=gropu_adapter
                 }
             })

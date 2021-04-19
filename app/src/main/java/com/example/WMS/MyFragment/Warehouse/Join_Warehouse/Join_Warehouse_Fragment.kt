@@ -13,11 +13,8 @@ import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
 import com.example.WMS.R
+import com.xuexiang.xui.widget.progress.loading.ARCLoadingView
 import kotlinx.android.synthetic.main.all_warehouse.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class Join_Warehouse_Fragment:Fragment() {
     lateinit var join_recycleview:RecyclerView
