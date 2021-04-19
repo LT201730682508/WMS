@@ -168,7 +168,7 @@ public class Categroy_Fragment extends Fragment implements View.OnClickListener{
                 if(categories!=null&&categories.size()>0){
                     im_empty.setVisibility(View.GONE);
                     tv_empty.setVisibility(View.GONE);
-                    adapter=new Category_Adapter<Category_Adapter.VH>(R.layout.item_category, categories, activity, token);
+                    adapter=new Category_Adapter<Category_Adapter.VH>(R.layout.item_category, categories, activity, token, 1);
                     rv_pager.setAdapter(adapter);
                 }
                 else{

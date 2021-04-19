@@ -2,6 +2,7 @@ package com.example.WMS.WareOperation.Categroy;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -64,12 +65,13 @@ public class Category_Adapter<V extends RecyclerView.ViewHolder> extends Recycle
     private int mResId;
     private MainActivity activity;
     private String token;
-
-    public Category_Adapter(int mResId, ArrayList<DataBean.Category> data, MainActivity activity,String token) {
+    private int opType;
+    public Category_Adapter(int mResId, ArrayList<DataBean.Category> data, MainActivity activity,String token, int opType) {
         this.mData = data;
         this.mResId = mResId;
         this.activity=activity;
         this.token=token;
+        this.opType = opType;
     }
 
     @NonNull
@@ -84,22 +86,52 @@ public class Category_Adapter<V extends RecyclerView.ViewHolder> extends Recycle
         onClickMethod(holder,position);
     }
 
-    private void onClickMethod(VH holder, final int position) {
-        holder.rl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    private int selectedPos = 0;
+    private int oldPos = 0;
 
+    private void onClickMethod(final VH holder, final int position) {
+        if(opType == 0){
+            if (position == SelectItem.getId()) {
+                holder.itemView.setBackgroundColor(Color.parseColor("#85C1E9"));
+            } else {
+                holder.itemView.setBackgroundColor(Color.LTGRAY);
             }
-        });
-        holder.fl_delete.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                DeleteData(mData.get(position).getCategoryId());
-                notifyItemRemoved(position);
-                Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
-            }
-        });
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    onItemClickListener.onItemClick(holder.itemView, position);
+                }
+            });
+        }
+        else if(opType == 1){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+
+                }
+            });
+            holder.fl_delete.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    DeleteData(mData.get(position).getCategoryId());
+                    notifyItemRemoved(position);
+                    Toast.makeText(activity,"删除成功",Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
+    private OnItemClickListener onItemClickListener = null;
+
+    /*暴露给外部的方法*/
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        onItemClickListener = listener;
+    }
+
+    public interface OnItemClickListener{
+        void onItemClick(View view, int position);
+    }
+
 
     public void DeleteData(int id){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
