@@ -45,7 +45,9 @@ import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_In_Record_Mode
 import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
+import com.example.WMS.WareOperation.Categroy.Category_Adapter;
 import com.example.WMS.WareOperation.Categroy.Categroy_Fragment;
+import com.example.WMS.WareOperation.Categroy.SelectItem;
 import com.example.WMS.WareOperation.MyAdapter;
 import com.example.WMS.WareOperation.Receiver_Supplier.Supplier_Fragment;
 import com.example.WMS.domain.DataBean;
@@ -70,6 +72,7 @@ import java.util.Arrays;
 public class WarehouseInList_Fragment extends Fragment implements View.OnClickListener{
     protected Context context;
     private static RecyclerView rv_pager;
+    private static RecyclerView category_List;
     private static TextView tv_nomedia;
     private static ProgressBar pb_loading;
     private static Spinner spinner;
@@ -80,7 +83,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private static ImageView btn_category;
     private Base_Topbar base_topbar;
     private static ArrayList<DataBean.ProductIn> warehouseItems;
+    private static ArrayList<DataBean.Category> categories;
     private static MyAdapter<MyAdapter.VH> adapter;
+    private static Category_Adapter category_adapter;
     private static ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<Ware_In_Record_Model.In_Record> warehouseName;
     private static String selectWarehouseName;
@@ -88,13 +93,14 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private String productCode;
     private static String supplierName="";
     private static String supplierId="";
-    private MyHandler handler;
+    private static MyHandler handler;
     private long lastClickTime=0;
     private long now=0;
     private static  Fragment fragment;
     private static String token;
     private int userId;
     private static Warehouse_authority_Model.authority roleList;
+    private static int pos=0;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,12 +119,15 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
 
     //子类实现方法
     public View initView(){
+        pos = 0;
         View view=View.inflate(context,R.layout.inlist_fragment,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         btn_category = base_topbar.getMore();
         btn_category.setOnClickListener(this);
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
+        category_List = view.findViewById(R.id.category_List);
+        category_List.setLayoutManager(new LinearLayoutManager(context));
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
         spinner=view.findViewById(R.id.spinner);
@@ -132,7 +141,13 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                  * 刷新操作在这里实现
                  * */
                 //这里获取数据的逻辑
-                getData(wareHouseId);
+                //getAllData(wareHouseId);
+                if(pos == 0){
+                    getAllData(wareHouseId);
+                }
+                else {
+                    getCategoryData(categories.get(pos).getCategoryName(),wareHouseId);
+                }
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -147,6 +162,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 selectWarehouseName=warehouseName.get(position).getWarehouseName();
                 getRole(token, warehouseName.get(position).getWarehouseId());
                 wareHouseId=warehouseName.get(position).getWarehouseId();
+                getCategoryList();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -203,8 +219,78 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             }
         });
     }
+    private void getCategoryList() {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getCategoryListByWarehouseId/"+wareHouseId+"?userToken="+token,new BaseCallback<DataBean.Category>(){
 
-    private void getData(int wareid) {
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("response"+response);
+            }
+
+            @Override
+            public void onSuccess_List(String resultStr) {
+                categories = new ArrayList<DataBean.Category>();
+                categories.add(new DataBean.Category(-1,"全部种类"));
+                Gson gson= new Gson();
+                DataBean.Category[] wares=gson.fromJson(resultStr,DataBean.Category[].class);
+                for (int i=0;i<wares.length;i++){
+                    categories.add(wares[i]);
+                }
+                handler.sendEmptyMessage(3);
+            }
+
+            @Override
+            public void onSuccess(Response response, DataBean.Category category) {
+
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+        });
+    }
+    private static void getCategoryData(String categoryName, int wareid) {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseIdAndCategory/"+categoryName+"/"+wareid+"?userToken="+token,
+                new BaseCallback<DataBean.ProductIn>(){
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        System.out.println("failure"+e);
+                    }
+
+                    @Override
+                    public void onResponse(Response response) {
+                        System.out.println("@@@@@@@@@@1"+response);
+                    }
+
+                    @Override
+                    public void onSuccess_List(final String resultStr) {
+                        warehouseItems = new ArrayList<DataBean.ProductIn>();
+                        Gson gson= new Gson();
+                        DataBean.ProductIn[] wares=gson.fromJson(resultStr,DataBean.ProductIn[].class);
+                        warehouseItems.addAll(Arrays.asList(wares));
+                        handler.sendEmptyMessage(0);
+                    }
+
+                    @Override
+                    public void onSuccess(Response response, DataBean.ProductIn productIn) {
+                        System.out.println("Success"+response);
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        System.out.println("error"+response+e);
+                    }
+                });
+    }
+    private static void getAllData(int wareid) {
         OkHttpHelper ok= OkHttpHelper.getInstance();
         ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseId/"+wareid+"?userToken="+token,
                 new BaseCallback<DataBean.ProductIn>(){
@@ -257,7 +343,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 Gson gson= new Gson();
                 Warehouse_authority_Model.authority wares=gson.fromJson(resultStr,Warehouse_authority_Model.authority.class);
                 roleList = wares;
-                getData(warehouseId);
+                getAllData(warehouseId);
                 handler.sendEmptyMessage(2);
             }
 
@@ -292,7 +378,6 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                                     selectWarehouseName, supplierName, token, supplierId, roleList.getAuthorities());
                             rv_pager.setAdapter(adapter);
                         } else {
-                            System.out.println("@@@@@@@@@@222");
                             rv_pager.setVisibility(View.GONE);
                             tv_nomedia.setVisibility(View.VISIBLE);
                             pb_loading.setVisibility(View.VISIBLE);
@@ -320,6 +405,23 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                             btn_add.setBackgroundColor(Color.LTGRAY);
                         }
                         break;
+                    case 3:
+                        category_adapter = new Category_Adapter<Category_Adapter.VH>(R.layout.item_category, categories, activity, token, 0);
+                        category_adapter.setOnItemClickListener(new Category_Adapter.OnItemClickListener() {
+                            public void onItemClick(View view, int position) {
+                                SelectItem.setId(position);//自定义的方法，告诉adpter被点击item
+                                pos = position;
+                                if(pos == 0){
+                                    getAllData(wareHouseId);
+                                }
+                                else {
+                                    getCategoryData(categories.get(position).getCategoryName(),wareHouseId);
+                                }
+
+                                category_adapter.notifyDataSetChanged();
+                            }
+                        });
+                        category_List.setAdapter(category_adapter);
                     default:
                         break;
                 }

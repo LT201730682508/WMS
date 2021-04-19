@@ -36,6 +36,8 @@ import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Mo
 import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model;
 import com.example.WMS.OkHttpHelper;
 import com.example.WMS.R;
+import com.example.WMS.WareOperation.Categroy.Category_Adapter;
+import com.example.WMS.WareOperation.Categroy.SelectItem;
 import com.example.WMS.WareOperation.MyAdapter;
 import com.example.WMS.WareOperation.Receiver_Supplier.Receiver_Fragment;
 
@@ -56,6 +58,7 @@ import java.util.Arrays;
 public class WarehouseOutList_Fragment extends Fragment implements View.OnClickListener{
     protected Context context;
     private static RecyclerView rv_pager;
+    private static RecyclerView category_List;
     private static TextView tv_nomedia;
     private static ProgressBar pb_loading;
     private static Spinner spinner;
@@ -63,11 +66,13 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private SwipeRefreshLayout swipeRefreshLayout;
     private Base_Topbar base_topbar;
     private Button btn_scan;
+    private static ArrayList<DataBean.Category> categories;
+    private static Category_Adapter category_adapter;
     private static MyAdapter<MyAdapter.VH> adapter;
     private static ArrayList<DataBean.ProductOut> warehouseItems;
     private static ArrayAdapter<String> spinnerAdapter;
     private static ArrayList<Ware_out_Record_Model.Out_Record> warehouseName;
-
+    private static int pos=0;
     private static String selectWarehouseName;
     private static int wareHouseId;
     private String productCode;
@@ -76,7 +81,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static Fragment fragment;
     private static String token;
     //private MyHandler handler=new MyHandler((MainActivity) getActivity());
-    private MyHandler handler;
+    private static MyHandler handler;
     private long lastClickTime=0;
     private long now=0;
     private int userId;
@@ -89,6 +94,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         context=getActivity();
         token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
         userId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getUserId();
+        getWarehouseList();
     }
 
     @Nullable
@@ -98,10 +104,13 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     }
     
     public View initView(){
+        pos = 0;
         View view=View.inflate(context,R.layout.outlist_fragment,null);
         base_topbar=new Base_Topbar(view,(MainActivity) getActivity(),true);
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
+        category_List = view.findViewById(R.id.category_List);
+        category_List.setLayoutManager(new LinearLayoutManager(context));
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -110,8 +119,12 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                  * 刷新操作在这里实现
                  * */
                 //这里获取数据的逻辑
-                getRole(token,wareHouseId);
-
+                if(pos == 0){
+                    getData(wareHouseId);
+                }
+                else {
+                    getCategoryData(categories.get(pos).getCategoryName(),wareHouseId);
+                }
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
@@ -121,13 +134,14 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         btn_scan=view.findViewById(R.id.scan);
         btn_select=view.findViewById(R.id.select_receiver);
         //设置适配器
-        getWarehouseList();
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 selectWarehouseName = warehouseName.get(position).getWarehouseName();
                 getRole(token, warehouseName.get(position).getWarehouseId());
                 wareHouseId= warehouseName.get(position).getWarehouseId();
+                getCategoryList();
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -209,7 +223,78 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     }
                 });
     }
-    private void getData(int wareHouseId) {
+    private void getCategoryList() {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getCategoryListByWarehouseId/"+wareHouseId+"?userToken="+token,new BaseCallback<DataBean.Category>(){
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("response"+response);
+            }
+
+            @Override
+            public void onSuccess_List(String resultStr) {
+                categories = new ArrayList<DataBean.Category>();
+                categories.add(new DataBean.Category(-1,"全部种类"));
+                Gson gson= new Gson();
+                DataBean.Category[] wares=gson.fromJson(resultStr,DataBean.Category[].class);
+                for (int i=0;i<wares.length;i++){
+                    categories.add(wares[i]);
+                }
+                handler.sendEmptyMessage(3);
+            }
+
+            @Override
+            public void onSuccess(Response response, DataBean.Category category) {
+
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+        });
+    }
+    private static void getCategoryData(String categoryName, int wareid) {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseIdAndCategory/"+categoryName+"/"+wareid+"?userToken="+token,
+                new BaseCallback<DataBean.ProductIn>(){
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        System.out.println("failure"+e);
+                    }
+
+                    @Override
+                    public void onResponse(Response response) {
+                        System.out.println("@@@@@@@@@@1"+response);
+                    }
+
+                    @Override
+                    public void onSuccess_List(final String resultStr) {
+                        warehouseItems = new ArrayList<DataBean.ProductOut>();
+                        Gson gson= new Gson();
+                        DataBean.ProductOut[] wares=gson.fromJson(resultStr,DataBean.ProductOut[].class);
+                        warehouseItems.addAll(Arrays.asList(wares));
+                        handler.sendEmptyMessage(0);
+                    }
+
+                    @Override
+                    public void onSuccess(Response response, DataBean.ProductIn productIn) {
+                        System.out.println("Success"+response);
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        System.out.println("error"+response+e);
+                    }
+                });
+    }
+    private static void getData(int wareHouseId) {
         OkHttpHelper ok= OkHttpHelper.getInstance();
         ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseId/"+wareHouseId+"?userToken="+token,new BaseCallback<DataBean.ProductOut>(){
             @Override
@@ -277,6 +362,23 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                             spinner.setAdapter(spinnerAdapter);
                         }
                         break;
+                    case 3:
+                        category_adapter = new Category_Adapter<Category_Adapter.VH>(R.layout.item_category, categories, activity, token, 0);
+                        category_adapter.setOnItemClickListener(new Category_Adapter.OnItemClickListener() {
+                            public void onItemClick(View view, int position) {
+                                SelectItem.setId(position);//自定义的方法，告诉adpter被点击item
+                                pos = position;
+                                if(pos == 0){
+                                    getData(wareHouseId);
+                                }
+                                else {
+                                    getCategoryData(categories.get(position).getCategoryName(),wareHouseId);
+                                }
+
+                                category_adapter.notifyDataSetChanged();
+                            }
+                        });
+                        category_List.setAdapter(category_adapter);
                     default:
                         break;
                 }
