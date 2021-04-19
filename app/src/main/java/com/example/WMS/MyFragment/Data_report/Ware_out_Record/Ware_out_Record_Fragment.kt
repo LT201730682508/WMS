@@ -29,6 +29,7 @@ import kotlinx.android.synthetic.main.ware_in_record.view.*
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
@@ -78,7 +79,7 @@ class Ware_out_Record_Fragment :Fragment(){
         select_time=view.findViewById(R.id.select_time)
 
         Join_Warehouse_Model.getData(object : Join_Warehouse_Model.Show{
-            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+            override fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>) {
                 if (wares.size!=0){
                     var mList = ArrayList<String>()
                     mList.add("请选择")
