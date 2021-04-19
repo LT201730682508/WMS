@@ -15,9 +15,38 @@
         android:paddingLeft="20dp"
         android:layout_height="50dp">
     </TextView>
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="10dp"
+        android:id="@+id/search_frame"
         android:layout_below="@+id/dialog_title"
+        android:background="@drawable/editframe1"
+        android:layout_height="40dp">
 
+        <EditText
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:layout_marginLeft="25dp"
+            android:hint="账号搜索"
+            android:background="@null"
+            android:id="@+id/search_text"
+            android:textColorHint="@color/black"
+            android:layout_height="wrap_content"></EditText>
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/search"
+            android:id="@+id/search_img"
+            android:layout_height="30dp"></ImageView>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@+id/search_frame"
         android:id="@+id/add_ry"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>

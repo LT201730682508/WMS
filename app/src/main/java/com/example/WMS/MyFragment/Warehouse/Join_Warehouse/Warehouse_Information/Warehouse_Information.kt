@@ -65,12 +65,10 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
             override fun get(authority: Warehouse_authority_Model.authority) {
                  Warehouse_Authority_List.authorityList_Map.put(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.authorities)
                 Warehouse_Authority_List.roleList_Map.put(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.role)
-
                 if (authority.role!="库主"||authority==null){
                     delete_modify_ll.visibility=View.GONE
                 }
             }
-
         })
 
         ware_in.setOnClickListener {
