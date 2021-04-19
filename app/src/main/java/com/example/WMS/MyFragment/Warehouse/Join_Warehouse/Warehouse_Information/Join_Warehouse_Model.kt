@@ -35,7 +35,7 @@ class Join_Warehouse_Model {
                             Array<All_Warehouse_Model.Warehouse>::class.java
                         )
                         if(wares!=null){
-                            show.show(wares)
+                            show.show(wares.toList() as ArrayList<All_Warehouse_Model.Warehouse>)
                         }
                         for (ware in wares){
                             println("@@@@@2"+ware)
@@ -59,7 +59,7 @@ class Join_Warehouse_Model {
     }
 
     interface Show{
-        fun show(wares: Array<All_Warehouse_Model.Warehouse>)
+        fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>)
     }
 
 

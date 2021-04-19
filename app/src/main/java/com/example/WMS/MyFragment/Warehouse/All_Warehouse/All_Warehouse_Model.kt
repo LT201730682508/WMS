@@ -34,7 +34,7 @@ class All_Warehouse_Model {
                             Array<Warehouse>::class.java
                         )
                         if(wares!=null){
-                            show.show(wares)
+                            show.show(wares.toList() as ArrayList<Warehouse>)
                         }
 
                         for (ware in wares){
@@ -57,7 +57,7 @@ class All_Warehouse_Model {
     }
 
     interface Show{
-        fun show(wares: Array<Warehouse>)
+        fun show(wares: ArrayList<Warehouse>)
     }
 
     data class Warehouse(var warehouseId:Int,var warehouseName:String,val warehouseAddress:String,val warehouseDescription:String,val warehouseImg:String)

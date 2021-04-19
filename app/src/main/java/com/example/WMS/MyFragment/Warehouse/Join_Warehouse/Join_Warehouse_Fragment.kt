@@ -36,6 +36,21 @@ class Join_Warehouse_Fragment:Fragment() {
     fun init(view:View){
         base_Top_Bar= Base_Topbar(view,(activity as MainActivity),true)
         base_Top_Bar.setTitle("仓库管理")
+        base_Top_Bar.make_sure.setOnClickListener {
+            if(base_Top_Bar.search_content.text!!.isEmpty()){
+                getDataAgain()
+            }else{
+                var mlist= arrayListOf<All_Warehouse_Model.Warehouse>()
+                for (l in joinWarehouseAdapter.list){
+                    if(l.warehouseName.contains(base_Top_Bar.search_content.text.toString()))   {
+                        mlist.add(l)
+                    }
+                }
+                joinWarehouseAdapter.list= mlist
+                joinWarehouseAdapter.notifyDataSetChanged()
+            }
+
+        }
         join_recycleview=view.findViewById(R.id.join_recycleview)
         empty_rl=view.findViewById(R.id.empty_rl)
         initdata()
@@ -44,7 +59,7 @@ class Join_Warehouse_Fragment:Fragment() {
         join_recycleview.layoutManager= LinearLayoutManager(context)
 
             Join_Warehouse_Model.getData(object :Join_Warehouse_Model.Show{
-                override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+                override fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>) {
                     if (wares.size==0){
                         empty_rl.visibility=View.VISIBLE
                         join_recycleview.visibility=View.GONE
@@ -71,7 +86,7 @@ class Join_Warehouse_Fragment:Fragment() {
     }
     fun getDataAgain(){
         Join_Warehouse_Model.getData(object :Join_Warehouse_Model.Show{
-            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+            override fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>) {
                 if (wares.size==0){
                     empty_rl.visibility=View.VISIBLE
                     all_recycleview.visibility=View.GONE
