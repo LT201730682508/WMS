@@ -97,6 +97,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
+        <com.xuexiang.xui.widget.textview.label.LabelTextView
+            android:id="@+id/labeled"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="无状态"
+            android:textSize="10sp"
+            android:background="@color/white"
+            android:gravity="top"/>
+        <com.xuexiang.xui.widget.textview.label.LabelTextView
+            android:id="@+id/labeled_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="品质"
+            android:textSize="10sp"
+            android:background="@color/white"
+            android:gravity="top"
+            android:layout_alignParentRight="true"/>
         <Button
             android:layout_width="40dp"
             android:background="@drawable/myroundbutton"

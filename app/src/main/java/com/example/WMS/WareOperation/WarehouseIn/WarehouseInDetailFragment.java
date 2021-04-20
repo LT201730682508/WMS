@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -59,7 +61,8 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
     private Dialog dialog;
     private DataBean.Product wares;
     private String token;
-
+    private RadioGroup radioGroup;
+    private String tags;
     public WarehouseInDetailFragment(String warehouseName, DataBean.ProductIn productIn,String token){
         //根据仓库名和商品名读取数据库，显示已有数据
         this.warehouseName=warehouseName;
@@ -95,7 +98,31 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
         category=view.findViewById(R.id.et_category);
+        radioGroup = view.findViewById(R.id.radio);
         getData();
+
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.checkbox_1:
+                        tags += "e";
+                        break;
+                    case R.id.checkbox_2:
+                        tags += "g";
+                        break;
+                    case R.id.checkbox_3:
+                        tags += "f";
+                        break;
+                    case R.id.checkbox_4:
+                        tags += "h";
+                        break;
+                    default:
+                        tags += "f";
+                        break;
+                }
+            }
+        });
         warehouse_name.setFocusable(false);
         warehouse_name.setOnClickListener(this);
         category.setFocusable(false);
@@ -128,6 +155,22 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
                 detail.setText(wares.getProductDescription());
                 name.setText(wares.getProductName());
                 setImage(getActivity(),wares.getProductImg(),picture);
+                if(wares.getProductTags().length()>1){
+                    tags = "";
+                    tags += wares.getProductTags().charAt(0);
+                }
+                if(wares.getProductTags().contains("e")){
+                    radioGroup.check(R.id.checkbox_1);
+                }
+                else if(wares.getProductTags().contains("f")){
+                    radioGroup.check(R.id.checkbox_3);
+                }
+                else if(wares.getProductTags().contains("g")){
+                    radioGroup.check(R.id.checkbox_2);
+                }
+                else if(wares.getProductTags().contains("h")){
+                    radioGroup.check(R.id.checkbox_4);
+                }
             }
 
             @Override
@@ -202,6 +245,7 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
             map.put("productDescription",detail.getText().toString());
             map.put("productCategory",category.getText().toString());
             map.put("productCode","url");
+            map.put("productTags", tags);
             sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
             ((MainActivity)getActivity()).fragment_Manager.pop();
         }

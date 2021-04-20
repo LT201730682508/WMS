@@ -22,39 +22,33 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/picture_add_big"/>
-            <LinearLayout
+            <RadioGroup
+                android:id="@+id/radio"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/checkbox1"
-                    android:layout_margin="10dp"
+                android:orientation="vertical"
+                android:checkedButton="@+id/checkbox_3">
+                <RadioButton
+                    android:id="@+id/checkbox_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="一号标签"/>
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/checkbox2"
+                    android:text="优品" />
+                <RadioButton
+                    android:id="@+id/checkbox_2"
                     android:layout_width="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="二号标签"/>
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/checkbox3"
+                    android:text="良品" />
+                <RadioButton
+                    android:id="@+id/checkbox_3"
                     android:layout_width="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="三号标签"/>
-                <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/checkbox4"
+                    android:text="合格品" />
+                <RadioButton
+                    android:id="@+id/checkbox_4"
                     android:layout_width="wrap_content"
-                    android:layout_margin="10dp"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:text="四号标签"/>
-            </LinearLayout>
+                    android:text="残次品" />
+            </RadioGroup>
         </LinearLayout>
         <LinearLayout
             android:padding="8dp"

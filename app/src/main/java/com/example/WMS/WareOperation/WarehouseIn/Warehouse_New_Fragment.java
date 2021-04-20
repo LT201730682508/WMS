@@ -19,6 +19,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -71,6 +73,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private ClearEditText warehouse_name;
     private ClearEditText scan_code;
     private Button btn_scan;
+    private RadioGroup radioGroup;
     private static String selectCategory = "";
     private static ArrayList<String> categoryList;
     private static ArrayAdapter<String> spinnerAdapter;
@@ -79,6 +82,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private Dialog dialog;
     private String token;
     private Boolean hasImg=false;
+    private String tags;
     private MyHandler handler;
     public Warehouse_New_Fragment(String warehouseName,int warehouseId,String token){
         this.warehouseName=warehouseName;
@@ -114,6 +118,29 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
         category=view.findViewById(R.id.spinner_category);
+        radioGroup = view.findViewById(R.id.radio);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.checkbox_1:
+                        tags = "e";
+                        break;
+                    case R.id.checkbox_2:
+                        tags = "g";
+                        break;
+                    case R.id.checkbox_3:
+                        tags = "f";
+                        break;
+                    case R.id.checkbox_4:
+                        tags = "h";
+                        break;
+                    default:
+                        tags = "f";
+                        break;
+                }
+            }
+        });
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -152,6 +179,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 map.put("productCategory", selectCategory);
                 map.put("warehouseId",warehouseId+"");
                 map.put("productCode",scan_code.getText().toString());
+                map.put("productTags", tags);
                 sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
             }
 
