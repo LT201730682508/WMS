@@ -9,10 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Group_Manager.Group_Model
 import com.example.WMS.R
+import com.xuexiang.xui.widget.toast.XToast
 import kotlinx.android.synthetic.main.group_item.view.*
+import kotlinx.android.synthetic.main.group_item.view.cancel
+import kotlinx.android.synthetic.main.group_item.view.delete
+import kotlinx.android.synthetic.main.group_item.view.delete_frame
+import kotlinx.android.synthetic.main.member_item.view.*
 
 class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_Model.Gropu_data>,val wareHouseid: Int,val type:Int,val role:String): RecyclerView.Adapter<Member_group_Adapter.ViewHolder>() {
-    var hashMap= HashMap<Int,Array<Member_Manager_Model.member_item>>()
+    var hashMap= HashMap<Int,ArrayList<Member_Manager_Model.member_item>>()
     class ViewHolder(itemview: View): RecyclerView.ViewHolder(itemview) {
     }
 
@@ -28,8 +33,31 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(type==1){
-            holder.itemView.next.visibility=View.GONE
+        if(type==1) {
+            holder.itemView.next.visibility = View.GONE
+            holder.itemView.delete.setOnClickListener {
+                     Group_Model.deleteGroup((activity as MainActivity).fragment_Manager.userinfo.token,list[position].group_id,object :Group_Model.Delete{
+                         override fun show(g: String) {
+                             if(g=="OK"){
+                                 XToast.success(activity,g).show()
+                                 list.removeAt(position)
+                                 notifyDataSetChanged()
+                             }
+                             else
+                                 XToast.warning(activity,g).show()
+
+                             holder.itemView.delete_frame.visibility=View.GONE
+
+                         }
+                     })
+            }
+            holder.itemView.cancel.setOnClickListener {
+                holder.itemView.delete_frame.visibility=View.GONE
+            }
+            holder.itemView.setOnLongClickListener {
+                holder.itemView.delete_frame.visibility=View.VISIBLE
+                 true
+            }
         }
         holder.itemView.group_name.text=list[position].group_name
         holder.itemView.down.setOnClickListener {
@@ -38,15 +66,6 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
             holder.itemView.member_sr.visibility=View.GONE
         }
         if(role!="库主"){
-            holder.itemView.next.setOnClickListener {
-                holder.itemView.down.visibility=View.VISIBLE
-                holder.itemView.next.visibility=View.GONE
-                holder.itemView.member_sr.visibility=View.VISIBLE
-                holder.itemView.member_sr.layoutManager=LinearLayoutManager(activity)
-                Alldata(holder,wareHouseid)
-            }
-        }
-       else{
             if(position==0){
                 holder.itemView.next.setOnClickListener {
                     holder.itemView.down.visibility=View.VISIBLE
@@ -61,7 +80,27 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
                     holder.itemView.next.visibility=View.GONE
                     holder.itemView.member_sr.visibility=View.VISIBLE
                     holder.itemView.member_sr.layoutManager=LinearLayoutManager(activity)
-                    getGroupMember(position,holder,list[position].group_id)
+                    getGroupMember(position,holder,list[position].group_id,false)
+                }
+            }
+        }
+       else{
+            if(position==0){
+                holder.itemView.next.setOnClickListener {
+                    holder.itemView.down.visibility=View.VISIBLE
+                    holder.itemView.next.visibility=View.GONE
+                    holder.itemView.member_sr.visibility=View.VISIBLE
+                    holder.itemView.member_sr.layoutManager=LinearLayoutManager(activity)
+                    Alldata(holder,wareHouseid)
+                }
+            }else{
+                holder.itemView.next.setOnClickListener {
+          //`          XToast.success(activity,list[position].group_id.toString()).show()
+                    holder.itemView.down.visibility=View.VISIBLE
+                    holder.itemView.next.visibility=View.GONE
+                    holder.itemView.member_sr.visibility=View.VISIBLE
+                    holder.itemView.member_sr.layoutManager=LinearLayoutManager(activity)
+                    getGroupMember(position,holder,list[position].group_id,true)
                 }
             }
         }
@@ -75,11 +114,11 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
                 override fun change() {
                     TODO("Not yet implemented")
                 }
-            },activity as MainActivity)
+            },false,activity as MainActivity)
             holder.itemView.member_sr.adapter=memberListAdapter
         }else{
             Member_Manager_Model.getData(object :Member_Manager_Model.Show{
-                override fun show(wares: Array<Member_Manager_Model.member_item>) {
+                override fun show(wares: ArrayList<Member_Manager_Model.member_item>) {
                     if(wares.size==0){
 
                     }else{
@@ -88,7 +127,7 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
                             override fun change() {
                                 TODO("Not yet implemented")
                             }
-                        },activity as MainActivity)
+                        },false,activity as MainActivity)
                         holder.itemView.member_sr.adapter=memberListAdapter
                     }
                 }
@@ -96,31 +135,37 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
         }
 
     }
-    fun getGroupMember(position: Int,holder: ViewHolder,groupId:Int){
+    fun getGroupMemberMethod(position: Int,holder: ViewHolder,groupId:Int,master:Boolean){
+        Member_Manager_Model.getGroupMemberData(object :Member_Manager_Model.Show{
+            override fun show(wares: ArrayList<Member_Manager_Model.member_item>) {
+                if(wares.size==0){
+                }else{
+                    hashMap.put(position,wares)
+                }
+                var memberListAdapter= Member_List_Adapter(wareHouseid,list[position].group_id,wares,object :Member_Manager_Model.notifychange{
+                    override fun change() {
+                       getGroupMemberMethod(position,holder,groupId,master)
+                    }
+                },master,activity as MainActivity)
+                holder.itemView.member_sr.adapter=memberListAdapter
+            }
+
+        },(activity as MainActivity).fragment_Manager.userinfo.token,groupId)
+    }
+    fun getGroupMember(position: Int,holder: ViewHolder,groupId:Int,master: Boolean){
         if(hashMap.containsKey(position)){
             var memberListAdapter= Member_List_Adapter(wareHouseid,list[position].group_id,hashMap.get(position)!!,object :Member_Manager_Model.notifychange{
                 override fun change() {
-                  hashMap.clear()
+                    getGroupMemberMethod(position,holder,groupId,master)
                 }
-            },activity as MainActivity)
+            },master,activity as MainActivity)
             holder.itemView.member_sr.adapter=memberListAdapter
         }else{
-            Member_Manager_Model.getGroupMemberData(object :Member_Manager_Model.Show{
-                override fun show(wares: Array<Member_Manager_Model.member_item>) {
-                    if(wares.size==0){
-                    }else{
-                        hashMap.put(position,wares)
-                    }
-                    var memberListAdapter= Member_List_Adapter(wareHouseid,list[position].group_id,wares,object :Member_Manager_Model.notifychange{
-                        override fun change() {
-                             hashMap.clear()
-                        }
-                    },activity as MainActivity)
-                    holder.itemView.member_sr.adapter=memberListAdapter
-                }
-
-            },(activity as MainActivity).fragment_Manager.userinfo.token,groupId)
+           getGroupMemberMethod(position,holder,groupId,master)
         }
 
     }
+
+
 }
+

@@ -6,6 +6,32 @@
     android:layout_marginBottom="2dp"
     android:background="#FFFFFF"
     android:layout_height="wrap_content">
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_width="80dp"
+        android:id="@+id/member_delete_frame"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/delete_qipao"
+        android:orientation="horizontal"
+        android:layout_height="40dp">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:text="删除"
+            android:id="@+id/member_delete"
+            android:gravity="center"
+            android:layout_height="30dp"></TextView>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:text="取消"
+            android:id="@+id/member_cancel"
+            android:gravity="center"
+            android:layout_height="30dp"></TextView>
+    </LinearLayout>
     <com.makeramen.roundedimageview.RoundedImageView
         android:layout_width="35dp"
         android:id="@+id/member_img"

@@ -36,7 +36,33 @@
             android:src="@drawable/down"
             android:layout_centerVertical="true"
             android:layout_height="20dp"></ImageView></RelativeLayout>
-
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="80dp"
+                android:id="@+id/delete_frame"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/delete_qipao"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="15dp"
+                android:orientation="horizontal"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="删除"
+                    android:id="@+id/delete"
+                    android:gravity="center"
+                    android:layout_height="30dp"></TextView>
+                <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:text="取消"
+                    android:id="@+id/cancel"
+                    android:gravity="center"
+                android:layout_height="30dp"></TextView>
+            </LinearLayout>
     <com.example.WMS.SlideRecyclerView
         android:visibility="visible"
         android:id="@+id/member_sr"

@@ -60,7 +60,9 @@ class Create_Group_Dialog (context: Context, val token:String,val warehouse_id: 
 
             override fun onSuccess(response: Response?, t: String?) {
                 println("@@@@@3"+t)
+                if(t=="OK")
                 XToast.success(context,t!!).show()
+                else XToast.warning(context,t!!).show()
                 result.result()
             }
 

@@ -10,14 +10,16 @@ import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Imformation.Member_Imformation_Fragment
 import com.example.WMS.R
 import com.example.WMS.custom_Dialog.Group_member_Add_Dialog
+import kotlinx.android.synthetic.main.group_item.view.*
 import kotlinx.android.synthetic.main.member_item.view.*
 import kotlinx.android.synthetic.main.member_list_add.view.*
 
 class Member_List_Adapter(
     var warhouseId:Int,
     val group_id:Int,
-    var list: Array<Member_Manager_Model.member_item>,
+    var list: ArrayList<Member_Manager_Model.member_item>,
     val notifychange: Member_Manager_Model.notifychange,
+    val master:Boolean,
     var activity: MainActivity):RecyclerView.Adapter<Member_List_Adapter.ViewHolder>() {
 
     val TYPEONE=1
@@ -41,7 +43,6 @@ class Member_List_Adapter(
              view =
                 LayoutInflater.from(parent.context).inflate(R.layout.member_item, parent, false)
             viewHolder = ViewHolder(view)
-
         }else{
             view =
                 LayoutInflater.from(parent.context).inflate(R.layout.member_list_add, parent, false)
@@ -51,6 +52,21 @@ class Member_List_Adapter(
     }
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(position<list.size){
+            if(master){
+                holder.itemView.setOnLongClickListener {
+                    holder.itemView.member_delete_frame.visibility=View.VISIBLE
+                    true
+                }
+            }
+            holder.itemView.member_cancel.setOnClickListener {
+                holder.itemView.member_delete_frame.visibility=View.GONE
+            }
+            holder.itemView.member_delete.setOnClickListener {
+                Member_Manager_Model.groupDeleteMember(activity,(activity as MainActivity).fragment_Manager.userinfo.token,group_id,list[position].user_name)
+                holder.itemView.member_delete_frame.visibility=View.GONE
+                list.removeAt(position)
+                notifyDataSetChanged()
+            }
             holder.itemView.member_name.text=list[position].user_name
             holder.itemView.member_title.text=list[position].role
             holder.itemView.setOnClickListener {
@@ -66,7 +82,7 @@ class Member_List_Adapter(
 
     }
     override fun getItemCount(): Int {
-        if(group_id==0){
+        if(group_id==0||!master){
             return list.size
         }else
         return list.size+1

@@ -5,6 +5,7 @@ import com.example.WMS.OkHttpHelper
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
+import com.xuexiang.xui.widget.toast.XToast
 import java.io.IOException
 
 class Group_Model {
@@ -48,10 +49,45 @@ class Group_Model {
                     }
                 })
         }
+
+        fun deleteGroup(token: String, group_id: Int,delete: Delete ){
+            val ok = OkHttpHelper.getInstance()
+            ok.post_for_object("http://121.199.22.134:8003/api-authority/deleteGroup?userToken="+token+"&groupId="+group_id,null,    object : BaseCallback<String>() {
+                override fun onFailure(
+                    request: Request,
+                    e: IOException
+                ) {
+                    println("failure$e")
+                }
+
+                override fun onResponse(response: Response) {
+                    println("response$response")
+                }
+
+                override fun onSuccess_List(resultStr: String) {
+                    println("@@2@@@2" + resultStr)
+                }
+
+                override fun onError(
+                    response: Response,
+                    code: Int,
+                    e: Exception
+                ) {
+                    println("error$response$e")
+                }
+
+                override fun onSuccess(response: Response?, t: String?) {
+                    delete.show(t!!)
+                }
+            })
+        }
     }
 
     interface GroupShow{
         fun show(g: Array<Gropu_data>)
+    }
+    interface Delete{
+        fun show(g:String)
     }
     data class Gropu_data(val group_id:Int,val group_name:String,val account:Int)
 }
