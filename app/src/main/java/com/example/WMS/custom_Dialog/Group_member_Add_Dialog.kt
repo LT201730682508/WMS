@@ -49,7 +49,7 @@ class Group_member_Add_Dialog (val group_id:Int,context: Context, val token:Stri
     }
     fun getAllStaff(){
         Member_Manager_Model.getData(object : Member_Manager_Model.Show{
-            override fun show(wares: Array<Member_Manager_Model.member_item>) {
+            override fun show(wares: ArrayList<Member_Manager_Model.member_item>) {
                 if(wares.size==0){
 
                 }else{

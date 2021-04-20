@@ -82,7 +82,7 @@ class Add_Member_Fragment(val warehouseid:Int):Fragment() {
             val memberparams= Add_Member_Model.member_params((activity as MainActivity).fragment_Manager.userinfo.token,search_text.text.toString())
             Add_Member_Model.search_user(object :Add_Member_Model.Companion.show{
                 override fun shou(str: Add_Member_Model.search_member_imformation) {
-                    if(str.user_name!=null){
+                    if(str.user_name!=""){
                         search_results.visibility=View.VISIBLE
                         search_no.visibility=View.GONE
                         new_member_name.text=str.user_name

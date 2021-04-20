@@ -36,7 +36,7 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
         if(type==1) {
             holder.itemView.next.visibility = View.GONE
             holder.itemView.delete.setOnClickListener {
-                     Group_Model.deleteGroup((activity as MainActivity).fragment_Manager.userinfo.token,list[position].group_id,object :Group_Model.Delete{
+                     Group_Model.deleteGroup(activity.fragment_Manager.userinfo.token,list[position].group_id,object :Group_Model.Delete{
                          override fun show(g: String) {
                              if(g=="OK"){
                                  XToast.success(activity,g).show()
@@ -114,7 +114,7 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
                 override fun change() {
                     TODO("Not yet implemented")
                 }
-            },false,activity as MainActivity)
+            },false,activity )
             holder.itemView.member_sr.adapter=memberListAdapter
         }else{
             Member_Manager_Model.getData(object :Member_Manager_Model.Show{
@@ -127,11 +127,11 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
                             override fun change() {
                                 TODO("Not yet implemented")
                             }
-                        },false,activity as MainActivity)
+                        },false,activity )
                         holder.itemView.member_sr.adapter=memberListAdapter
                     }
                 }
-            },(activity as MainActivity).fragment_Manager.userinfo,wareHouseid)
+            },(activity).fragment_Manager.userinfo,wareHouseid)
         }
 
     }
@@ -146,11 +146,11 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
                     override fun change() {
                        getGroupMemberMethod(position,holder,groupId,master)
                     }
-                },master,activity as MainActivity)
+                },master,activity )
                 holder.itemView.member_sr.adapter=memberListAdapter
             }
 
-        },(activity as MainActivity).fragment_Manager.userinfo.token,groupId)
+        },(activity ).fragment_Manager.userinfo.token,groupId)
     }
     fun getGroupMember(position: Int,holder: ViewHolder,groupId:Int,master: Boolean){
         if(hashMap.containsKey(position)){
@@ -158,7 +158,7 @@ class Member_group_Adapter(val activity: MainActivity,var list: ArrayList<Group_
                 override fun change() {
                     getGroupMemberMethod(position,holder,groupId,master)
                 }
-            },master,activity as MainActivity)
+            },master,activity )
             holder.itemView.member_sr.adapter=memberListAdapter
         }else{
            getGroupMemberMethod(position,holder,groupId,master)

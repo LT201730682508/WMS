@@ -171,7 +171,7 @@ class Member_Manager_Model {
 
                     override fun onSuccess(response: Response?, t: String?) {
                           if(t=="OK"){
-                              XToast.success(context,t!!).show()
+                              XToast.success(context,t).show()
                           }else{
                               XToast.warning(context,t!!).show()
                           }

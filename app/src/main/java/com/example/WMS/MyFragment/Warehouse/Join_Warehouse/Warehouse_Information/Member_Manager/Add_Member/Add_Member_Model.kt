@@ -40,6 +40,7 @@ class Add_Member_Model {
 
                     override fun onSuccess(response: Response?, t: search_member_imformation?) {
                         show.shou(t!!)
+                        println("success$response"+t)
                     }
                 })
         }
