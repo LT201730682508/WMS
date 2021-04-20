@@ -4,7 +4,6 @@ import com.example.WMS.BaseCallback
 import com.example.WMS.MyFragment.Login_fragment
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.OkHttpHelper
-import com.example.WMS.domain.DataBean
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
@@ -35,7 +34,9 @@ class Join_Warehouse_Model {
                             Array<All_Warehouse_Model.Warehouse>::class.java
                         )
                         if(wares!=null){
-                            show.show(wares)
+                            var arrayList= arrayListOf<All_Warehouse_Model.Warehouse>()
+                            arrayList.addAll(wares)
+                            show.show(arrayList)
                         }
                         for (ware in wares){
                             println("@@@@@2"+ware)
@@ -59,7 +60,7 @@ class Join_Warehouse_Model {
     }
 
     interface Show{
-        fun show(wares: Array<All_Warehouse_Model.Warehouse>)
+        fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>)
     }
 
 

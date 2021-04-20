@@ -75,7 +75,7 @@ class Ware_in_Record_Fragment :Fragment(){
         select_time=view.findViewById(R.id.select_time)
 
              Join_Warehouse_Model.getData(object :Join_Warehouse_Model.Show{
-            override fun show(wares: Array<All_Warehouse_Model.Warehouse>) {
+            override fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>) {
                 if (wares.size!=0){
                     var mList = ArrayList<String>()
                     mList.add("请选择")

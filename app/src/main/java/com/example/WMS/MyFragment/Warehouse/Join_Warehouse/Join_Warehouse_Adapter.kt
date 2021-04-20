@@ -13,14 +13,15 @@ import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Warehouse_Information
 import com.example.WMS.R
 
-class Join_Warehouse_Adapter(var list: Array<All_Warehouse_Model.Warehouse>, var activity: MainActivity,var fragment: Join_Warehouse_Fragment): RecyclerView.Adapter<Join_Warehouse_Adapter.ViewHolder>() {
+class Join_Warehouse_Adapter(var list: ArrayList<All_Warehouse_Model.Warehouse>, var activity: MainActivity,var fragment: Join_Warehouse_Fragment): RecyclerView.Adapter<Join_Warehouse_Adapter.ViewHolder>() {
 
    inner class ViewHolder(itemView: View) :RecyclerView.ViewHolder(itemView){
          var imageView:ImageView=itemView.findViewById(R.id.ware_img)
          var ware_name:TextView=itemView.findViewById(R.id.warehouse_name)
     }
-    fun setMyList(changelist: Array<All_Warehouse_Model.Warehouse>){
-        list= changelist
+    fun setMyList(changelist: ArrayList<All_Warehouse_Model.Warehouse>){
+        list.clear()
+        list.addAll(changelist)
         notifyDataSetChanged()
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

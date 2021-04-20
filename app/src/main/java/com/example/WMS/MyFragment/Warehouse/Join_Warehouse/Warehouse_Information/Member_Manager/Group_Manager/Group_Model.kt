@@ -1,20 +1,18 @@
-package com.example.WMS.MyFragment.Warehouse.All_Warehouse
+package com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Group_Manager
 
 import com.example.WMS.BaseCallback
-import com.example.WMS.MyFragment.Login_fragment
 import com.example.WMS.OkHttpHelper
-import com.example.WMS.domain.DataBean.ProductIn
 import com.google.gson.Gson
 import com.squareup.okhttp.Request
 import com.squareup.okhttp.Response
 import java.io.IOException
 
-class All_Warehouse_Model {
-    companion object{
-           fun getData(show:Show,userLogin: Login_fragment.user_Login) {
+class Group_Model {
+    companion object {
+        fun get_group_list(token: String, warehouseId: Int, show: GroupShow) {
             val ok = OkHttpHelper.getInstance()
             ok.get_for_list(
-                "http://121.199.22.134:8003/api-inventory/getWarehouseByCompanyId/"+userLogin.userInfo.companyId+"?userToken="+userLogin.token,
+                "http://121.199.22.134:8003/api-authority/getGroupListByWarehouseId?userToken=" + token+"&warehouseId="+warehouseId,
                 object : BaseCallback<String>() {
                     override fun onFailure(
                         request: Request,
@@ -29,20 +27,14 @@ class All_Warehouse_Model {
 
                     override fun onSuccess_List(resultStr: String) {
                         val gson = Gson()
-                        val wares = gson.fromJson(
+                        val groupList = gson.fromJson(
                             resultStr,
-                            Array<Warehouse>::class.java
+                            Array<Gropu_data>::class.java
                         )
-                        if(wares!=null){
-                            var arrayList= arrayListOf<Warehouse>()
-                            arrayList.addAll(wares)
-                            show.show(arrayList)
-                        }
-
-                        for (ware in wares){
-                            println("@@@@@2"+ware)
-                        }
+                        show.show(groupList)
+                        println("@@2@@@2" + resultStr)
                     }
+
                     override fun onError(
                         response: Response,
                         code: Int,
@@ -52,15 +44,14 @@ class All_Warehouse_Model {
                     }
 
                     override fun onSuccess(response: Response?, t: String?) {
-                        TODO("Not yet implemented")
+
                     }
                 })
         }
     }
 
-    interface Show{
-        fun show(wares: ArrayList<Warehouse>)
+    interface GroupShow{
+        fun show(g: Array<Gropu_data>)
     }
-
-    data class Warehouse(var warehouseId:Int,var warehouseName:String,val warehouseAddress:String,val warehouseDescription:String,val warehouseImg:String)
+    data class Gropu_data(val group_id:Int,val group_name:String,val account:Int)
 }

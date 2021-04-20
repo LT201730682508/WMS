@@ -26,15 +26,15 @@
         android:textColor="@color/skyblue"
         android:layout_marginLeft="25dp"
         android:layout_height="50dp"></TextView>
-    <TextView
-        android:layout_width="wrap_content"
-        android:text="职位"
-        android:gravity="center_vertical"
-        android:textSize="15dp"
-        android:id="@+id/member_title"
+    <com.xuexiang.xui.widget.button.roundbutton.RoundButton
+        style="@style/RoundButton.Auto"
+        android:id="@+id/make_sure"
+        android:layout_width="60dp"
+        android:layout_height="30dp"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="20dp"
         android:layout_alignParentRight="true"
-        android:textColor="@color/skyblue"
-        android:layout_marginRight="25dp"
-        android:layout_height="50dp"
-        ></TextView>
+        android:text="添加"/>
+
 </RelativeLayout>

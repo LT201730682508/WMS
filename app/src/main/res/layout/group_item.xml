@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_marginBottom="1dp"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:id="@+id/Rl"
+        android:layout_height="wrap_content">
+        <TextView
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:id="@+id/group_name"
+        android:text="第一组"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:textColor="@color/gray"
+        android:layout_height="50dp"></TextView>
+
+        <ImageView
+            android:visibility="visible"
+            android:layout_width="30dp"
+            android:id="@+id/next"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/go_to_right"
+            android:layout_centerVertical="true"
+            android:layout_height="20dp"></ImageView>
+        <ImageView
+            android:visibility="gone"
+            android:layout_width="20dp"
+            android:id="@+id/down"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:src="@drawable/down"
+            android:layout_centerVertical="true"
+            android:layout_height="20dp"></ImageView></RelativeLayout>
+
+    <com.example.WMS.SlideRecyclerView
+        android:visibility="visible"
+        android:id="@+id/member_sr"
+        android:layout_below="@+id/Rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.example.WMS.SlideRecyclerView>
+</RelativeLayout>
