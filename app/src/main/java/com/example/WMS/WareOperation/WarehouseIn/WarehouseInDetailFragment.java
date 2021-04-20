@@ -100,7 +100,6 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
         category=view.findViewById(R.id.et_category);
         radioGroup = view.findViewById(R.id.radio);
         getData();
-
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -155,8 +154,8 @@ public class WarehouseInDetailFragment extends Fragment implements View.OnClickL
                 detail.setText(wares.getProductDescription());
                 name.setText(wares.getProductName());
                 setImage(getActivity(),wares.getProductImg(),picture);
+                tags = "";
                 if(wares.getProductTags().length()>1){
-                    tags = "";
                     tags += wares.getProductTags().charAt(0);
                 }
                 if(wares.getProductTags().contains("e")){

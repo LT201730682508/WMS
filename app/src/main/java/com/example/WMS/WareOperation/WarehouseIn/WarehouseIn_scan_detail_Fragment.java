@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +57,8 @@ public class WarehouseIn_scan_detail_Fragment extends Fragment implements View.O
     private String token;
     private String productCode;
     private int wareHouseId;
+    private RadioGroup radioGroup;
+    private String tags;
     public WarehouseIn_scan_detail_Fragment(String productCode, String token, String warehouseName, int warehouseId){
         this.productCode = productCode;
         this.token = token;
@@ -102,7 +105,30 @@ public class WarehouseIn_scan_detail_Fragment extends Fragment implements View.O
         category.setOnClickListener(this);
         warehouse_name.setFocusable(false);
         warehouse_name.setOnClickListener(this);
+        radioGroup = view.findViewById(R.id.radio);
         getByCode();
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.checkbox_1:
+                        tags += "e";
+                        break;
+                    case R.id.checkbox_2:
+                        tags += "g";
+                        break;
+                    case R.id.checkbox_3:
+                        tags += "f";
+                        break;
+                    case R.id.checkbox_4:
+                        tags += "h";
+                        break;
+                    default:
+                        tags += "f";
+                        break;
+                }
+            }
+        });
         return view;
     }
 
@@ -127,14 +153,7 @@ public class WarehouseIn_scan_detail_Fragment extends Fragment implements View.O
 
             @Override
             public void onSuccess_List(String resultStr) {
-                Gson gson= new Gson();
-                DataBean.ProductIn wares=gson.fromJson(resultStr,DataBean.ProductIn.class);
-                size.setText(wares.getTotalAmount()+"");
-                price.setText(wares.getInPrice()+"元（RMB）");
-                name.setText(wares.getProductName());
-                detail.setText(wares.getProductDescription());
-                category.setText(wares.getProductCategory());
-                setImage(getActivity(),wares.getProductImg(),picture);
+
             }
 
             @Override
@@ -146,6 +165,22 @@ public class WarehouseIn_scan_detail_Fragment extends Fragment implements View.O
                 detail.setText(product.getProductDescription());
                 category.setText(product.getProductCategory());
                 setImage(getActivity(),product.getProductImg(),picture);
+                tags = "";
+                if(product.getProductTags().length()>1){
+                    tags += product.getProductTags().charAt(0);
+                }
+                if(product.getProductTags().contains("e")){
+                    radioGroup.check(R.id.checkbox_1);
+                }
+                else if(product.getProductTags().contains("f")){
+                    radioGroup.check(R.id.checkbox_3);
+                }
+                else if(product.getProductTags().contains("g")){
+                    radioGroup.check(R.id.checkbox_2);
+                }
+                else if(product.getProductTags().contains("h")){
+                    radioGroup.check(R.id.checkbox_4);
+                }
             }
 
             @Override
@@ -195,6 +230,7 @@ public class WarehouseIn_scan_detail_Fragment extends Fragment implements View.O
             map.put("productDescription",detail.getText().toString());
             map.put("productCategory",category.getText().toString());
             map.put("productCode","url");
+            map.put("productTags",tags);
             sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
             ((MainActivity)getActivity()).fragment_Manager.pop();
         }
