@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,8 @@ public class WarehouseOut_scan_detail_Fragment extends Fragment implements View.
     private String token;
     private String productCode;
     private int wareHouseId;
+    private RadioGroup radioGroup;
+    private String tags;
     public WarehouseOut_scan_detail_Fragment(String productCode, String token, String warehouseName, int warehouseId){
         this.productCode = productCode;
         this.token = token;
@@ -102,7 +105,30 @@ public class WarehouseOut_scan_detail_Fragment extends Fragment implements View.
         category.setOnClickListener(this);
         btn_add=view.findViewById(R.id.btn_add);
         btn_add.setOnClickListener(this);
+        radioGroup = view.findViewById(R.id.radio);
         getByCode();
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.checkbox_1:
+                        tags += "e";
+                        break;
+                    case R.id.checkbox_2:
+                        tags += "g";
+                        break;
+                    case R.id.checkbox_3:
+                        tags += "f";
+                        break;
+                    case R.id.checkbox_4:
+                        tags += "h";
+                        break;
+                    default:
+                        tags += "f";
+                        break;
+                }
+            }
+        });
         return view;
     }
 
@@ -127,14 +153,7 @@ public class WarehouseOut_scan_detail_Fragment extends Fragment implements View.
 
             @Override
             public void onSuccess_List(String resultStr) {
-                Gson gson= new Gson();
-                DataBean.ProductOut wares=gson.fromJson(resultStr,DataBean.ProductOut.class);
-                size.setText(wares.getTotalAmount()+"");
-                price.setText(wares.getOutPrice()+"");
-                name.setText(wares.getProductName());
-                detail.setText(wares.getProductDescription());
-                category.setText(wares.getProductCategory());
-                setImage(getActivity(),wares.getProductImg(),picture);
+
             }
 
             @Override
@@ -146,6 +165,22 @@ public class WarehouseOut_scan_detail_Fragment extends Fragment implements View.
                 detail.setText(product.getProductDescription());
                 category.setText(product.getProductCategory());
                 setImage(getActivity(),product.getProductImg(),picture);
+                tags = "";
+                if(product.getProductTags().length()>1){
+                    tags += product.getProductTags().charAt(0);
+                }
+                if(product.getProductTags().contains("e")){
+                    radioGroup.check(R.id.checkbox_1);
+                }
+                else if(product.getProductTags().contains("f")){
+                    radioGroup.check(R.id.checkbox_3);
+                }
+                else if(product.getProductTags().contains("g")){
+                    radioGroup.check(R.id.checkbox_2);
+                }
+                else if(product.getProductTags().contains("h")){
+                    radioGroup.check(R.id.checkbox_4);
+                }
             }
 
             @Override

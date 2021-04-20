@@ -258,7 +258,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     }
     private static void getCategoryData(String categoryName, int wareid) {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseIdAndCategory/"+categoryName+"/"+wareid+"?userToken="+token,
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getInInventoryProductByWarehouseIdAndCategory/"+categoryName+"/"+wareid+"?userToken="+token,
                 new BaseCallback<DataBean.ProductIn>(){
                     @Override
                     public void onFailure(Request request, IOException e) {

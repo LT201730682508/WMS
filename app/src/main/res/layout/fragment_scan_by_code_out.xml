@@ -40,6 +40,32 @@
                 android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:hint="出库价格"/>
+            <RadioGroup
+                android:id="@+id/radio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <RadioButton
+                    android:id="@+id/checkbox_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="优品" />
+                <RadioButton
+                    android:id="@+id/checkbox_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="良品" />
+                <RadioButton
+                    android:id="@+id/checkbox_3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="合格品" />
+                <RadioButton
+                    android:id="@+id/checkbox_4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="残次品" />
+            </RadioGroup>
         </LinearLayout>
         <LinearLayout
             android:padding="8dp"

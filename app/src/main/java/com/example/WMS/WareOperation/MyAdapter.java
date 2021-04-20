@@ -230,7 +230,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
     public void bindView(VH holder,int position){
         holder.btn_add.setVisibility(View.VISIBLE);
 //        holder.fl.setVisibility(View.VISIBLE);
-        int temp=0;
+        String temp = "";
 //        if(!role.contains("g")){
 //            holder.fl.setVisibility(View.GONE);
 //        }
@@ -238,7 +238,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             if(!role.contains("b")){
                 holder.btn_add.setVisibility(View.GONE);
             }
-            temp = mDatas.get(position).getTotalAmount();
+            temp = mDatas.get(position).getProductTags();
             holder.setText(R.id.tv_name, mDatas.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_inPrice,mDatas.get(position).getInPrice());
@@ -250,7 +250,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             if(!role.contains("c")){
                 holder.btn_add.setVisibility(View.GONE);
             }
-            temp = mDatasOut.get(position).getTotalAmount();
+            temp = mDatasOut.get(position).getProductTags();
             holder.setText(R.id.tv_name, mDatasOut.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatasOut.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_outPrice,mDatasOut.get(position).getOutPrice());
@@ -258,8 +258,37 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             holder.setText(R.id.tv_time, mDatasOut.get(position).getUpdateTime());
             Glide.with(fragment).load(mDatasOut.get(position).getProductImg()).into(holder.imageView);
         }
-        if(temp==0){
-            holder.itemView.setBackgroundColor(Color.parseColor("#D35400"));//#D35400
+        if(temp.contains("a")){
+            holder.setText(R.id.labeled, "售罄");
+            holder.itemView.setBackgroundColor(Color.parseColor("#641E16"));
+        }
+        else if(temp.contains("b")){
+            holder.setText(R.id.labeled, "库存告警");
+            holder.itemView.setBackgroundColor(Color.parseColor("#F1948A"));
+        }
+        else if(temp.contains("c")){
+            holder.setText(R.id.labeled, "库存正常");
+            holder.itemView.setBackgroundColor(Color.parseColor("#D1F2EB"));
+        }
+        else if(temp.contains("d")){
+            holder.setText(R.id.labeled, "库存积压");
+            holder.itemView.setBackgroundColor(Color.parseColor("#ABB2B9"));
+        }
+        else{
+            holder.setText(R.id.labeled, "无状态");
+            holder.itemView.setBackgroundColor(Color.WHITE);
+        }
+        if(temp.contains("e")){
+            holder.setText(R.id.labeled_tag, "优品");
+        }
+        else if(temp.contains("f")){
+            holder.setText(R.id.labeled_tag, "合格品");
+        }
+        else if(temp.contains("g")){
+            holder.setText(R.id.labeled_tag, "良品");
+        }
+        else if(temp.contains("h")){
+            holder.setText(R.id.labeled_tag, "残次品");
         }
     }
     @Override
