@@ -27,15 +27,18 @@
               android:layout_marginLeft="20dp"
               android:gravity="center"
               android:layout_height="match_parent"></TextView>
-          <Spinner
+          <TextView
               android:id="@+id/ware_spinner"
               android:layout_width="match_parent"
-              android:spinnerMode="dialog"
+              android:text="请选择仓库"
+              android:gravity="center_vertical"
+              android:layout_centerHorizontal="true"
+              android:textColor="@color/black"
               android:layout_marginRight="15dp"
               android:layout_marginLeft="100dp"
               android:layout_toRightOf="@+id/text"
               android:layout_centerVertical="true"
-              android:layout_height="50dp"></Spinner>
+              android:layout_height="50dp"></TextView>
       </RelativeLayout>
 
           <RadioGroup

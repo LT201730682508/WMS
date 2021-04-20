@@ -37,7 +37,7 @@ class Ware_In_Record_Model  {
                             resultStr,
                             Array<In_Record>::class.java
                         )
-                        result.result(record_list)
+                        result.result(record_list,warehouseId)
                     }
 
 
@@ -77,7 +77,7 @@ class Ware_In_Record_Model  {
                             resultStr,
                             Array<In_Record>::class.java
                         )
-                        result.result(record_list)
+                        result.result(record_list,warehouseId)
                     }
 
 
@@ -117,7 +117,7 @@ class Ware_In_Record_Model  {
                             resultStr,
                             Array<In_Record>::class.java
                         )
-                        result.result(record_list)
+                        result.result(record_list,warehouseId)
                     }
 
 
@@ -152,7 +152,7 @@ class Ware_In_Record_Model  {
                             resultStr,
                             Array<In_Record>::class.java
                         )
-                        result.result(record_list)
+                        result.result(record_list,warehouseId)
                     }
 
 
@@ -169,7 +169,7 @@ class Ware_In_Record_Model  {
     }
 
     interface Ware_Record{
-        fun result(record_list:Array<In_Record>)
+        fun result(record_list:Array<In_Record>,warehouseId: Int)
     }
 
     data class In_Record(val inId:Int,val userId:Int,val productId:Int,val productName:String,val userName:String,val productImg:String,val warehouseId:Int,val warehouseName:String,val amount:Int,val inPrice:Double,val supplierId:Int,val supplierName:String,val note:String,val createTime:String)
