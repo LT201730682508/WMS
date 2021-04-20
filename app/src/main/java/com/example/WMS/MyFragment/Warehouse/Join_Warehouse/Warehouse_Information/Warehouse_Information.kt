@@ -58,8 +58,8 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
         ware_delete=view.findViewById(R.id.ware_delete)
         Glide.with(this).load(item.warehouseImg).into(warehouse_img)
         warehouse_name.text=item.warehouseName
-        ware_address.text=item.warehouseAddress
-        warehouse_des.text=item.warehouseDescription
+        ware_address.text="地址："+item.warehouseAddress
+        warehouse_des.text="简介："+item.warehouseDescription
 
         Warehouse_authority_Model.getRole(item.warehouseId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Warehouse_authority_Model.getRole{
             override fun get(authority: Warehouse_authority_Model.authority) {

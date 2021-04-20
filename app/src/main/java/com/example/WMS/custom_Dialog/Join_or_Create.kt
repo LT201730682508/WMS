@@ -32,8 +32,6 @@ class Join_or_Create (context: Context ,val token:String,val changeInfo: Create_
         }
         join_company.setOnClickListener {
             dismiss()
-            var findCompanyJoin=Find_Company_Join(context)
-            findCompanyJoin.show()
         }
     }
 }

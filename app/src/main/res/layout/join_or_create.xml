@@ -20,7 +20,7 @@
         android:layout_width="300dp"
         android:layout_height="70dp"
         android:gravity="center"
-        android:text="申请加入"
+        android:text="取消"
         android:textColor="@color/skyblue"
         android:id="@+id/join_company"
         android:textSize="25dp"></TextView>
