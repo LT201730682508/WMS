@@ -18,14 +18,14 @@ class DataBean {
     data class Product(var productId: Int,var productName:String,var productDescription:String,
                               var productCategory:String,var productCode:String,var productImg:String)
 
-    data class Supplier_add(var supplierName: String,var companyId: String,var supplierAddress:String)
+    data class Supplier_add(var supplierName: String,var companyId: String,var supplierAddress: String, var supplierContact:String,var tags:String,var supplierCompany:String)
 
-    data class Receiver_add(var receiverName: String,var companyId: String,var receiverAddress: String)
+    data class Receiver_add(var receiverName: String,var companyId: String,var receiverAddress: String, var receiverContact:String,var tags:String,var receiverCompany:String)
 
 
-    data class Supplier(var supplierId:Int,var supplierName:String,var supplierAddress:String)
+    data class Supplier(var supplierId:Int,var supplierName:String,var supplierAddress:String,var supplierContact:String,var tags:String,var supplierCompany:String)
 
-    data class Receiver(var receiverId:Int,var receiverName:String,var receiverAddress:String)
+    data class Receiver(var receiverId:Int,var receiverName:String,var receiverAddress:String,var receiverContact:String,var tags:String,var receiverCompany:String)
 
     data class Category(var categoryId:Int, var categoryName: String)
 

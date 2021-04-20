@@ -1,45 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="30dp"
-
+    android:layout_height="80dp"
     android:orientation="horizontal">
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/item_rl"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <com.xuexiang.xui.widget.textview.label.LabelTextView
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="5dp"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_name"
-            android:textColor="@color/black"
-            android:text="姓名"/>
-        <com.xuexiang.xui.widget.textview.label.LabelTextView
-            android:layout_centerVertical="true"
-            android:textColor="@color/black"
-            android:layout_marginRight="5dp"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/tv_address"
-            android:text="地址"/>
-    </RelativeLayout>
-<!--    <FrameLayout
-        android:id="@+id/item_fl"
-        android:layout_width="80dp"
-        android:layout_height="match_parent"
-        android:background="#7A7A7A">
-        <TextView
+            android:layout_height="wrap_content">
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_name"
+                android:textColor="@color/black"
+                android:text="姓名"/>
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:textColor="@color/white"
+                android:background="#A9DFBF"
+                android:layout_margin="5dp"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tag"
+                android:text="标签"/>
+        </RelativeLayout>
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="编辑"
-            android:textColor="#000000"
-            android:textSize="15sp" />
-    </FrameLayout>-->
+            android:layout_height="0.5dp"
+            android:background="#D6DBDF"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_margin="5dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/dizhi"
+                android:text="公司地址："/>
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_margin="5dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_address"
+                android:text="地址"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/gongsi"
+                android:text="公司："/>
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_company"
+                android:text="公司名称"/>
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/lianxifangshi"
+                android:text="联系方式："/>
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textColor="@color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tv_contract"
+                android:text="电话"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#2C3E50"/>
+    </LinearLayout>
+
+
     <FrameLayout
         android:id="@+id/item_fl_2"
         android:layout_width="40dp"

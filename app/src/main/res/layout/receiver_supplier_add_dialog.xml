@@ -31,7 +31,7 @@
             android:orientation="horizontal">
             <com.xuexiang.xui.widget.textview.label.LabelTextView
                 android:id="@+id/tv_name"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
                 />
             <com.xuexiang.xui.widget.edittext.ClearEditText
                 android:id="@+id/et_name"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
@@ -52,7 +52,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <com.xuexiang.xui.widget.textview.label.LabelTextView
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -60,13 +60,93 @@
                 />
             <com.xuexiang.xui.widget.edittext.ClearEditText
                 android:id="@+id/et_address"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:maxLines="1"
                 android:layout_weight="1"
                 android:hint="请输入地址"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_margin="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="公司："
+                />
+            <com.xuexiang.xui.widget.edittext.ClearEditText
+                android:id="@+id/et_company"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:hint="请输入公司"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <com.xuexiang.xui.widget.textview.label.LabelTextView
+                android:layout_margin="10dp"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="联系方式："
+                />
+            <com.xuexiang.xui.widget.edittext.ClearEditText
+                android:id="@+id/et_contract"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:hint="请输入联系方式"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkbox1"
+                android:layout_margin="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="一号标签"/>
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkbox2"
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="二号标签"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkbox3"
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="三号标签"/>
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/checkbox4"
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="四号标签"/>
         </LinearLayout>
 
     </LinearLayout>

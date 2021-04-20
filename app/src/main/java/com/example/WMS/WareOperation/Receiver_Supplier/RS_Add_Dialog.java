@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,12 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     private TextView title;
     private ClearEditText address;
     private ClearEditText name;
+    private ClearEditText companyName;
+    private ClearEditText contact;
+    private CheckBox checkBox_1;
+    private CheckBox checkBox_2;
+    private CheckBox checkBox_3;
+    private CheckBox checkBox_4;
     private int opType;
     private String token;
 
@@ -51,16 +58,32 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
         title=contentView.findViewById(R.id.title);
         address=contentView.findViewById(R.id.et_address);
         name=contentView.findViewById(R.id.et_name);
+        companyName = contentView.findViewById(R.id.et_company);
+        contact = contentView.findViewById(R.id.et_contract);
+        checkBox_1 = contentView.findViewById(R.id.checkbox1);
+        checkBox_2 = contentView.findViewById(R.id.checkbox2);
+        checkBox_3 = contentView.findViewById(R.id.checkbox3);
+        checkBox_4 = contentView.findViewById(R.id.checkbox4);
         if(opType==0){
             title.setText("新增供应商");
+            checkBox_1.setText("交货及时");
+            checkBox_2.setText("可以赊账");
+            checkBox_3.setText("质量上乘");
+            checkBox_4.setText("质量较差");
         }
         else if(opType==1){
             title.setText("新增客户");
+            checkBox_1.setText("拖欠尾款");
+            checkBox_2.setText("付款及时");
+            checkBox_3.setText("提货量大");
+            checkBox_4.setText("提货量小");
         }
         setCanceledOnTouchOutside(true);
         getWindow().setGravity(Gravity.BOTTOM);
         getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         getWindow().setWindowAnimations(R.style.BottomDialog_Animation);
+
+
     }
 
     public void sendSupplierData(DataBean.Supplier_add parms){
@@ -126,13 +149,29 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        String str = "";
+        if(checkBox_1.isChecked()){
+            str += "a";
+        }
+        if(checkBox_2.isChecked()){
+            str += "b";
+        }
+        if(checkBox_3.isChecked()){
+            str += "c";
+        }
+        if(checkBox_4.isChecked()){
+            str += "d";
+        }
+
         if(v==btn_add){
             if(opType==0){
-                DataBean.Supplier_add post_data=new DataBean.Supplier_add(name.getText().toString(),"1",address.getText().toString());
+                DataBean.Supplier_add post_data=new DataBean.Supplier_add(name.getText().toString(),
+                        "1",address.getText().toString(), contact.getText().toString(), str, companyName.getText().toString());
                 sendSupplierData(post_data);
             }
             else if(opType==1){
-                DataBean.Receiver_add post_data=new DataBean.Receiver_add(name.getText().toString(),"1",address.getText().toString());
+                DataBean.Receiver_add post_data=new DataBean.Receiver_add(name.getText().toString(),
+                        "1",address.getText().toString(), contact.getText().toString(), str, companyName.getText().toString());
                 sendReceiverData(post_data);
             }
             cancel();
