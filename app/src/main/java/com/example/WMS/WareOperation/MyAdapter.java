@@ -243,6 +243,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_inPrice,mDatas.get(position).getInPrice());
             holder.setDetail(R.id.tv_detail,mDatas.get(position).getProductDescription());
+            holder.setText(R.id.tv_time, mDatas.get(position).getUpdateTime());
             Glide.with(fragment).load(mDatas.get(position).getProductImg()).into(holder.imageView);
         }
         else if(opType==WAREHOUSE_OUT){
@@ -254,10 +255,11 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             holder.setSize(R.id.tv_quantity,mDatasOut.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_outPrice,mDatasOut.get(position).getOutPrice());
             holder.setDetail(R.id.tv_detail,mDatasOut.get(position).getProductDescription());
+            holder.setText(R.id.tv_time, mDatasOut.get(position).getUpdateTime());
             Glide.with(fragment).load(mDatasOut.get(position).getProductImg()).into(holder.imageView);
         }
         if(temp==0){
-            holder.itemView.setBackgroundColor(Color.LTGRAY);
+            holder.itemView.setBackgroundColor(Color.parseColor("#D35400"));//#D35400
         }
     }
     @Override

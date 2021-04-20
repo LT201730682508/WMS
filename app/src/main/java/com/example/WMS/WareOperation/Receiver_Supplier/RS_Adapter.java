@@ -2,11 +2,13 @@ package com.example.WMS.WareOperation.Receiver_Supplier;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 
 public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.Adapter<RS_Adapter.VH>{
     public static class VH extends RecyclerView.ViewHolder{
-        private RelativeLayout rl;
+        private LinearLayout rl;
         private FrameLayout fl_delete;
         //private FrameLayout fl_write;
         private SparseArray<View> views = new SparseArray<>();
@@ -57,6 +59,11 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
         public VH setText(int id,String text){
             TextView textView = getView(id);
             textView.setText(text);
+            return this;
+        }
+        public VH setBackground(int id){
+            TextView textView = getView(id);
+            textView.setBackgroundColor(Color.RED);
             return this;
         }
     }
@@ -185,13 +192,58 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
     }
 
     private void bindView(VH holder, int position) {
+        String tag = "";
+        String str = "";
+//        checkBox_1.setText("交货及时");
+//        checkBox_2.setText("可以赊账");
+//        checkBox_3.setText("质量上乘");
+//        checkBox_4.setText("质量较差");
+//        checkBox_1.setText("拖欠尾款");
+//        checkBox_2.setText("付款及时");
+//        checkBox_3.setText("提货量大");
+//        checkBox_4.setText("提货量小");
         if(opType==SUPPLIER){
             holder.setText(R.id.tv_name, mDatas_Supplier.get(position).getSupplierName());
-            holder.setText(R.id.tv_address,mDatas_Supplier.get(position).getSupplierAddress());
+            holder.setText(R.id.tv_address, mDatas_Supplier.get(position).getSupplierAddress());
+            holder.setText(R.id.tv_company, mDatas_Supplier.get(position).getSupplierCompany());
+            holder.setText(R.id.tv_contract, mDatas_Supplier.get(position).getSupplierContact());
+            tag = mDatas_Supplier.get(position).getTags();
+            if(tag.contains("a")){
+                str += "交货及时 ";
+            }
+            if(tag.contains("b")){
+                str += "可以赊账 ";
+            }
+            if(tag.contains("c")){
+                str += "质量上乘 ";
+            }
+            if(tag.contains("d")){
+                str += "质量较差 ";
+                holder.setBackground(R.id.tag);
+            }
+            holder.setText(R.id.tag,str);
         }
         else if(opType==RECEIVER){
             holder.setText(R.id.tv_name, mDatas_Receiver.get(position).getReceiverName());
-            holder.setText(R.id.tv_address,mDatas_Receiver.get(position).getReceiverAddress());
+            holder.setText(R.id.tv_address, mDatas_Receiver.get(position).getReceiverAddress());
+            holder.setText(R.id.tv_company, mDatas_Receiver.get(position).getReceiverCompany());
+            holder.setText(R.id.tv_contract, mDatas_Receiver.get(position).getReceiverContact());
+            tag = mDatas_Receiver.get(position).getTags();
+            if(tag.contains("a")){
+                str += "拖欠尾款 ";
+                holder.setBackground(R.id.tag);
+            }
+            if(tag.contains("b")){
+                str += "付款及时 ";
+            }
+            if(tag.contains("c")){
+                str += "提货量大 ";
+            }
+            if(tag.contains("d")){
+                str += "提货量小 ";
+                holder.setBackground(R.id.tag);
+            }
+            holder.setText(R.id.tag,str);
         }
     }
 
