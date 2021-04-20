@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.member_list_add.view.*
 class Group_member_add_Adapter (
     val context: Context,
     var group_id:Int,
-    var list: Array<Member_Manager_Model.member_item>,
+    var list: ArrayList<Member_Manager_Model.member_item>,
     val token:String,
     val notifychange: Member_Manager_Model.notifychange
 ): RecyclerView.Adapter<Group_member_add_Adapter.ViewHolder>() {

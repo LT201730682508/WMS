@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.WMS.*
+import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Show_Sure
+import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_Out_Record_Dialog
 import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Model
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Join_Warehouse_Model
@@ -30,7 +32,7 @@ import kotlin.collections.ArrayList
 
 class Ware_out_Record_Fragment :Fragment(){
     lateinit var baseTopbar:Base_Topbar
-    lateinit var ware_spinner:Spinner
+    lateinit var ware_spinner:TextView
     lateinit var ware_in_recycle: MyListView
     lateinit var select_title:String
     lateinit var start_time:TextView
@@ -72,97 +74,120 @@ class Ware_out_Record_Fragment :Fragment(){
         start_time=view.findViewById(R.id.start_time)
         end_time=view.findViewById(R.id.end_time)
         select_time=view.findViewById(R.id.select_time)
-
-        Join_Warehouse_Model.getData(object : Join_Warehouse_Model.Show{
-            override fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>) {
-                if (wares.size!=0){
-                    var mList = ArrayList<String>()
-                    mList.add("请选择")
-                    for (ware in wares){
-                        mList.add(ware.warehouseName)
-                    }
-                    var arrayAdapter= ArrayAdapter<String>(activity as MainActivity,R.layout.member_title_spinner,mList)
-                    arrayAdapter.setDropDownViewResource(R.layout.item_dropdown)
-                    ware_spinner.adapter=arrayAdapter
-                    ware_spinner.prompt="请选择仓库"
-                    ware_spinner.onItemSelectedListener=object :
-                        AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            view: View,
-                            position: Int,
-                            id: Long
-                        ) {
-                            select_title=mList[position]
-                            if (position>0){
-                                select_what.clearCheck()
-                                select_execute.visibility=View.GONE
-                                select_product.visibility=View.GONE
-                                select_time.visibility=View.GONE
-                                var my_authority=Warehouse_Authority_List.authorityList_Map.get(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
-                                if(my_authority==null){
-                                    Warehouse_authority_Model.getRole(wares.get(position-1).warehouseId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Warehouse_authority_Model.getRole{
-                                        override fun get(authority: Warehouse_authority_Model.authority) {
-                                            my_authority=authority.authorities
-                                            Warehouse_Authority_List.authorityList_Map.put(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.authorities)
-                                            Warehouse_Authority_List.roleList_Map.put(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.role)
-                                            if(authority.authorities.contains('f')) {
-                                                select_what.visibility=View.VISIBLE
-                                                warehouse_id= wares.get(position - 1).warehouseId
-                                                Ware_out_Record_Model.getData(
-                                                    wares.get(position - 1).warehouseId,
-                                                    object : Ware_out_Record_Model.Ware_Record {
-                                                        override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
-                                                            var wareOutAdapter = Ware_out_Adapter(
-                                                                record_list,
-                                                                activity as MainActivity
-                                                            )
-                                                            ware_in_recycle.adapter = wareOutAdapter
-                                                        }
-                                                    },
-                                                    (activity as MainActivity).fragment_Manager.userinfo
-                                                )
-                                            }else{
-                                                XToast.warning(requireContext(),"您没有相关权限").show()
-                                            }
-                                        }
-
-                                    })
-                                }else{
-                                    if(my_authority!!.contains("f")) {
-                                        select_what.visibility=View.VISIBLE
-                                        warehouse_id=wares.get(position-1).warehouseId
-                                        Ware_out_Record_Model.getData(
-                                            wares.get(position - 1).warehouseId,
-                                            object : Ware_out_Record_Model.Ware_Record {
-                                                override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
-                                                    var wareOutAdapter = Ware_out_Adapter(
-                                                        record_list,
-                                                        activity as MainActivity
-                                                    )
-                                                    ware_in_recycle.adapter = wareOutAdapter
-                                                }
-                                            },
-                                            (activity as MainActivity).fragment_Manager.userinfo
-                                        )
-                                    }else{
-                                        XToast.warning(requireContext(),"您没有相关权限").show()
-                                    }
-                                }
-                                }else{
-                                select_what.visibility=View.GONE
-                                select_execute.visibility=View.GONE
-                                select_product.visibility=View.GONE
-                                select_time.visibility=View.GONE
-                            }
-
-
-                        }
-                        override fun onNothingSelected(parent: AdapterView<*>?) {}
-                    }
+        ware_spinner.setOnClickListener {
+            var wareOutRecordDialog=Ware_Out_Record_Dialog(requireContext(),object :Show_Sure{
+                override fun show(str:String) {
+                    ware_spinner.text=str
+                    select_what.clearCheck()
+                    select_execute.visibility=View.GONE
+                    select_product.visibility=View.GONE
+                    select_time.visibility=View.GONE
                 }
 
-            }},(activity as MainActivity).fragment_Manager.userinfo)
+            },object :Ware_out_Record_Model.Ware_Record{
+                override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>,wareid: Int) {
+                            select_what.visibility=View.VISIBLE
+                            warehouse_id=wareid
+                             var wareOutAdapter = Ware_out_Adapter(
+                              record_list,
+                             activity as MainActivity
+                            )
+                           ware_in_recycle.adapter = wareOutAdapter
+                }
+
+            },(activity as MainActivity).fragment_Manager.userinfo)
+            wareOutRecordDialog.show()
+        }
+//        Join_Warehouse_Model.getData(object : Join_Warehouse_Model.Show{
+//            override fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>) {
+//                if (wares.size!=0){
+//                    var mList = ArrayList<String>()
+//                    mList.add("请选择")
+//                    for (ware in wares){
+//                        mList.add(ware.warehouseName)
+//                    }
+//                    var arrayAdapter= ArrayAdapter<String>(activity as MainActivity,R.layout.member_title_spinner,mList)
+//                    arrayAdapter.setDropDownViewResource(R.layout.item_dropdown)
+//                    ware_spinner.adapter=arrayAdapter
+//                    ware_spinner.prompt="请选择仓库"
+//                    ware_spinner.onItemSelectedListener=object :
+//                        AdapterView.OnItemSelectedListener {
+//                        override fun onItemSelected(
+//                            parent: AdapterView<*>?,
+//                            view: View,
+//                            position: Int,
+//                            id: Long
+//                        ) {
+//                            select_title=mList[position]
+//                            if (position>0){
+//                                select_what.clearCheck()
+//                                select_execute.visibility=View.GONE
+//                                select_product.visibility=View.GONE
+//                                select_time.visibility=View.GONE
+//                                var my_authority=Warehouse_Authority_List.authorityList_Map.get(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token)
+//                                if(my_authority==null){
+//                                    Warehouse_authority_Model.getRole(wares.get(position-1).warehouseId,(activity as MainActivity).fragment_Manager.userinfo.token,object :Warehouse_authority_Model.getRole{
+//                                        override fun get(authority: Warehouse_authority_Model.authority) {
+//                                            my_authority=authority.authorities
+//                                            Warehouse_Authority_List.authorityList_Map.put(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.authorities)
+//                                            Warehouse_Authority_List.roleList_Map.put(wares.get(position-1).warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.role)
+//                                            if(authority.authorities.contains('f')) {
+//                                                select_what.visibility=View.VISIBLE
+//                                                warehouse_id= wares.get(position - 1).warehouseId
+//                                                Ware_out_Record_Model.getData(
+//                                                    wares.get(position - 1).warehouseId,
+//                                                    object : Ware_out_Record_Model.Ware_Record {
+//                                                        override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+//                                                            var wareOutAdapter = Ware_out_Adapter(
+//                                                                record_list,
+//                                                                activity as MainActivity
+//                                                            )
+//                                                            ware_in_recycle.adapter = wareOutAdapter
+//                                                        }
+//                                                    },
+//                                                    (activity as MainActivity).fragment_Manager.userinfo
+//                                                )
+//                                            }else{
+//                                                XToast.warning(requireContext(),"您没有相关权限").show()
+//                                            }
+//                                        }
+//
+//                                    })
+//                                }else{
+//                                    if(my_authority!!.contains("f")) {
+//                                        select_what.visibility=View.VISIBLE
+//                                        warehouse_id=wares.get(position-1).warehouseId
+//                                        Ware_out_Record_Model.getData(
+//                                            wares.get(position - 1).warehouseId,
+//                                            object : Ware_out_Record_Model.Ware_Record {
+//                                                override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+//                                                    var wareOutAdapter = Ware_out_Adapter(
+//                                                        record_list,
+//                                                        activity as MainActivity
+//                                                    )
+//                                                    ware_in_recycle.adapter = wareOutAdapter
+//                                                }
+//                                            },
+//                                            (activity as MainActivity).fragment_Manager.userinfo
+//                                        )
+//                                    }else{
+//                                        XToast.warning(requireContext(),"您没有相关权限").show()
+//                                    }
+//                                }
+//                                }else{
+//                                select_what.visibility=View.GONE
+//                                select_execute.visibility=View.GONE
+//                                select_product.visibility=View.GONE
+//                                select_time.visibility=View.GONE
+//                            }
+//
+//
+//                        }
+//                        override fun onNothingSelected(parent: AdapterView<*>?) {}
+//                    }
+//                }
+//
+//            }},(activity as MainActivity).fragment_Manager.userinfo)
 
 
 
@@ -257,7 +282,7 @@ class Ware_out_Record_Fragment :Fragment(){
             ) {
                 if(position>0){
                     Ware_out_Record_Model.getDataWithProduct(warehouse_id,mlist[position].toString(),(activity as MainActivity).fragment_Manager.userinfo.token,object :Ware_out_Record_Model.Ware_Record{
-                        override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+                        override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>,wareid: Int) {
                             var wareOutAdapter = Ware_out_Adapter(
                                 record_list,
                                 activity as MainActivity
@@ -271,7 +296,7 @@ class Ware_out_Record_Fragment :Fragment(){
                     Ware_out_Record_Model.getData(
                         warehouse_id,
                         object : Ware_out_Record_Model.Ware_Record {
-                            override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+                            override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>,wareid: Int) {
                                 var wareOutAdapter = Ware_out_Adapter(
                                     record_list,
                                     activity as MainActivity
@@ -349,7 +374,7 @@ class Ware_out_Record_Fragment :Fragment(){
             ) {
                 if(position>0){
                     Ware_out_Record_Model.getDataWithExecuter(warehouse_id,mlist[position],(activity as MainActivity).fragment_Manager.userinfo.token,object :Ware_out_Record_Model.Ware_Record{
-                        override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+                        override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>,wareid: Int) {
                             var wareOutAdapter = Ware_out_Adapter(
                                 record_list,
                                 activity as MainActivity
@@ -362,7 +387,7 @@ class Ware_out_Record_Fragment :Fragment(){
                     Ware_out_Record_Model.getData(
                        warehouse_id,
                         object : Ware_out_Record_Model.Ware_Record {
-                            override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+                            override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>,wareid: Int) {
                                 var wareOutAdapter = Ware_out_Adapter(
                                     record_list,
                                     activity as MainActivity
@@ -417,7 +442,7 @@ class Ware_out_Record_Fragment :Fragment(){
                 if(::start.isInitialized&&::end.isInitialized){
                     println("@@@@@123")
                   Ware_out_Record_Model.getDataWithTime(warehouse_id,(activity as MainActivity).fragment_Manager.userinfo.token,start_time.text.toString(),end_time.text.toString(),object :Ware_out_Record_Model.Ware_Record{
-                      override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>) {
+                      override fun result(record_list: Array<Ware_out_Record_Model.Out_Record>,wareid: Int) {
                           var wareOutAdapter = Ware_out_Adapter(
                               record_list,
                               activity as MainActivity
