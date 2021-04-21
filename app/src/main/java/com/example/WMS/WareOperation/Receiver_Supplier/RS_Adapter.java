@@ -111,24 +111,16 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
                 if(opType==SUPPLIER){
                     //选中返回
                     //返回当前选中供应商进入textview中
-                    SharedPreferences preferences=activity.getSharedPreferences("supplier",Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor=preferences.edit();
-                    editor.putString("supplierName",mDatas_Supplier.get(position).getSupplierName());
-                    editor.putString("supplierId",mDatas_Supplier.get(position).getSupplierId()+"");
-                    editor.commit();
-                    WarehouseInList_Fragment.setSupplierName( mDatas_Supplier.get(position).getSupplierName());
-                    activity.fragment_Manager.pop();
+                    RS_Modify_Fragment rs_modify_fragment = new RS_Modify_Fragment(token, opType, mDatas_Supplier.get(position), activity);
+//                    activity.fragment_Manager.pop();
+                    activity.fragment_Manager.hide_all(rs_modify_fragment);
                 }
                 else if(opType==RECEIVER){
                     //选中返回
                     //返回当前选中客户进入textview中
-                    SharedPreferences preferences=activity.getSharedPreferences("receiver",Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor=preferences.edit();
-                    editor.putString("receiverName",mDatas_Receiver.get(position).getReceiverName());
-                    editor.putString("receiverId",mDatas_Receiver.get(position).getReceiverId()+"");
-                    editor.commit();
-                    WarehouseOutList_Fragment.setReceiverName( mDatas_Receiver.get(position).getReceiverName());
-                    activity.fragment_Manager.pop();
+                    RS_Modify_Fragment rs_modify_fragment = new RS_Modify_Fragment(token, opType, mDatas_Receiver.get(position), activity);
+//                    activity.fragment_Manager.pop();
+                    activity.fragment_Manager.hide_all(rs_modify_fragment);
                 }
             }
         });
@@ -194,14 +186,6 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
     private void bindView(VH holder, int position) {
         String tag = "";
         String str = "";
-//        checkBox_1.setText("交货及时");
-//        checkBox_2.setText("可以赊账");
-//        checkBox_3.setText("质量上乘");
-//        checkBox_4.setText("质量较差");
-//        checkBox_1.setText("拖欠尾款");
-//        checkBox_2.setText("付款及时");
-//        checkBox_3.setText("提货量大");
-//        checkBox_4.setText("提货量小");
         if(opType==SUPPLIER){
             holder.setText(R.id.tv_name, mDatas_Supplier.get(position).getSupplierName());
             holder.setText(R.id.tv_address, mDatas_Supplier.get(position).getSupplierAddress());
