@@ -107,6 +107,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         pos = 0;
         View view=View.inflate(context,R.layout.outlist_fragment,null);
         base_topbar=new Base_Topbar(view,(MainActivity) getActivity(),true);
+        base_topbar.setTitle("出库");
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
         category_List = view.findViewById(R.id.category_List);

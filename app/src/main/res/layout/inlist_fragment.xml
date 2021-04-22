@@ -40,7 +40,7 @@
                 android:text="请选择供应商"
                 android:layout_weight="1"
                 android:textSize="20sp"
-                android:background="@color/gray"
+                android:background="#D6EAF8"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -57,7 +57,7 @@
                 android:text="新增商品"
                 android:layout_weight="1"
                 android:textSize="20sp"
-                android:background="@color/gray"
+                android:background="#D6EAF8"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_marginRight="5dp"
@@ -65,7 +65,7 @@
             <Button
                 android:id="@+id/scan"
                 android:text="扫条码"
-                android:background="@color/gray"
+                android:background="#D6EAF8"
                 android:layout_weight="1"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"

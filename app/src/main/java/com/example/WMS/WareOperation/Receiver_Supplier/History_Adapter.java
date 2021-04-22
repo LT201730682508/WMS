@@ -112,11 +112,11 @@ public class History_Adapter<V extends RecyclerView.ViewHolder> extends Recycler
             holder.setText(R.id.date, mData_Supplier.get(position).getCreateTime());
             holder.setText(R.id.supplier_or_other, attr);
             holder.setText(R.id.ware_in_item_name, mData_Supplier.get(position).getProductName());
-            holder.setText(R.id.ware_in_item_price, mData_Supplier.get(position).getInPrice()+"");
+            holder.setText(R.id.ware_in_item_price, "单价："+mData_Supplier.get(position).getInPrice()+"");
             holder.setText(R.id.wae_in_item_number, "数量："+mData_Supplier.get(position).getAmount());
             holder.setText(R.id.wae_in_item_all_price, "总价："+mData_Supplier.get(position).getInPrice()*mData_Supplier.get(position).getAmount());
-            holder.setText(R.id.note, mData_Supplier.get(position).getNote());
-            holder.setText(R.id.executer, mData_Supplier.get(position).getUserName());
+            holder.setText(R.id.note, "备注："+mData_Supplier.get(position).getNote());
+            holder.setText(R.id.executer, "经手人："+mData_Supplier.get(position).getUserName());
             Glide.with(fragment).load(mData_Supplier.get(position).getProductImg()).into(holder.imageView);
         }
         else if(opType == 1){
@@ -139,11 +139,11 @@ public class History_Adapter<V extends RecyclerView.ViewHolder> extends Recycler
             holder.setText(R.id.date, mData_Receiver.get(position).getCreateTime());
             holder.setText(R.id.supplier_or_other, attr);
             holder.setText(R.id.ware_in_item_name, mData_Receiver.get(position).getProductName());
-            holder.setText(R.id.ware_in_item_price, mData_Receiver.get(position).getOutPrice()+"");
+            holder.setText(R.id.ware_in_item_price, "单价："+mData_Receiver.get(position).getOutPrice());
             holder.setText(R.id.wae_in_item_number, "数量："+mData_Receiver.get(position).getAmount());
             holder.setText(R.id.wae_in_item_all_price, "总价："+mData_Receiver.get(position).getOutPrice()*mData_Receiver.get(position).getAmount());
-            holder.setText(R.id.note, mData_Receiver.get(position).getNote());
-            holder.setText(R.id.executer, mData_Receiver.get(position).getUserName());
+            holder.setText(R.id.note, "备注："+mData_Receiver.get(position).getNote());
+            holder.setText(R.id.executer, "经手人："+mData_Receiver.get(position).getUserName());
             Glide.with(fragment).load(mData_Receiver.get(position).getProductImg()).into(holder.imageView);
         }
     }

@@ -101,6 +101,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
     private int userId;
     private static Warehouse_authority_Model.authority roleList;
     private static int pos=0;
+    private ImageView btn_search;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -123,6 +124,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         View view=View.inflate(context,R.layout.inlist_fragment,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
         btn_category = base_topbar.getMore();
+        btn_search = base_topbar.getSearch();
+        btn_search.setOnClickListener(this);
+        base_topbar.setTitle("入库");
         btn_category.setOnClickListener(this);
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
@@ -471,6 +475,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 Categroy_Fragment category_fragment = new Categroy_Fragment(token, wareHouseId, roleList.getAuthorities());
                 ((MainActivity) getActivity()).fragment_Manager.hide_all(category_fragment);
             }
+        }
+        else if(v == btn_search){
+            Toast.makeText(context,"搜索", Toast.LENGTH_SHORT).show();
         }
     }
 

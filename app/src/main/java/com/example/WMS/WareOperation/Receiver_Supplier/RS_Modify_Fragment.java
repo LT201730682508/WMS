@@ -101,6 +101,7 @@ public class RS_Modify_Fragment extends Fragment implements View.OnClickListener
     private View initView() {
         View view=View.inflate(context,R.layout.fragment_rs_modify,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
+        base_topbar.setTitle("修改信息&历史列表");
         rv_pager=view.findViewById(R.id.rv_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
