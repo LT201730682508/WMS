@@ -38,12 +38,13 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
     private CheckBox checkBox_4;
     private int opType;
     private String token;
-
-    public RS_Add_Dialog(@NonNull Context context,int opType,String token) {
+    private int companyId;
+    public RS_Add_Dialog(@NonNull Context context,int opType,String token, int companyId) {
         super(context);
         this.context=context;
         this.opType=opType;
         this.token=token;
+        this.companyId = companyId;
     }
 
     @Override
@@ -166,12 +167,12 @@ public class RS_Add_Dialog extends Dialog implements View.OnClickListener {
         if(v==btn_add){
             if(opType==0){
                 DataBean.Supplier_add post_data=new DataBean.Supplier_add(name.getText().toString(),
-                        "1",address.getText().toString(), contact.getText().toString(), str, companyName.getText().toString());
+                        companyId, address.getText().toString(), contact.getText().toString(), str, companyName.getText().toString());
                 sendSupplierData(post_data);
             }
             else if(opType==1){
                 DataBean.Receiver_add post_data=new DataBean.Receiver_add(name.getText().toString(),
-                        "1",address.getText().toString(), contact.getText().toString(), str, companyName.getText().toString());
+                        companyId, address.getText().toString(), contact.getText().toString(), str, companyName.getText().toString());
                 sendReceiverData(post_data);
             }
             cancel();

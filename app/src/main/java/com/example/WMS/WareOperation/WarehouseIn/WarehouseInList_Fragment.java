@@ -694,6 +694,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
             easySearch(wareHouseId, guess);
         }
         else if(v == search_detail_back){
+            detail_name.setText(null);
+            radio_num.clearCheck();
+            radio_topbar.clearCheck();
             search_detail.setVisibility(View.GONE);
         }
         else if(v == detail_make_sure){

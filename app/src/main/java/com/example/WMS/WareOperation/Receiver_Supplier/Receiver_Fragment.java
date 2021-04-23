@@ -47,6 +47,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
     private static RS_Adapter<RS_Adapter.VH> adapter;
     private static String token;
     private String roleList;
+    private int companyId;
     public Receiver_Fragment(String token, String roleList) {
         this.token = token;
         this.roleList = roleList;
@@ -57,6 +58,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
+        companyId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getCompanyId();
     }
 
     @Nullable
@@ -86,7 +88,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
         btn_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,1,token);
+                RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,1,token, companyId);
                 rs_add_dialog.show();
             }
         });
@@ -116,7 +118,6 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
     }
 
     private void getData() {
-        String companyId="1";
         OkHttpHelper ok= OkHttpHelper.getInstance();
         ok.get_for_list("http://121.199.22.134:8003/api-inventory/getReceiverByCompanyId/"+companyId+"?userToken="+token,new BaseCallback<DataBean.Receiver>(){
             @Override
@@ -133,8 +134,6 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
             public void onSuccess_List(String resultStr) {
                 Gson gson= new Gson();
                 DataBean.Receiver[] wares=gson.fromJson(resultStr,DataBean.Receiver[].class);
-                System.out.println("a  "+resultStr);
-                System.out.println(""+wares[0]);
                 for (int i=0;i<wares.length;i++){
                     receivers_list.add(wares[i]);
                 }
