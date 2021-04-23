@@ -698,8 +698,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
         }
         else if(v == detail_make_sure){
             String name = detail_name.getText().toString();
-            String str = tags[0] + tags[1];
-            detailSearch(null, name);
+            String str = tags[0] + tags[1]+"";
+            detailSearch(str, name);
             Toast.makeText(context,"搜索", Toast.LENGTH_SHORT).show();
         }
         else if(v == clear_select){
