@@ -70,4 +70,155 @@
             android:layout_marginRight="10dp"
             android:layout_height="50dp"></ImageView>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/search_detail"
+        android:visibility="gone"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_width="25dp"
+                android:src="@drawable/search_back"
+                android:id="@+id/search_detail_back"
+                android:layout_marginLeft="10dp"
+                android:layout_height="50dp"/>
+            <com.xuexiang.xui.widget.edittext.ClearEditText
+                android:id="@+id/detail_name"
+                android:textColorHint="@color/skyblue"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/skyblue"
+                android:hint="请输入商品名称"
+                android:textSize="15dp"
+                android:layout_weight="1"/>
+            <ImageView
+                android:id="@+id/detail_make_sure"
+                android:layout_width="25dp"
+                android:src="@drawable/search"
+                android:layout_marginRight="10dp"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <com.xuexiang.xui.widget.edittext.ClearEditText
+                android:textColorHint="@color/skyblue"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="55dp"
+                android:layout_marginRight="35dp"
+                android:textColor="@color/skyblue"
+                android:hint="请输入标签"
+                android:textSize="15dp"
+                android:layout_weight="1"/>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#D6DBDF"/>
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <RadioGroup
+                android:id="@+id/radio_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/checkbox_a"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="售罄" />
+                <RadioButton
+                    android:id="@+id/checkbox_b"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="库存告警" />
+                <RadioButton
+                    android:id="@+id/checkbox_c"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="库存正常" />
+                <RadioButton
+                    android:id="@+id/checkbox_d"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="库存积压" />
+            </RadioGroup>
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#D6DBDF"/>
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <RadioGroup
+                android:id="@+id/radio_topbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <RadioButton
+                    android:id="@+id/checkbox_e"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="优品" />
+                <RadioButton
+                    android:id="@+id/checkbox_g"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="良品" />
+                <RadioButton
+                    android:id="@+id/checkbox_f"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="合格品" />
+                <RadioButton
+                    android:id="@+id/checkbox_h"
+                    android:layout_margin="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="残次品" />
+                <ImageView
+                    android:layout_width="20dp"
+                    android:id="@+id/clear_select"
+                    android:src="@drawable/cha"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_height="20dp"/>
+            </RadioGroup>
+
+        </LinearLayout>
+
+<!--        <TextView-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_margin="8dp"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:gravity="center"-->
+<!--            android:text="提示：详细模式下，不必填写所有输入框哦"-->
+<!--            android:textColor="@color/skyBlue"-->
+<!--            android:layout_height="wrap_content"/>-->
+    </LinearLayout>
 </RelativeLayout>

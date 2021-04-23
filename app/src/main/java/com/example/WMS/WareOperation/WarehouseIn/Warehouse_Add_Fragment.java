@@ -95,7 +95,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
                 SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
                 id=preferences.getString("supplierId", "-1");
                 DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getId(),id,
-                        Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
+                        Double.parseDouble(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
                 sendData(post_data);
                 cancel();
             }
