@@ -103,6 +103,9 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private RadioGroup radio_num;
     private ImageView clear_select;
     private String[] tags = new String[2];
+    private static Spinner category;
+    private static String selectCategory = "";
+    private static ArrayAdapter<String> category_spinnerAdapter;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -218,7 +221,17 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         btn_scan=view.findViewById(R.id.scan);
         btn_select=view.findViewById(R.id.select_receiver);
         //设置适配器
-
+        category=view.findViewById(R.id.spinner_category);
+        category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectCategory = categories.get(position).getCategoryName();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //todo-something
+            }
+        });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -415,9 +428,19 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         });
     }
     private void detailSearch(String tags, String productName){
+        String urlString = "";
+        if(selectCategory != "全部种类"){
+            urlString += "&category=" + selectCategory;
+        }
+        if(productName != ""){
+            urlString += "&productName=" + productName;
+        }
+        if(tags != ""){
+            urlString += "&tags=" + tags;
+        }
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseIdAndProductNameAndTags/"
-                        +tags+"/"+productName+"/"+wareHouseId+"?userToken="+token,
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByConditions/?userToken="
+                        +token+"&warehouseId="+wareHouseId+urlString,
                 new BaseCallback<DataBean.ProductOut>(){
                     @Override
                     public void onFailure(Request request, IOException e) {
@@ -586,6 +609,16 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                             }
                         });
                         category_List.setAdapter(category_adapter);
+                        String[] list=new String[categories.size()];
+                        list[0] = "空";
+                        for(int i = 1; i < categories.size(); i++){
+                            list[i] = categories.get(i).getCategoryName();
+                        }
+                        if(list != null && list.length > 0){
+                            category_spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner, list);
+                            selectCategory = list[0];
+                            category.setAdapter(category_spinnerAdapter);
+                        }
                     case 4:
                         SelectItem.setId(0);
                         pos = 0;
@@ -642,9 +675,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         }
         else if(v == detail_make_sure){
             String name = detail_name.getText().toString();
-            String str = tags[0] + tags[1]+"";
+            String str = tags[0] + tags[1];
             detailSearch(str, name);
-            Toast.makeText(context,"搜索", Toast.LENGTH_SHORT).show();
         }
         else if(v == clear_select){
             detail_name.setText(null);

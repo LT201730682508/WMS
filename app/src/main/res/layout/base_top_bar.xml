@@ -111,17 +111,20 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content">
-            <com.xuexiang.xui.widget.edittext.ClearEditText
-                android:textColorHint="@color/skyblue"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:gravity="center_vertical"
-                android:layout_marginLeft="55dp"
-                android:layout_marginRight="35dp"
-                android:textColor="@color/skyblue"
-                android:hint="请输入标签"
-                android:textSize="15dp"
-                android:layout_weight="1"/>
+            <TextView
+                android:layout_marginLeft="60dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="种类："
+                android:textSize="20sp"
+                android:textColor="@color/skyblue" />
+            <Spinner
+                android:id="@+id/spinner_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:spinnerMode="dropdown"
+                android:popupBackground="#E7E7E7"
+                android:layout_marginRight="25dp"/>
         </LinearLayout>
         <ImageView
             android:layout_width="match_parent"
