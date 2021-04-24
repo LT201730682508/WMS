@@ -75,7 +75,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             textView.setText(detail);
             return this;
         }
-        public VH setInPrice(int id,int inPrice){
+        public VH setInPrice(int id,double inPrice){
             TextView textView = getView(id);
             textView.setText(inPrice+"元(RMB)");
             return this;

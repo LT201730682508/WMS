@@ -2,8 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/inlist"
     android:layout_width="match_parent" android:layout_height="match_parent">
-    <include
-        layout="@layout/base_top_bar"></include>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -40,7 +38,7 @@
                 android:text="请选择供应商"
                 android:layout_weight="1"
                 android:textSize="20sp"
-                android:background="@color/gray"
+                android:background="#D6EAF8"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -57,7 +55,7 @@
                 android:text="新增商品"
                 android:layout_weight="1"
                 android:textSize="20sp"
-                android:background="@color/gray"
+                android:background="#D6EAF8"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_marginRight="5dp"
@@ -65,7 +63,7 @@
             <Button
                 android:id="@+id/scan"
                 android:text="扫条码"
-                android:background="@color/gray"
+                android:background="#D6EAF8"
                 android:layout_weight="1"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
@@ -74,6 +72,7 @@
                 android:layout_height="wrap_content"/>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/detail_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -101,8 +100,8 @@
 
 
     </LinearLayout>
-
-
+    <include
+        layout="@layout/base_top_bar"></include>
     <TextView
         android:layout_centerInParent="true"
         android:id="@+id/tv_nomedia"

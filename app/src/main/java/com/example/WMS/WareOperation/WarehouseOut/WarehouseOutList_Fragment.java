@@ -15,7 +15,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +52,7 @@ import com.huawei.hms.ml.scan.HmsScan;
 import com.huawei.hms.ml.scan.HmsScanAnalyzerOptions;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
+import com.xuexiang.xui.widget.edittext.ClearEditText;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -86,6 +90,19 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private long now=0;
     private int userId;
     private static Warehouse_authority_Model.authority roleList;
+    private ImageView btn_search;
+    private ImageView make_sure;
+    private ImageView search_detail_back;
+    private LinearLayout search_lin;
+    private LinearLayout search_detail;
+    private ClearEditText search_content;
+    private LinearLayout detail_list;
+    private ImageView detail_make_sure;
+    private ClearEditText detail_name;
+    private RadioGroup radio_topbar;
+    private RadioGroup radio_num;
+    private ImageView clear_select;
+    private String[] tags = new String[2];
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,10 +124,77 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         pos = 0;
         View view=View.inflate(context,R.layout.outlist_fragment,null);
         base_topbar=new Base_Topbar(view,(MainActivity) getActivity(),true);
+        base_topbar.setTitle("出库");
         rv_pager=view.findViewById(R.id.lv_video_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(context));
         category_List = view.findViewById(R.id.category_List);
         category_List.setLayoutManager(new LinearLayoutManager(context));
+        btn_search = base_topbar.getSearch();
+        make_sure = base_topbar.getMake_sure();
+        detail_make_sure = base_topbar.getDetail_make_sure();
+        search_lin = base_topbar.getSearch_lin();
+        search_detail = base_topbar.getSearch_detail();
+        search_detail_back = base_topbar.getSearch_detail_back();
+        search_content = base_topbar.getSearch_content();
+        detail_name = base_topbar.getDetail_name();
+        radio_topbar = base_topbar.getRadio_topbar();
+        radio_topbar.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.checkbox_e:
+                        tags[1] = "e";
+                        break;
+                    case R.id.checkbox_g:
+                        tags[1] = "g";
+                        break;
+                    case R.id.checkbox_f:
+                        tags[1] = "f";
+                        break;
+                    case R.id.checkbox_h:
+                        tags[1] = "h";
+                        break;
+                    default:
+                        tags[1] = "";
+                        break;
+                }
+            }
+        });
+        radio_num = view.findViewById(R.id.radio_num);
+        radio_num.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.checkbox_a:
+                        tags[0] = "a";
+                        break;
+                    case R.id.checkbox_b:
+                        tags[0] = "b";
+                        break;
+                    case R.id.checkbox_c:
+                        tags[0] = "c";
+                        break;
+                    case R.id.checkbox_d:
+                        tags[0] = "d";
+                        break;
+                    default:
+                        tags[0] = "";
+                        break;
+                }
+            }
+        });
+        radio_num = view.findViewById(R.id.radio_num);
+        clear_select = view.findViewById(R.id.clear_select);
+        detail_list = view.findViewById(R.id.detail_list);
+        search_content.setHint("简单搜索支持名称或标签快捷搜索~");
+        btn_search.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                search_detail.setVisibility(View.VISIBLE);
+                Toast.makeText(context,"详细搜索模式", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -156,6 +240,11 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         super.onActivityCreated(savedInstanceState);
         btn_scan.setOnClickListener(this);
         btn_select.setOnClickListener(this);
+        btn_search.setOnClickListener(this);
+        make_sure.setOnClickListener(this);
+        detail_make_sure.setOnClickListener(this);
+        search_detail_back.setOnClickListener(this);
+        clear_select.setOnClickListener(this);
     }
     private void getWarehouseList() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
@@ -325,7 +414,125 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             }
         });
     }
+    private void detailSearch(String tags, String productName){
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseIdAndProductNameAndTags/"
+                        +tags+"/"+productName+"/"+wareHouseId+"?userToken="+token,
+                new BaseCallback<DataBean.ProductOut>(){
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        System.out.println("failure"+e);
+                    }
 
+                    @Override
+                    public void onResponse(Response response) {
+                        System.out.println("@@@@@@@@@@1"+response);
+                    }
+
+                    @Override
+                    public void onSuccess_List(final String resultStr) {
+                        warehouseItems = new ArrayList<DataBean.ProductOut>();
+                        Gson gson= new Gson();
+                        DataBean.ProductOut[] wares=gson.fromJson(resultStr,DataBean.ProductOut[].class);
+                        warehouseItems.addAll(Arrays.asList(wares));
+                        handler.sendEmptyMessage(0);
+                    }
+
+                    @Override
+                    public void onSuccess(Response response, DataBean.ProductOut productOut) {
+                        System.out.println("Success"+response);
+                    }
+
+                    @Override
+                    public void onError(Response response, int code, Exception e) {
+                        System.out.println("error"+response+e);
+                    }
+                });
+
+    }
+    private void easySearch(int wareid, String guess) {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        if(guess.contains("优")|guess.contains("良")|guess.contains("合格")|guess.contains("残")|guess.contains("次")){
+            String tag = "";
+            if(guess.contains("优")){
+                tag = "e";
+            }
+            else if(guess.contains("良")){
+                tag = "g";
+            }
+            else if(guess.contains("合格")){
+                tag = "f";
+            }
+            else if(guess.contains("残")||guess.contains("次")){
+                tag = "h";
+            }
+            ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseIdAndTags/"+tag+"/"+wareid+"?userToken="+token,
+                    new BaseCallback<DataBean.ProductOut>(){
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            System.out.println("failure"+e);
+                        }
+
+                        @Override
+                        public void onResponse(Response response) {
+                            System.out.println("@@@@@@@@@@1"+response);
+                        }
+
+                        @Override
+                        public void onSuccess_List(final String resultStr) {
+                            warehouseItems = new ArrayList<DataBean.ProductOut>();
+                            Gson gson= new Gson();
+                            DataBean.ProductOut[] wares=gson.fromJson(resultStr,DataBean.ProductOut[].class);
+                            warehouseItems.addAll(Arrays.asList(wares));
+                            handler.sendEmptyMessage(0);
+                        }
+
+                        @Override
+                        public void onSuccess(Response response, DataBean.ProductOut productOut) {
+                            System.out.println("Success"+response);
+                        }
+
+                        @Override
+                        public void onError(Response response, int code, Exception e) {
+                            System.out.println("error"+response+e);
+                        }
+                    });
+        }
+        else{//根据名称进行简单搜索
+            ok.get_for_list("http://121.199.22.134:8003/api-inventory/getOutInventoryProductByWarehouseIdAndProductName/"+guess+"/"+wareid+"?userToken="+token,
+                    new BaseCallback<DataBean.ProductOut>(){
+                        @Override
+                        public void onFailure(Request request, IOException e) {
+                            System.out.println("failure"+e);
+                        }
+
+                        @Override
+                        public void onResponse(Response response) {
+                            System.out.println("@@@@@@@@@@1"+response);
+                        }
+
+                        @Override
+                        public void onSuccess_List(final String resultStr) {
+                            warehouseItems = new ArrayList<DataBean.ProductOut>();
+                            Gson gson= new Gson();
+                            DataBean.ProductOut[] wares=gson.fromJson(resultStr,DataBean.ProductOut[].class);
+                            warehouseItems.addAll(Arrays.asList(wares));
+                            handler.sendEmptyMessage(0);
+                        }
+
+                        @Override
+                        public void onSuccess(Response response, DataBean.ProductOut productOut) {
+                            System.out.println("Success"+response);
+                        }
+
+                        @Override
+                        public void onError(Response response, int code, Exception e) {
+                            System.out.println("error"+response+e);
+                        }
+                    });
+        }
+
+    }
     private static class MyHandler extends Handler{
         private final WeakReference<MainActivity> mActivity;
         public MyHandler(MainActivity activity){
@@ -379,6 +586,11 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                             }
                         });
                         category_List.setAdapter(category_adapter);
+                    case 4:
+                        SelectItem.setId(0);
+                        pos = 0;
+                        getData(wareHouseId);
+                        category_adapter.notifyDataSetChanged();
                     default:
                         break;
                 }
@@ -412,6 +624,32 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                 Receiver_Fragment receiver_fragment = new Receiver_Fragment(token, roleList.getAuthorities());
                 ((MainActivity) getActivity()).fragment_Manager.hide_all(receiver_fragment);
             }
+        }
+        else if(v == btn_search){
+            search_lin.setVisibility(View.VISIBLE);
+            Toast.makeText(context,"当前是简单搜索模式，多关键词搜索请返回并长按搜索", Toast.LENGTH_SHORT).show();
+            handler.sendEmptyMessage(4);
+        }
+        else if(v == make_sure){
+            String guess = search_content.getText().toString();
+            easySearch(wareHouseId, guess);
+        }
+        else if(v == search_detail_back){
+            detail_name.setText(null);
+            radio_num.clearCheck();
+            radio_topbar.clearCheck();
+            search_detail.setVisibility(View.GONE);
+        }
+        else if(v == detail_make_sure){
+            String name = detail_name.getText().toString();
+            String str = tags[0] + tags[1]+"";
+            detailSearch(str, name);
+            Toast.makeText(context,"搜索", Toast.LENGTH_SHORT).show();
+        }
+        else if(v == clear_select){
+            detail_name.setText(null);
+            radio_num.clearCheck();
+            radio_topbar.clearCheck();
         }
     }
     private static final int CAMERA_REQ_CODE = 3;

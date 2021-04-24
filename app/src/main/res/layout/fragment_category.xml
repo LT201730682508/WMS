@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="55dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp">
             <Button
@@ -20,7 +20,7 @@
                 android:text="新增"
                 android:layout_weight="1"
                 android:textSize="20sp"
-                android:background="@color/gray"
+                android:background="#D6EAF8"
                 android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

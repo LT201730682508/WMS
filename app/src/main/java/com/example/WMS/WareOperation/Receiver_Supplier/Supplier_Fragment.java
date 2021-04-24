@@ -48,6 +48,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     private static RS_Adapter<RS_Adapter.VH> adapter;
     private static String token;
     private String roleList;
+    private int companyId;
     public Supplier_Fragment(String token, String roleList) {
         this.token = token;
         this.roleList = roleList;
@@ -58,6 +59,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         handler=new MyHandler((MainActivity) getActivity());
         context=getActivity();
+        companyId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getCompanyId();
     }
 
     @Nullable
@@ -69,6 +71,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     private View initView() {
         View view=View.inflate(context,R.layout.fragment_receiver_supplier,null);
         base_topbar=new Base_Topbar(view,(MainActivity)getActivity(),true);
+        base_topbar.setTitle("请选择供应商");
         rv_pager=view.findViewById(R.id.rv_pager);
         rv_pager.setLayoutManager(new LinearLayoutManager(getActivity()));
         rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
@@ -111,7 +114,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
 
     private void getData() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getSupplierByCompanyId/1?userToken="+token,new BaseCallback<DataBean.Supplier>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getSupplierByCompanyId/"+companyId+"?userToken="+token,new BaseCallback<DataBean.Supplier>(){
 
             @Override
             public void onFailure(Request request, IOException e) {
@@ -127,8 +130,6 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
             public void onSuccess_List(String resultStr) {
                 Gson gson= new Gson();
                 DataBean.Supplier[] wares=gson.fromJson(resultStr,DataBean.Supplier[].class);
-                System.out.println("a  "+resultStr);
-                System.out.println(""+wares[0]);
                 for (int i=0;i<wares.length;i++){
                     suppliers_list.add(wares[i]);
                 }
@@ -150,7 +151,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         if(v==btn_add){
-            RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0,token);
+            RS_Add_Dialog rs_add_dialog=new RS_Add_Dialog(context,0,token, companyId);
             rs_add_dialog.show();
         }
     }
