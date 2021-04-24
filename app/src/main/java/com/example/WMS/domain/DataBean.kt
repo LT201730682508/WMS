@@ -37,4 +37,5 @@ class DataBean {
                                 var productImg:String, var productTags :String, var warehouseId: Int, var warehouseName: String, var amount: Int, var outPrice: Double,
                                 var receiverId: Int, var receiverName: String, var note: String, var createTime: String)
 
+    data class Area(var areaId: Int,var areaName: String)
 }

@@ -68,6 +68,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private ClearEditText name;
     private ClearEditText detail;
     private static Spinner category;
+    private static Spinner area;
     private Base_Topbar base_topbar;
     private ImageView picture;
     private ClearEditText warehouse_name;
@@ -75,7 +76,9 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private Button btn_scan;
     private RadioGroup radioGroup;
     private static String selectCategory = "";
+    private static String selectArea = "";
     private static ArrayList<String> categoryList;
+    private static ArrayList<String> areaList;
     private static ArrayAdapter<String> spinnerAdapter;
     private String warehouseName;
     private int warehouseId;
@@ -97,6 +100,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         context=getActivity();
         dialog= new take_Album_Dialog(context);
         getCategoryList();
+        getAreaLsit();
     }
 
     @Nullable
@@ -117,7 +121,8 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
         picture.setOnClickListener(this);
         name=view.findViewById(R.id.et_name);
         detail=view.findViewById(R.id.et_detail);
-        category=view.findViewById(R.id.spinner_category);
+        category=view.findViewById(R.id.spinner_category_new);
+        area=view.findViewById(R.id.spinner_area);
         radioGroup = view.findViewById(R.id.radio);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
@@ -139,6 +144,16 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                         tags = "f";
                         break;
                 }
+            }
+        });
+        area.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                selectArea=areaList.get(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //todo-something
             }
         });
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -178,6 +193,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                 map.put("productDescription",detail.getText().toString());
                 map.put("productCategory", selectCategory);
                 map.put("warehouseId",warehouseId+"");
+                //map.put("areaName", selectArea);//需要找苏核实
                 map.put("productCode",scan_code.getText().toString());
                 map.put("productTags", tags);
                 sendData(map,saveBitmapFile(((BitmapDrawable)picture.getDrawable()).getBitmap(),"productImg"),"productImg");
@@ -209,6 +225,42 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
 
         }
         return file;
+    }
+    private void getAreaLsit() {
+        OkHttpHelper ok= OkHttpHelper.getInstance();
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getSimpleAreaListByWarehouseId/"+warehouseId+"?userToken="+token,new BaseCallback<DataBean.Area>(){
+
+            @Override
+            public void onFailure(Request request, IOException e) {
+                System.out.println("failure"+e);
+            }
+
+            @Override
+            public void onResponse(Response response) {
+                System.out.println("response"+response);
+            }
+
+            @Override
+            public void onSuccess_List(String resultStr) {
+                areaList = new ArrayList<String>();
+                Gson gson= new Gson();
+                DataBean.Area[] wares=gson.fromJson(resultStr,DataBean.Area[].class);
+                for (int i=0;i<wares.length;i++){
+                    areaList.add(wares[i].getAreaName());
+                }
+                handler.sendEmptyMessage(0);
+            }
+
+            @Override
+            public void onSuccess(Response response, DataBean.Area area) {
+
+            }
+
+            @Override
+            public void onError(Response response, int code, Exception e) {
+                System.out.println("error"+response+e);
+            }
+        });
     }
     private void getCategoryList() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
@@ -368,6 +420,15 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
                     spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner, warehouseList);
                     selectCategory = warehouseList[0];
                     category.setAdapter(spinnerAdapter);
+                }
+                String[] list=new String[areaList.size()];
+                for(int i = 0; i < areaList.size(); i++){
+                    list[i] = areaList.get(i);
+                }
+                if(list != null && list.length > 0){
+                    spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner, list);
+                    selectArea = list[0];
+                    area.setAdapter(spinnerAdapter);
                 }
             }
         }
