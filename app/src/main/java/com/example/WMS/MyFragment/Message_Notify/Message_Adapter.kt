@@ -38,7 +38,7 @@ class Message_Adapter(
         holder.message_ware_name.text=list[position].warehouseName
         holder.message_ware_title.text=list[position].role
         holder.join_it.setOnClickListener {
-            if(list[position].invitation_id==(activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId||(activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId==0){
+            if(list[position].companyName==(activity as MainActivity).fragment_Manager.userinfo.userInfo.companyName||(activity as MainActivity).fragment_Manager.userinfo.userInfo.companyId==0){
                 Message_Notify_Model.accept_Invite(list[position].invitation_id,(activity as MainActivity).fragment_Manager.userinfo.token,object :Message_Notify_Model.after_Show_accept{
                     override fun show(str: String) {
                         if(str=="OK") {

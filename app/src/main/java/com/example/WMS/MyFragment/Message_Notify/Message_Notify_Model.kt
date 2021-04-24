@@ -112,7 +112,7 @@ class Message_Notify_Model {
 
 
 
-    data class invite_item(val invitation_id:Int,val warehouseId:String,val warehouseName:String,val user_name:String,val role:String)
+    data class invite_item(val invitation_id:Int,val warehouseId:String,val warehouseName:String,val user_name:String,val role:String,val companyName:String)
 
     interface after_Show{
         fun show(list:Array<invite_item>)

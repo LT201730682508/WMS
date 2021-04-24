@@ -57,6 +57,54 @@ class Join_Warehouse_Model {
                     }
                 })
         }
+        fun getDataReport(show:Show,userLogin: Login_fragment.user_Login) {
+            val ok = OkHttpHelper.getInstance()
+            ok.get_for_list(
+                "http://121.199.22.134:8003/api-authority/getRecordSearchWarehouseList?userToken="+userLogin.token,
+                object : BaseCallback<String>() {
+                    override fun onFailure(
+                        request: Request,
+                        e: IOException
+                    ) {
+                        println("failure$e")
+                    }
+
+                    override fun onResponse(response: Response) {
+                        println("response$response")
+                    }
+
+                    override fun onSuccess_List(resultStr: String) {
+                        val gson = Gson()
+                        val wares = gson.fromJson(
+                            resultStr,
+                            Array<All_Warehouse_Model.Warehouse>::class.java
+                        )
+
+
+                        if(wares!=null){
+                            var arrayList= arrayListOf<All_Warehouse_Model.Warehouse>()
+                            arrayList.addAll(wares)
+                            show.show(arrayList)
+                        }
+                        for (ware in wares){
+                            println("@@@@@2"+ware)
+                        }
+
+
+                    }
+                    override fun onError(
+                        response: Response,
+                        code: Int,
+                        e: Exception
+                    ) {
+                        println("error$response$e")
+                    }
+
+                    override fun onSuccess(response: Response?, t: String?) {
+                        TODO("Not yet implemented")
+                    }
+                })
+        }
     }
 
     interface Show{

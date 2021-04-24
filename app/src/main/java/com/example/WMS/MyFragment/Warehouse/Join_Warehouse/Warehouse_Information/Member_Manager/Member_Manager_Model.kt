@@ -187,6 +187,6 @@ class Member_Manager_Model {
         fun change()
     }
     data class add_member_parmas(val group_id:Int,val user_name:String)
-    data class delete_member_params(val groupid: Int,val user_name: String)
+    data class delete_member_params(val group_id: Int,val user_name: String)
     data class member_item(val user_name:String,val role:String)
 }

@@ -50,7 +50,7 @@ class Ware_In_Record_Dialog(context: Context, var showSure: Show_Sure, var resul
     }
 
     fun getWare(){
-        Join_Warehouse_Model.getData(object : Join_Warehouse_Model.Show {
+        Join_Warehouse_Model.getDataReport(object : Join_Warehouse_Model.Show {
             override fun show(wares: ArrayList<All_Warehouse_Model.Warehouse>) {
                 if (wares.size != 0) {
                     var mList = ArrayList<All_Warehouse_Model.Warehouse>()
