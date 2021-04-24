@@ -140,7 +140,7 @@ class Login_fragment: Fragment() {
     }
 
     data class user_Info(val userId:Int, val userName:String, var userImg:String,
-                         var companyId:Int, var companyName:String, val hasInvitation:Int)
+                         var companyId:Int, var companyName:String,val corporation:String,val companyDescription:String,val companyAddress:String,val  companyContact:String,val hasInvitation:Int)
     data class user_Login(var userInfo:user_Info,val token:String)
 
 }
