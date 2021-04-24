@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.WMS.Base_Topbar
 import com.example.WMS.MainActivity
 import com.example.WMS.MyFragment.Warehouse.All_Warehouse.All_Warehouse_Model
+import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.AreaManager.AreaManagerFragment
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Member_Manager.Member_Manager_Fragment
 import com.example.WMS.MyFragment.Warehouse.Join_Warehouse.Warehouse_Information.Warehouse_Detail_Information.Warehouse_Detail_Information
 import com.example.WMS.MyFragment.Warehouse.Warehouse_Authority_List
@@ -32,6 +33,7 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
     lateinit var warehouse_name:TextView
     lateinit var base_Top_Bar: Base_Topbar
     lateinit var ware_name_modification:TextView
+    lateinit var area_manager:TextView
     lateinit var ware_delete:TextView
     lateinit var warehouse_img:ImageView
     override fun onCreateView(
@@ -49,7 +51,7 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
         warehouse_name=view.findViewById(R.id.warehouse_name)
         ware_address=view.findViewById(R.id.warehouse_address)
         warehouse_des=view.findViewById(R.id.warehouse_des)
-
+        area_manager=view.findViewById(R.id.area_manager)
         warehouse_img=view.findViewById(R.id.warehouse_img)
         ware_in=view.findViewById(R.id.ware_in)
         ware_out=view.findViewById(R.id.ware_out)
@@ -67,10 +69,14 @@ class Warehouse_Information(var item: All_Warehouse_Model.Warehouse):Fragment(){
                 Warehouse_Authority_List.roleList_Map.put(item.warehouseId.toString()+(activity as MainActivity).fragment_Manager.userinfo.token,authority.role)
                 if (authority.role!="库主"||authority==null){
                     delete_modify_ll.visibility=View.GONE
-                }
+                }else
+                    area_manager.visibility=View.VISIBLE
             }
         })
-
+        area_manager.setOnClickListener {
+            var areaManagerFragment=AreaManagerFragment(item.warehouseId)
+            (activity as MainActivity).fragment_Manager.hide_all(areaManagerFragment)
+        }
         ware_in.setOnClickListener {
             var warehouseinlistFragment=WarehouseInList_Fragment()
             (activity as MainActivity).fragment_Manager.hide_all(warehouseinlistFragment)
