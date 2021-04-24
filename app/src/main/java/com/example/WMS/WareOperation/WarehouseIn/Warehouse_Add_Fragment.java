@@ -108,7 +108,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
 
     public void sendData(DataBean.ProductIn_inWarehouse parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/inWarehouse/?userToken="+token,parms,new BaseCallback<DataBean.ProductIn_inWarehouse>(){
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/inWarehouse/?userToken="+token,parms,new BaseCallback<String>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -125,7 +125,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
             }
 
             @Override
-            public void onSuccess(Response response, DataBean.ProductIn_inWarehouse productIn_inWarehouse) {
+            public void onSuccess(Response response, String string) {
                 System.out.println("@@@@@3"+response);
             }
 

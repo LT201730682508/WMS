@@ -35,6 +35,10 @@ import com.example.WMS.Base_Topbar;
 import com.example.WMS.MainActivity;
 
 
+import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_In_Record_Dialog;
+import com.example.WMS.MyFragment.Data_report.Ware_in_Record.Ware_In_Record_Model;
+import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Show_Sure;
+import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_Out_Record_Dialog;
 import com.example.WMS.MyFragment.Data_report.Ware_out_Record.Ware_out_Record_Model;
 import com.example.WMS.MyFragment.Warehouse.Warehouse_authority_Model;
 import com.example.WMS.OkHttpHelper;
@@ -54,6 +58,8 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.xuexiang.xui.widget.edittext.ClearEditText;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -66,6 +72,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     private static TextView tv_nomedia;
     private static ProgressBar pb_loading;
     private static Spinner spinner;
+    private static TextView ware_spinner;
     private static Button btn_select;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Base_Topbar base_topbar;
@@ -115,6 +122,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
         userId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getUserId();
         getWarehouseList();
+        categories = new ArrayList<DataBean.Category>();
+        categories.add(new DataBean.Category(-1, "全部种类"));
     }
 
     @Nullable
@@ -217,7 +226,9 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         });
         tv_nomedia=view.findViewById(R.id.tv_nomedia);
         pb_loading=view.findViewById(R.id.pb_loading);
-        spinner=view.findViewById(R.id.spinner);
+        //        spinner=view.findViewById(R.id.spinner);
+        ware_spinner = view.findViewById(R.id.ware_spinner);
+        ware_spinner.setOnClickListener(this);
         btn_scan=view.findViewById(R.id.scan);
         btn_select=view.findViewById(R.id.select_receiver);
         //设置适配器
@@ -232,19 +243,19 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                 //todo-something
             }
         });
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                selectWarehouseName = warehouseName.get(position).getWarehouseName();
-                getRole(token, warehouseName.get(position).getWarehouseId());
-                wareHouseId= warehouseName.get(position).getWarehouseId();
-                getCategoryList();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                //todo-something
-            }
-        });
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                selectWarehouseName = warehouseName.get(position).getWarehouseName();
+//                getRole(token, warehouseName.get(position).getWarehouseId());
+//                wareHouseId= warehouseName.get(position).getWarehouseId();
+//                getCategoryList();
+//            }
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//                //todo-something
+//            }
+//        });
         return view;
     }
 
@@ -582,16 +593,16 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                         }
                         break;
                     case 1:
-                        String[] warehouseList=new String[warehouseName.size()];
-                        for(int i = 0; i < warehouseName.size(); i++){
-                            warehouseList[i] = warehouseName.get(i).getWarehouseName();
-                        }
-                        if(warehouseList != null && warehouseList.length > 0){
-                            spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner, warehouseList);
-                            selectWarehouseName = warehouseList[0];
-                            spinner.setAdapter(spinnerAdapter);
-                        }
-                        break;
+//                        String[] warehouseList=new String[warehouseName.size()];
+//                        for(int i = 0; i < warehouseName.size(); i++){
+//                            warehouseList[i] = warehouseName.get(i).getWarehouseName();
+//                        }
+//                        if(warehouseList != null && warehouseList.length > 0){
+//                            spinnerAdapter=new ArrayAdapter<String>(activity, R.layout.myspinner, warehouseList);
+//                            selectWarehouseName = warehouseList[0];
+//                            spinner.setAdapter(spinnerAdapter);
+//                        }
+//                        break;
                     case 3:
                         category_adapter = new Category_Adapter<Category_Adapter.VH>(R.layout.item_category, categories, activity, token, 0);
                         category_adapter.setOnItemClickListener(new Category_Adapter.OnItemClickListener() {
@@ -683,6 +694,24 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
             radio_num.clearCheck();
             radio_topbar.clearCheck();
         }
+        else if(v == ware_spinner){
+            Ware_Out_Record_Dialog ware_out_record_dialog = new Ware_Out_Record_Dialog(context, new Show_Sure() {
+                @Override
+                public void show(@NotNull String str) {
+                    selectWarehouseName = str;
+                    ware_spinner.setText(selectWarehouseName);
+                }
+            }, new Ware_out_Record_Model.Ware_Record() {
+                        @Override
+                        public void result(@NotNull Ware_out_Record_Model.Out_Record[] record_list, int wareId) {
+                            wareHouseId = wareId;
+                            getRole(token, wareId);
+                            getCategoryList();
+                        }
+                    }, ((MainActivity) getActivity()).fragment_Manager.userinfo);
+            ware_out_record_dialog.show();
+        }
+
     }
     private static final int CAMERA_REQ_CODE = 3;
     private static final int RESULT_OK = 4;
