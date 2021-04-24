@@ -72,7 +72,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
         }
         public VH setDetail(int id,String detail){
             TextView textView = getView(id);
-            textView.setText(detail);
+            textView.setText("所在区域："+detail);
             return this;
         }
         public VH setInPrice(int id,double inPrice){
@@ -242,7 +242,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             holder.setText(R.id.tv_name, mDatas.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatas.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_inPrice,mDatas.get(position).getInPrice());
-            holder.setDetail(R.id.tv_detail,mDatas.get(position).getProductDescription());
+            holder.setDetail(R.id.tv_detail,mDatas.get(position).getAreaName());
             holder.setText(R.id.tv_time, mDatas.get(position).getUpdateTime());
             Glide.with(fragment).load(mDatas.get(position).getProductImg()).into(holder.imageView);
         }
@@ -254,7 +254,7 @@ public class MyAdapter<V extends RecyclerView.ViewHolder> extends RecyclerView.A
             holder.setText(R.id.tv_name, mDatasOut.get(position).getProductName());
             holder.setSize(R.id.tv_quantity,mDatasOut.get(position).getTotalAmount());
             holder.setInPrice(R.id.tv_outPrice,mDatasOut.get(position).getOutPrice());
-            holder.setDetail(R.id.tv_detail,mDatasOut.get(position).getProductDescription());
+            holder.setDetail(R.id.tv_detail,mDatasOut.get(position).getAreaName());
             holder.setText(R.id.tv_time, mDatasOut.get(position).getUpdateTime());
             Glide.with(fragment).load(mDatasOut.get(position).getProductImg()).into(holder.imageView);
         }

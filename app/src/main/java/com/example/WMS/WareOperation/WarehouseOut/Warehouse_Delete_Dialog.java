@@ -101,7 +101,7 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
                 SharedPreferences preferences=context.getSharedPreferences("receiver", Context.MODE_PRIVATE);
                 id=preferences.getString("receiverId", "-1");
                 DataBean.ProductOut_outWarehouse post_data=new DataBean.ProductOut_outWarehouse(productOut.getId(),id,
-                        Integer.parseInt(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
+                        Double.parseDouble(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString(),productOut.getAreaId());
                 sendData(post_data);
                 cancel();
             }
@@ -115,7 +115,7 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
 
     public void sendData(DataBean.ProductOut_outWarehouse parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/outWarehouse/?userToken="+token,parms,new BaseCallback<DataBean.ProductOut_outWarehouse>(){
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/outWarehouse/?userToken="+token,parms,new BaseCallback<String>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -132,8 +132,8 @@ public class Warehouse_Delete_Dialog extends Dialog implements View.OnClickListe
             }
 
             @Override
-            public void onSuccess(Response response, DataBean.ProductOut_outWarehouse productOut_outWarehouse) {
-                System.out.println("@@@@@3"+response);
+            public void onSuccess(Response response, String str) {
+                Toast.makeText(context,str,Toast.LENGTH_SHORT).show();
             }
 
             @Override

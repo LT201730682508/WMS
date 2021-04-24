@@ -95,7 +95,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
                 SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
                 id=preferences.getString("supplierId", "-1");
                 DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getId(),id,
-                        Double.parseDouble(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
+                        Double.parseDouble(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString(), productIn.getAreaId());
                 sendData(post_data);
                 cancel();
             }
@@ -126,7 +126,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
 
             @Override
             public void onSuccess(Response response, String string) {
-                System.out.println("@@@@@3"+response);
+                Toast.makeText(context,string,Toast.LENGTH_SHORT).show();
             }
 
             @Override

@@ -43,6 +43,7 @@
             android:layout_marginRight="8dp">
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/select_supplier"
                 android:text="请选择供应商"
                 android:layout_weight="1"
@@ -60,6 +61,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp">
             <Button
+                android:visibility="gone"
                 android:id="@+id/add"
                 android:text="新增商品"
                 android:layout_weight="1"
@@ -70,6 +72,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_height="wrap_content" />
             <Button
+                android:visibility="gone"
                 android:id="@+id/scan"
                 android:text="扫条码"
                 android:background="#D6EAF8"

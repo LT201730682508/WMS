@@ -756,6 +756,9 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                 public void show(@NotNull String str) {
                     selectWarehouseName = str;
                     ware_spinner.setText(selectWarehouseName);
+                    btn_add.setVisibility(View.VISIBLE);
+                    btn_scan.setVisibility(View.VISIBLE);
+                    btn_select.setVisibility(View.VISIBLE);
                 }
             }, new Ware_In_Record_Model.Ware_Record() {
                 @Override

@@ -122,8 +122,9 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
         userId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getUserId();
         getWarehouseList();
+        //修复闪退bug加的初始化
         categories = new ArrayList<DataBean.Category>();
-        categories.add(new DataBean.Category(-1, "全部种类"));
+        categories.add(new DataBean.Category(-1, ""));
     }
 
     @Nullable
@@ -700,6 +701,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                 public void show(@NotNull String str) {
                     selectWarehouseName = str;
                     ware_spinner.setText(selectWarehouseName);
+                    btn_scan.setVisibility(View.VISIBLE);
+                    btn_select.setVisibility(View.VISIBLE);
                 }
             }, new Ware_out_Record_Model.Ware_Record() {
                         @Override
