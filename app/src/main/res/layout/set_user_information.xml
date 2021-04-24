@@ -21,7 +21,7 @@
       <TextView
           android:layout_width="wrap_content"
           android:id="@+id/user_account"
-          android:layout_marginTop="25dp"
+
           android:layout_alignTop="@+id/user_img"
           android:layout_toRightOf="@+id/user_img"
           android:text="账号：1419544834"
@@ -32,7 +32,7 @@
         android:id="@+id/user_name"
         android:layout_below="@+id/user_account"
         android:layout_toRightOf="@+id/user_img"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="25dp"
         android:text="公司名称："
         android:textSize="12dp"
         android:layout_height="wrap_content"></TextView>
@@ -42,8 +42,27 @@
        android:layout_below="@+id/user_account"
        android:id="@+id/company_name"
        android:layout_toRightOf="@+id/user_name"
-       android:layout_marginTop="50dp"
+       android:layout_marginTop="25dp"
        android:layout_height="wrap_content"></TextView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/company_address"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/company_name"
+        android:layout_toRightOf="@+id/user_img"
+        android:text="地址"
+        android:textSize="12dp"
+        android:layout_height="wrap_content"></TextView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/company_contact"
+        android:layout_marginTop="25dp"
+        android:layout_below="@+id/company_address"
+        android:layout_toRightOf="@+id/user_img"
+        android:text="联系方式"
+        android:textSize="12dp"
+        android:layout_height="wrap_content"></TextView>
     <com.xuexiang.xui.widget.button.roundbutton.RoundButton
         style="@style/RoundButton.Auto"
         android:id="@+id/sure"
