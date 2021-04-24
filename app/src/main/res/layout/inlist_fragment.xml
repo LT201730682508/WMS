@@ -6,25 +6,34 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="60dp">
+            android:id="@+id/select_rl"
+            android:layout_marginTop="60dp"
+            android:background="@color/white"
+            android:layout_height="50dp">
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="选择仓库"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                />
-            <Spinner
-                android:id="@+id/spinner"
+                android:text="仓库* "
+                android:id="@+id/text"
+                android:textColor="@color/red"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:gravity="center"
+                android:layout_height="match_parent"/>
+            <TextView
+                android:id="@+id/ware_spinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:spinnerMode="dropdown"
-                android:popupBackground="#66ccff" />
-        </LinearLayout>
+                android:text="请选择仓库"
+                android:gravity="center_vertical"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/black"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="100dp"
+                android:layout_toRightOf="@+id/text"
+                android:layout_centerVertical="true"
+                android:layout_height="50dp"/>
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,6 +43,7 @@
             android:layout_marginRight="8dp">
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/select_supplier"
                 android:text="请选择供应商"
                 android:layout_weight="1"
@@ -51,6 +61,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp">
             <Button
+                android:visibility="gone"
                 android:id="@+id/add"
                 android:text="新增商品"
                 android:layout_weight="1"
@@ -61,6 +72,7 @@
                 android:layout_marginRight="5dp"
                 android:layout_height="wrap_content" />
             <Button
+                android:visibility="gone"
                 android:id="@+id/scan"
                 android:text="扫条码"
                 android:background="#D6EAF8"

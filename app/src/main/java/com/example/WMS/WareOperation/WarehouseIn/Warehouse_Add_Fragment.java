@@ -95,7 +95,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
                 SharedPreferences preferences=context.getSharedPreferences("supplier", Context.MODE_PRIVATE);
                 id=preferences.getString("supplierId", "-1");
                 DataBean.ProductIn_inWarehouse post_data=new DataBean.ProductIn_inWarehouse(productIn.getId(),id,
-                        Double.parseDouble(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString());
+                        Double.parseDouble(et_price.getText().toString()),Integer.parseInt(et_size.getText().toString()),et_note.getContentText().toString(), productIn.getAreaId());
                 sendData(post_data);
                 cancel();
             }
@@ -108,7 +108,7 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
 
     public void sendData(DataBean.ProductIn_inWarehouse parms){
         OkHttpHelper okHttpHelper=OkHttpHelper.getInstance();
-        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/inWarehouse/?userToken="+token,parms,new BaseCallback<DataBean.ProductIn_inWarehouse>(){
+        okHttpHelper.post_for_object("http://121.199.22.134:8003/api-inventory/inWarehouse/?userToken="+token,parms,new BaseCallback<String>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -125,8 +125,8 @@ public class Warehouse_Add_Fragment extends Dialog implements View.OnClickListen
             }
 
             @Override
-            public void onSuccess(Response response, DataBean.ProductIn_inWarehouse productIn_inWarehouse) {
-                System.out.println("@@@@@3"+response);
+            public void onSuccess(Response response, String string) {
+                Toast.makeText(context,string,Toast.LENGTH_SHORT).show();
             }
 
             @Override
