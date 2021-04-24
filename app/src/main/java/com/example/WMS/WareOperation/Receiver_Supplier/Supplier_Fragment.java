@@ -49,7 +49,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
     private static String token;
-    private String roleList;
+    private static String roleList;
     private ClearEditText search_content;
     private int companyId;
     public Supplier_Fragment(String token, String roleList) {
@@ -80,7 +80,7 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
         rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         im_empty=view.findViewById(R.id.im_empty);
         tv_empty=view.findViewById(R.id.tv_nomedia);
-        btn_add=view.findViewById(R.id.btn_add);
+        btn_add=view.findViewById(R.id.btn_add_some);
         make_sure = base_topbar.getMake_sure();
         search_content = base_topbar.getSearch_content();
         if(!roleList.contains("g")){
@@ -109,7 +109,8 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        btn_add.setOnClickListener(this);
+        make_sure.setOnClickListener(this);
         initData();
     }
 
@@ -214,14 +215,12 @@ public class Supplier_Fragment extends Fragment implements View.OnClickListener{
             super.handleMessage(msg);
             if(activity!=null){
                 if(suppliers_list!=null&&suppliers_list.size()>0){
-                    im_empty.setVisibility(View.GONE);
-                    tv_empty.setVisibility(View.GONE);
-                    adapter=new RS_Adapter<RS_Adapter.VH>(R.layout.item_receiver_supplier, suppliers_list,0,activity,token);
+                    rv_pager.setVisibility(View.VISIBLE);
+                    adapter=new RS_Adapter<RS_Adapter.VH>(R.layout.item_receiver_supplier, suppliers_list,0,activity,token, roleList);
                     rv_pager.setAdapter(adapter);
                 }
                 else{
-                    im_empty.setVisibility(View.VISIBLE);
-                    tv_empty.setVisibility(View.VISIBLE);
+                    rv_pager.setVisibility(View.GONE);
                 }
             }
         }

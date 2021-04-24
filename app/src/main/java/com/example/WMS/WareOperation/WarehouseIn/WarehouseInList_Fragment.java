@@ -661,8 +661,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                         });
                         category_List.setAdapter(category_adapter);
                         String[] list=new String[categories.size()];
-                        list[0] = "空";
-                        for(int i = 1; i < categories.size(); i++){
+                        for(int i = 0; i < categories.size(); i++){
                             list[i] = categories.get(i).getCategoryName();
                         }
                         if(list != null && list.length > 0){
@@ -670,6 +669,7 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                             selectCategory = list[0];
                             category.setAdapter(category_spinnerAdapter);
                         }
+                        break;
                     case 4:
                         SelectItem.setId(0);
                         pos = 0;
@@ -759,6 +759,8 @@ public class WarehouseInList_Fragment extends Fragment implements View.OnClickLi
                     btn_add.setVisibility(View.VISIBLE);
                     btn_scan.setVisibility(View.VISIBLE);
                     btn_select.setVisibility(View.VISIBLE);
+                    tv_nomedia.setVisibility(View.VISIBLE);
+                    pb_loading.setVisibility(View.VISIBLE);
                 }
             }, new Ware_In_Record_Model.Ware_Record() {
                 @Override

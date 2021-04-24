@@ -122,9 +122,9 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         token=((MainActivity)getActivity()).fragment_Manager.userinfo.getToken();
         userId = ((MainActivity)getActivity()).fragment_Manager.userinfo.getUserInfo().getUserId();
         getWarehouseList();
-        //修复闪退bug加的初始化
-        categories = new ArrayList<DataBean.Category>();
-        categories.add(new DataBean.Category(-1, ""));
+//        //修复闪退bug加的初始化
+//        categories = new ArrayList<DataBean.Category>();
+//        categories.add(new DataBean.Category(-1, ""));
     }
 
     @Nullable
@@ -233,7 +233,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
         btn_scan=view.findViewById(R.id.scan);
         btn_select=view.findViewById(R.id.select_receiver);
         //设置适配器
-        category=view.findViewById(R.id.spinner_category);
+        category = view.findViewById(R.id.spinner_category);
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -273,7 +273,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
     }
     private void getWarehouseList() {
         OkHttpHelper ok= OkHttpHelper.getInstance();
-        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getJoinedWarehouse?userToken="+token,new BaseCallback<Ware_out_Record_Model.Out_Record>(){
+        ok.get_for_list("http://121.199.22.134:8003/api-inventory/getJoinedWarehouse?userToken="+token,
+                new BaseCallback<Ware_out_Record_Model.Out_Record>(){
             @Override
             public void onFailure(Request request, IOException e) {
                 System.out.println("failure"+e);
@@ -322,8 +323,8 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                     public void onSuccess_List(final String resultStr) {
                         Gson gson= new Gson();
                         Warehouse_authority_Model.authority wares=gson.fromJson(resultStr,Warehouse_authority_Model.authority.class);
-                        getData(warehouseId);
                         roleList = wares;
+                        getData(warehouseId);
                     }
 
                     @Override
@@ -603,7 +604,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
 //                            selectWarehouseName = warehouseList[0];
 //                            spinner.setAdapter(spinnerAdapter);
 //                        }
-//                        break;
+                        break;
                     case 3:
                         category_adapter = new Category_Adapter<Category_Adapter.VH>(R.layout.item_category, categories, activity, token, 0);
                         category_adapter.setOnItemClickListener(new Category_Adapter.OnItemClickListener() {
@@ -620,10 +621,10 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                                 category_adapter.notifyDataSetChanged();
                             }
                         });
+
                         category_List.setAdapter(category_adapter);
                         String[] list=new String[categories.size()];
-                        list[0] = "空";
-                        for(int i = 1; i < categories.size(); i++){
+                        for(int i = 0; i < categories.size(); i++){
                             list[i] = categories.get(i).getCategoryName();
                         }
                         if(list != null && list.length > 0){
@@ -631,6 +632,7 @@ public class WarehouseOutList_Fragment extends Fragment implements View.OnClickL
                             selectCategory = list[0];
                             category.setAdapter(category_spinnerAdapter);
                         }
+                        break;
                     case 4:
                         SelectItem.setId(0);
                         pos = 0;

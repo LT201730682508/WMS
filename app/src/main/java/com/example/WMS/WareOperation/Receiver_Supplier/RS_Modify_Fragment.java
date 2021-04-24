@@ -72,17 +72,20 @@ public class RS_Modify_Fragment extends Fragment implements View.OnClickListener
     private String tags = "";
     private static  Fragment fragment;
     private MainActivity activity;
-    public RS_Modify_Fragment(String token, int opType, DataBean.Supplier supplier, MainActivity activity) {
+    private String roleList;
+    public RS_Modify_Fragment(String token, int opType, DataBean.Supplier supplier, MainActivity activity, String roleList) {
         this.token=token;
         this.supplier = supplier;
         this.opType = opType;
         this.activity = activity;
+        this.roleList = roleList;
     }
-    public RS_Modify_Fragment(String token, int opType, DataBean.Receiver receiver, MainActivity activity) {
+    public RS_Modify_Fragment(String token, int opType, DataBean.Receiver receiver, MainActivity activity, String roleList) {
         this.token=token;
         this.receiver = receiver;
         this.opType = opType;
         this.activity = activity;
+        this.roleList = roleList;
     }
 
     @Override
@@ -107,6 +110,12 @@ public class RS_Modify_Fragment extends Fragment implements View.OnClickListener
         rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         tv_empty=view.findViewById(R.id.tv_nomedia);
         btn_modify = view.findViewById(R.id.btn_modify);
+        if(!roleList.contains("g")){
+            btn_modify.setVisibility(View.GONE);
+        }
+        else {
+            btn_modify.setVisibility(View.VISIBLE);
+        }
         btn_commit = view.findViewById(R.id.btn_commit);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

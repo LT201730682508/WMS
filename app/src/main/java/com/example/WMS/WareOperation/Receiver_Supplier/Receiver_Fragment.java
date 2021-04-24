@@ -49,7 +49,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
     private SwipeRefreshLayout swipeRefreshLayout;
     private static RS_Adapter<RS_Adapter.VH> adapter;
     private static String token;
-    private String roleList;
+    private static String roleList;
     private int companyId;
     public Receiver_Fragment(String token, String roleList) {
         this.token = token;
@@ -79,7 +79,7 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
         rv_pager.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         im_empty=view.findViewById(R.id.im_empty);
         tv_empty=view.findViewById(R.id.tv_nomedia);
-        btn_add=view.findViewById(R.id.btn_add);
+        btn_add=view.findViewById(R.id.btn_add_some);
         make_sure = base_topbar.getMake_sure();
         search_content = base_topbar.getSearch_content();
         if(!roleList.contains("g")){
@@ -90,12 +90,6 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
         else{
             btn_add.setEnabled(true);
         }
-        btn_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -218,15 +212,12 @@ public class Receiver_Fragment extends Fragment implements View.OnClickListener{
             super.handleMessage(msg);
             if(activity!=null){
                 if(receivers_list!=null&&receivers_list.size()>0){
-                    im_empty.setVisibility(View.GONE);
-                    tv_empty.setVisibility(View.GONE);
-                    adapter=new RS_Adapter<RS_Adapter.VH>(receivers_list, R.layout.item_receiver_supplier, 1,activity,token);
+                    adapter=new RS_Adapter<RS_Adapter.VH>(receivers_list, R.layout.item_receiver_supplier, 1,activity,token, roleList);
                     rv_pager.setAdapter(adapter);
                     rv_pager.setLayoutManager(new LinearLayoutManager(activity));
                 }
                 else{
-                    im_empty.setVisibility(View.VISIBLE);
-                    tv_empty.setVisibility(View.VISIBLE);
+
                 }
             }
         }

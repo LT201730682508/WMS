@@ -75,21 +75,23 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
     private int opType;
     private MainActivity activity;
     private String token;
-
-    public RS_Adapter(int mResId, ArrayList<DataBean.Supplier> data,  int opType,MainActivity activity,String token) {
+    private String roleList;
+    public RS_Adapter(int mResId, ArrayList<DataBean.Supplier> data,  int opType,MainActivity activity,String token, String roleList) {
         this.mDatas_Supplier = data;
         this.mResId = mResId;
         this.opType = opType;
         this.activity=activity;
         this.token=token;
+        this.roleList = roleList;
     }
 
-    public RS_Adapter( ArrayList<DataBean.Receiver> data,int mResId,  int opType,MainActivity activity,String token) {
+    public RS_Adapter( ArrayList<DataBean.Receiver> data,int mResId,  int opType,MainActivity activity,String token, String roleList) {
         this.mDatas_Receiver = data;
         this.mResId = mResId;
         this.opType = opType;
         this.activity=activity;
         this.token=token;
+        this.roleList = roleList;
     }
 
     @NonNull
@@ -111,14 +113,14 @@ public class RS_Adapter<V extends RecyclerView.ViewHolder> extends RecyclerView.
                 if(opType==SUPPLIER){
                     //选中返回
                     //返回当前选中供应商进入textview中
-                    RS_Modify_Fragment rs_modify_fragment = new RS_Modify_Fragment(token, opType, mDatas_Supplier.get(position), activity);
+                    RS_Modify_Fragment rs_modify_fragment = new RS_Modify_Fragment(token, opType, mDatas_Supplier.get(position), activity, roleList);
 //                    activity.fragment_Manager.pop();
                     activity.fragment_Manager.hide_all(rs_modify_fragment);
                 }
                 else if(opType==RECEIVER){
                     //选中返回
                     //返回当前选中客户进入textview中
-                    RS_Modify_Fragment rs_modify_fragment = new RS_Modify_Fragment(token, opType, mDatas_Receiver.get(position), activity);
+                    RS_Modify_Fragment rs_modify_fragment = new RS_Modify_Fragment(token, opType, mDatas_Receiver.get(position), activity, roleList);
 //                    activity.fragment_Manager.pop();
                     activity.fragment_Manager.hide_all(rs_modify_fragment);
                 }

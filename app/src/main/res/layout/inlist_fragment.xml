@@ -115,6 +115,7 @@
     <include
         layout="@layout/base_top_bar"></include>
     <TextView
+        android:visibility="gone"
         android:layout_centerInParent="true"
         android:id="@+id/tv_nomedia"
         android:text="当前仓库无商品(入库)"
@@ -123,6 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ProgressBar
+        android:visibility="gone"
         android:layout_centerInParent="true"
         android:id="@+id/pb_loading"
         android:layout_width="wrap_content"

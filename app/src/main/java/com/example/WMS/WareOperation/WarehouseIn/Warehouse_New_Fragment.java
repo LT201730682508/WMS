@@ -85,7 +85,7 @@ public class Warehouse_New_Fragment extends Fragment implements View.OnClickList
     private Dialog dialog;
     private String token;
     private Boolean hasImg=false;
-    private String tags;
+    private String tags="f";
     private MyHandler handler;
     public Warehouse_New_Fragment(String warehouseName,int warehouseId,String token){
         this.warehouseName=warehouseName;
